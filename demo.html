@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Forge">
+<meta name="apple-mobile-web-app-title" content="Forge Demo">
 <meta name="theme-color" content="#0C0F14">
-<link rel="apple-touch-icon" href="icon.png">
-<title>Forge</title>
+<link rel="apple-touch-icon" href="icon-demo.png">
+<title>Forge — Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -28,7 +27,7 @@
     background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:160px;
     background-image:radial-gradient(ellipse 90% 40% at 50% -10%, color-mix(in srgb, var(--accent) 7%, transparent), transparent);
   }
-  header{padding:calc(24px + env(safe-area-inset-top)) 18px 4px;display:flex;justify-content:space-between;align-items:flex-end}
+  header{padding:24px 18px 4px;display:flex;justify-content:space-between;align-items:flex-end}
   .kicker{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
   h1{font-size:27px;font-weight:900;letter-spacing:-.02em;line-height:1.05;text-transform:uppercase;font-style:italic}
   h1::after{content:".";color:var(--accent);font-style:normal}
@@ -36,7 +35,7 @@
     border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);padding:6px 12px;border-radius:99px;display:none;
     font-variant-numeric:tabular-nums}
   .duration.on{display:block}
-  .save-status{position:fixed;top:calc(10px + env(safe-area-inset-top));right:12px;z-index:90;font-size:10px;font-weight:800;
+  .save-status{position:fixed;top:10px;right:12px;z-index:90;font-size:10px;font-weight:800;
     text-transform:uppercase;letter-spacing:.07em;padding:5px 10px;border-radius:99px;
     background:var(--card);border:1px solid var(--line);color:var(--muted);
     opacity:0;transition:opacity .25s ease;pointer-events:none}
@@ -447,7 +446,7 @@
 <header>
   <div>
     <div class="kicker" id="dateLine"></div>
-    <h1>Forge</h1>
+    <h1>Forge <span style="font-size:12px;font-style:normal;vertical-align:middle;background:var(--plan-soft);color:var(--plan);border:1px solid rgba(185,156,255,.3);border-radius:99px;padding:4px 9px;letter-spacing:.06em">DEMO</span></h1>
   </div>
   <div style="display:flex;align-items:center">
     <button class="snd" id="voiceBtn">🎙</button>
@@ -463,6 +462,8 @@
   <div class="stat"><b id="statWeek">0</b><span>This week</span></div>
   <div class="stat"><b id="statStreak">0</b><span>Day streak</span></div>
 </div>
+
+<div class="preview" id="preview"></div>
 
 <div class="datenav tab-train" id="datenav"></div>
 
@@ -805,7 +806,8 @@ const DAYS = [
 ];
 
 /* ---------- State ---------- */
-const KEY = "ppl-tracker-prod-1";
+const KEY = "ppl-tracker-demo-1";
+const OLD_KEYS = [];
 let state = null;
 let openPanel = null;
 let openChart = null;
@@ -1005,11 +1007,149 @@ function freshState(){
   return s;
 }
 
+/* ---------- Coaching preview: sample data ---------- */
+function dISO(daysAgo){
+  const d = new Date(); d.setDate(d.getDate() - daysAgo);
+  return d.toISOString().slice(0,10);
+}
+function sampleHistory(){
+  const S = (w,r) => ({w, r});
+  const mk = (daysAgo, day, ex) => ({date: dISO(daysAgo), day, dur: 2200 + Math.floor(Math.random()*600), ex, demo:true});
+  return [
+    /* PUSH: chest press earns a bump, lateral raises stall */
+    mk(8,"push",[
+      {n:"Chest press (EXM3000)",g:"Chest",sets:[S(50,10),S(50,10),S(50,10)]},
+      {n:"Overhead dumbbell press",g:"Shoulders",sets:[S(15,10),S(15,10),S(15,9)]},
+      {n:"Incline bench press (dumbbell)",g:"Chest",sets:[S(15,10),S(15,10),S(15,10)]},
+      {n:"Upright dips (dip station)",g:"Triceps",sets:[S(0,5),S(0,5),S(0,4)]},
+      {n:"Lateral raises (dumbbell)",g:"Shoulders",sets:[S(8,12),S(8,12),S(8,11)]}]),
+    mk(5,"push",[
+      {n:"Chest press (EXM3000)",g:"Chest",sets:[S(50,11),S(50,12),S(50,11)]},
+      {n:"Overhead dumbbell press",g:"Shoulders",sets:[S(15,11),S(15,10),S(15,10)]},
+      {n:"Incline bench press (dumbbell)",g:"Chest",sets:[S(20,10),S(20,9),S(20,8)]},
+      {n:"Upright dips (dip station)",g:"Triceps",sets:[S(0,6),S(0,5),S(0,5)]},
+      {n:"Lateral raises (dumbbell)",g:"Shoulders",sets:[S(8,12),S(8,12),S(8,11)]}]),
+    mk(2,"push",[
+      {n:"Chest press (EXM3000)",g:"Chest",sets:[S(50,12),S(50,12),S(50,12)]},
+      {n:"Overhead dumbbell press",g:"Shoulders",sets:[S(15,12),S(15,11),S(15,10)]},
+      {n:"Incline bench press (dumbbell)",g:"Chest",sets:[S(20,11),S(20,10),S(20,10)]},
+      {n:"Upright dips (dip station)",g:"Triceps",sets:[S(0,6),S(0,6),S(0,6)]},
+      {n:"Lateral raises (dumbbell)",g:"Shoulders",sets:[S(8,12),S(8,12),S(8,11)]}]),
+    /* PULL: EXM row + dumbbell row earn bumps, curls stall */
+    mk(7,"pull",[
+      {n:"Band-assisted pull-ups",g:"Back",sets:[S(0,8),S(0,7),S(0,6)]},
+      {n:"Bent-over row (EXM3000)",g:"Back",sets:[S(40,10),S(40,10),S(40,10)]},
+      {n:"Single-arm dumbbell row",g:"Back",sets:[S(25,10),S(25,10),S(25,10)]},
+      {n:"Standing dumbbell curl",g:"Biceps",sets:[S(15,10),S(15,10),S(15,9)]},
+      {n:"Shrugs (dumbbell)",g:"Shoulders",sets:[S(30,12),S(30,12),S(30,12)]}]),
+    mk(4,"pull",[
+      {n:"Band-assisted pull-ups",g:"Back",sets:[S(0,8),S(0,8),S(0,7)]},
+      {n:"Bent-over row (EXM3000)",g:"Back",sets:[S(40,11),S(40,12),S(40,11)]},
+      {n:"Single-arm dumbbell row",g:"Back",sets:[S(25,11),S(25,11),S(25,10)]},
+      {n:"Standing dumbbell curl",g:"Biceps",sets:[S(15,10),S(15,9),S(15,9)]},
+      {n:"Shrugs (dumbbell)",g:"Shoulders",sets:[S(35,12),S(35,12),S(35,11)]}]),
+    mk(1,"pull",[
+      {n:"Band-assisted pull-ups",g:"Back",sets:[S(0,9),S(0,8),S(0,8)]},
+      {n:"Bent-over row (EXM3000)",g:"Back",sets:[S(40,12),S(40,12),S(40,12)]},
+      {n:"Single-arm dumbbell row",g:"Back",sets:[S(25,12),S(25,12),S(25,12)]},
+      {n:"Standing dumbbell curl",g:"Biceps",sets:[S(15,10),S(15,10),S(15,9)]},
+      {n:"Shrugs (dumbbell)",g:"Shoulders",sets:[S(35,12),S(35,12),S(35,12)]}]),
+    /* LEGS: steady gains for nice charts, swings stall */
+    mk(9,"legs",[
+      {n:"Goblet squat (dumbbell)",g:"Quads & Glutes",sets:[S(25,10),S(25,10),S(25,10)]},
+      {n:"Romanian deadlift (barbell)",g:"Hamstrings",sets:[S(45,10),S(45,10),S(45,10)]},
+      {n:"Walking lunges (dumbbell)",g:"Quads & Glutes",sets:[S(15,10),S(15,10),S(15,10)]},
+      {n:"Kettlebell swings",g:"Hamstrings",sets:[S(25,15),S(25,15),S(25,14)]},
+      {n:"Plank",g:"Abs & Core",sets:[S(0,30),S(0,30)]}]),
+    mk(6,"legs",[
+      {n:"Goblet squat (dumbbell)",g:"Quads & Glutes",sets:[S(30,10),S(30,10),S(30,9)]},
+      {n:"Romanian deadlift (barbell)",g:"Hamstrings",sets:[S(55,10),S(55,10),S(55,9)]},
+      {n:"Walking lunges (dumbbell)",g:"Quads & Glutes",sets:[S(15,11),S(15,10),S(15,10)]},
+      {n:"Kettlebell swings",g:"Hamstrings",sets:[S(25,15),S(25,15),S(25,14)]},
+      {n:"Plank",g:"Abs & Core",sets:[S(0,35),S(0,32)]}]),
+    mk(3,"legs",[
+      {n:"Goblet squat (dumbbell)",g:"Quads & Glutes",sets:[S(35,10),S(35,10),S(35,9)]},
+      {n:"Romanian deadlift (barbell)",g:"Hamstrings",sets:[S(65,10),S(65,9),S(65,8)]},
+      {n:"Walking lunges (dumbbell)",g:"Quads & Glutes",sets:[S(15,12),S(15,11),S(15,10)]},
+      {n:"Kettlebell swings",g:"Hamstrings",sets:[S(25,15),S(25,15),S(25,13)]},
+      {n:"Plank",g:"Abs & Core",sets:[S(0,40),S(0,35)]}]),
+  ];
+}
+function sampleBody(){
+  /* 8 weekly check-ins: lean-bulk pattern — weight & girths up, waist drifting down */
+  const wk = (n, vals) => ({date: dISO(7*n), vals, demo:true});
+  return [
+    wk(8, {weight:178.0, height:70, neck:15.0, shoulders:44.0, chest:39.0, waist:34.0, hips:38.0, bicep:13.0, forearm:11.5, thigh:21.5, calf:14.5}),
+    wk(7, {weight:178.6, chest:39.2, waist:34.0, bicep:13.1, thigh:21.6}),
+    wk(6, {weight:179.2, chest:39.4, waist:33.9, bicep:13.2, thigh:21.7, shoulders:44.2}),
+    wk(5, {weight:179.6, chest:39.6, waist:33.9, bicep:13.3, thigh:21.9, calf:14.6}),
+    wk(4, {weight:180.2, chest:39.8, waist:33.8, bicep:13.4, thigh:22.0, forearm:11.6}),
+    wk(3, {weight:180.6, chest:40.0, waist:33.7, bicep:13.4, thigh:22.1, shoulders:44.6, neck:15.1}),
+    wk(2, {weight:181.0, chest:40.1, waist:33.7, bicep:13.5, thigh:22.2, calf:14.7}),
+    wk(1, {weight:181.4, chest:40.2, waist:33.6, bicep:13.6, thigh:22.3, shoulders:44.8, forearm:11.7, hips:38.1}),
+  ];
+}
+function hasDemo(){ return state.history.some(h => h.demo) || state.body.some(e => e.demo); }
+function loadSample(){
+  state.history = state.history.concat(sampleHistory());
+  state.history.sort((a,b) => b.date.localeCompare(a.date));
+  state.body = state.body.concat(sampleBody());
+  state.session = buildSession(state.session.day);
+  openChart = null;
+  save(); render();
+  toast("Sample data loaded — explore the tabs!");
+}
+function clearSample(){
+  state.history = state.history.filter(h => !h.demo);
+  state.body = state.body.filter(e => !e.demo);
+  openMeasChart = null;
+  state.session = buildSession(state.session.day);
+  openChart = null;
+  save(); render();
+  toast("Sample data cleared");
+}
+function renderPreview(){
+  const el = $("preview");
+  if (hasDemo()){
+    el.innerHTML = `<p><b>Demo build — play freely.</b> Green ⬆ badges are earned progressions, red ⚠ are stalled lifts, 📈 opens trends. This uses separate storage, so nothing here touches the real tracker.</p>
+      <button class="clear" id="demoBtn">Clear sample data</button>`;
+  } else {
+    el.innerHTML = `<p><b>Demo build.</b> Pre-loaded with sample workouts and measurements — separate storage from the real tracker, so play freely.</p>
+      <button id="demoBtn">Load sample data</button>`;
+  }
+  $("demoBtn").onclick = hasDemo() ? clearSample : loadSample;
+  const dr = document.getElementById("demoReset");
+  if (dr) dr.onclick = () => {
+    if (!dr.dataset.armed){
+      dr.dataset.armed = "1";
+      dr.textContent = "⚠ Tap again — wipes everything here";
+      return;
+    }
+    state = freshState();
+    state.history = sampleHistory();
+    state.history.forEach((h,i) => { h.wu = true; if (i % 2 === 0) h.cd = true; });
+    state.history.sort((a,b) => b.date.localeCompare(a.date));
+    state.body = sampleBody();
+    state.coins = 240;
+    state.session = buildSession(suggestDay());
+    pastEdit = null; editArm = null; openPanel = null; openChart = null;
+    openMeasChart = null; progSel = null; previewList = null;
+    viewDate = todayISO();
+    applyTheme("volt");
+    save(); render();
+    confetti(40);
+    toast("🔄 Demo reset — factory fresh");
+  };
+}
+
 async function load(){
   await probeStorage();
   if (!storageOK) setSaveStatus("💾 In-memory", "mem", true);
+  /* Demo runs happily without storage: session-only mode */
   if (!storageOK && !localOK){
-    toast("💾 Storage unreachable — changes won't persist in this view");
+    const pv = document.getElementById("preview");
+    if (pv) pv.insertAdjacentHTML("beforeend",
+      '<p style="margin-top:10px;margin-bottom:0">💾 Storage isn\'t reachable in this view, so changes last for this session only — which is perfect for a demo anyway.</p>');
   }
   try{
     const r = await window.storage.get(KEY);
@@ -1023,6 +1163,22 @@ async function load(){
   }
   if (!state){
     state = freshState();
+    state.history = sampleHistory();
+    state.history.forEach((h,i) => { h.wu = true; if (i % 2 === 0) h.cd = true; });
+    state.history.sort((a,b) => b.date.localeCompare(a.date));
+    state.body = sampleBody();
+    state.coins = 240;
+    for (const ok of OLD_KEYS){
+      try{
+        const old = await window.storage.get(ok);
+        if (old && old.value){
+          const prev = JSON.parse(old.value);
+          if (prev.plan) state.plan = prev.plan;
+          if (prev.history) state.history = prev.history;
+          break;
+        }
+      }catch(e){ /* keep trying older keys */ }
+    }
     state.session = buildSession("push");
     save();
   }
@@ -1213,6 +1369,7 @@ function unitLabel(ex){ return isTimed(ex.n) ? "time" : "reps"; }
 function wLabel(ex){ return ex.g === "Cardio" ? "level" : "lbs"; }
 
 function render(){
+  renderPreview();
   const now = new Date();
   $("dateLine").textContent = now.toLocaleDateString(undefined,{weekday:"long", month:"long", day:"numeric"});
   $("statTotal").textContent = realWorkouts();
