@@ -32,6 +32,10 @@
     border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);padding:6px 12px;border-radius:99px;display:none;
     font-variant-numeric:tabular-nums}
   .duration.on{display:block}
+  .sync-badge{position:fixed;top:calc(34px + env(safe-area-inset-top));right:12px;z-index:90;font-size:10px;font-weight:800;
+    border-radius:99px;padding:4px 9px;display:none;align-items:center;background:var(--card);border:1px solid var(--line);color:var(--muted)}
+  .sync-badge.ok{color:var(--accent);border-color:color-mix(in srgb, var(--accent) 35%, transparent)}
+  .sync-badge.err{color:var(--danger);border-color:var(--danger)}
   .save-status{position:fixed;top:10px;right:12px;z-index:90;font-size:10px;font-weight:800;
     text-transform:uppercase;letter-spacing:.07em;padding:5px 10px;border-radius:99px;
     background:var(--card);border:1px solid var(--line);color:var(--muted);
@@ -542,6 +546,7 @@
 <body>
 
 <div class="save-status" id="saveStatus"></div>
+<div class="sync-badge" id="syncBadge"></div>
 
 <header>
   <div>
@@ -644,6 +649,7 @@
 
 <div class="data-sec tab-body">
   <h3>Your data</h3>
+  <div class="form-ex" id="acctBox" style="margin-bottom:12px;display:none"></div>
   <div class="data-btns">
     <button id="dataView">View & export</button>
     <button id="dataJson">JSON backup</button>
@@ -734,6 +740,7 @@
 <div class="flash-cue" id="flashCue"></div>
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ---------- Exercise library ---------- */
 const RAWLIB = {
@@ -1481,6 +1488,144 @@ function renderProgramCard(){
 
 /* ---------- State ---------- */
 const KEY = "ppl-tracker-prod-1";
+const SYNC_ENABLED = true;
+/* ================= Account & Cloud Sync (Supabase) ================= */
+const SUPA_URL = "https://vmavwgrwwfuxsnttlphb.supabase.co";
+const SUPA_KEY = "sb_publishable_VcJlC8XNpOk6VgOdBVri7g_xPGRIOMJ";
+const SYNC_META_KEY = KEY + "-syncmeta";
+let sb = null, sbUser = null, syncTimer = null, acctEmail = "", acctStage = "email", syncSuppress = false;
+
+function syncMeta(){
+  try { return JSON.parse(localStorage.getItem(SYNC_META_KEY)) || {}; } catch(e){ return {}; }
+}
+function setSyncMeta(m){
+  try { localStorage.setItem(SYNC_META_KEY, JSON.stringify(m)); } catch(e){}
+}
+function setSyncBadge(txt, cls){
+  const el = document.getElementById("syncBadge");
+  if (!el) return;
+  if (!txt){ el.style.display = "none"; return; }
+  el.style.display = "inline-flex";
+  el.textContent = txt;
+  el.className = "sync-badge " + (cls || "");
+}
+function syncReady(){ return SYNC_ENABLED && sb && sbUser; }
+
+async function initSync(){
+  if (!SYNC_ENABLED || !window.supabase || SUPA_URL.indexOf("http") !== 0) { setSyncBadge(null); return; }
+  try {
+    sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+    const { data } = await sb.auth.getSession();
+    sbUser = (data && data.session && data.session.user) || null;
+    if (sbUser){ await cloudPull(); setSyncBadge("Synced", "ok"); }
+    else setSyncBadge(null);
+  } catch(e){ sb = null; setSyncBadge(null); }
+}
+
+async function cloudPull(){
+  if (!syncReady()) return;
+  try {
+    const { data: rows, error } = await sb.from("app_state").select("data, updated_at").eq("user_id", sbUser.id);
+    if (error) throw error;
+    if (!rows || !rows.length){ scheduleCloudPush(true); return; }   /* first device: seed the cloud */
+    const row = rows[0];
+    const cloudTs = Date.parse(row.updated_at) || 0;
+    const localTs = syncMeta().ts || 0;
+    const localEmpty = (!state.history || !state.history.length) && (!state.body || !state.body.length);
+    if (localEmpty || cloudTs > localTs + 2000){
+      state = row.data;
+      setSyncMeta({ ts: cloudTs });
+      toast("Synced \u2014 pulled your data from the cloud");
+    } else if (localTs > cloudTs + 2000){
+      scheduleCloudPush(true);                                       /* local is newer: cloud catches up */
+    } else {
+      setSyncMeta({ ts: cloudTs });
+    }
+  } catch(e){ setSyncBadge("Sync failed \u2014 will retry", "err"); }
+}
+
+function scheduleCloudPush(now){
+  if (!syncReady()) return;
+  if (syncSuppress){ syncSuppress = false; return; }
+  clearTimeout(syncTimer);
+  setSyncBadge("Syncing\u2026");
+  syncTimer = setTimeout(doCloudPush, now ? 50 : 1800);
+}
+async function doCloudPush(){
+  if (!syncReady()) return;
+  try {
+    const { data: rows, error } = await sb.from("app_state")
+      .upsert({ user_id: sbUser.id, data: state, updated_at: new Date().toISOString() })
+      .select("updated_at");
+    if (error) throw error;
+    const ts = rows && rows[0] ? Date.parse(rows[0].updated_at) : Date.now();
+    setSyncMeta({ ts });
+    setSyncBadge("Synced", "ok");
+  } catch(e){ setSyncBadge("Sync failed \u2014 will retry", "err"); }
+}
+
+function renderAccount(){
+  const el = document.getElementById("acctBox");
+  if (!el) return;
+  if (!SYNC_ENABLED){ el.style.display = "none"; return; }
+  el.style.display = "block";
+  if (sb && sbUser){
+    const m = syncMeta();
+    el.innerHTML = `<div class="si-name" style="font-size:13px;margin-bottom:3px">Account</div>
+      <div class="si-desc" style="margin-bottom:8px">${sbUser.email} \u00b7 syncing to the cloud${m.ts ? " \u00b7 last sync " + new Date(m.ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) : ""}</div>
+      <div class="data-btns"><button id="acctOut">Sign out</button><button id="acctPush">Sync now</button></div>`;
+    document.getElementById("acctOut").onclick = async () => {
+      try { await sb.auth.signOut(); } catch(e){}
+      sbUser = null; setSyncMeta({}); setSyncBadge(null);
+      renderAccount();
+      toast("Signed out \u2014 data stays on this device");
+    };
+    document.getElementById("acctPush").onclick = () => { scheduleCloudPush(true); };
+  } else if (sb){
+    if (acctStage === "email"){
+      el.innerHTML = `<div class="si-name" style="font-size:13px;margin-bottom:3px">Account</div>
+        <div class="si-desc" style="margin-bottom:8px">Sign in to sync your data across devices. We email you a 6-digit code \u2014 no password.</div>
+        <input class="import-area" id="acctEmailIn" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" style="min-height:0;padding:12px;font-family:inherit;font-size:15px;margin-bottom:8px" value="${acctEmail}">
+        <div class="data-btns"><button id="acctSend">Email me a code</button></div>`;
+      document.getElementById("acctSend").onclick = async () => {
+        const em = (document.getElementById("acctEmailIn").value || "").trim();
+        if (!em || em.indexOf("@") < 1){ toast("Enter your email first"); return; }
+        acctEmail = em;
+        try {
+          const { error } = await sb.auth.signInWithOtp({ email: em, options: { shouldCreateUser: true } });
+          if (error) throw error;
+          acctStage = "code"; renderAccount();
+          toast("Code sent \u2014 check your email");
+        } catch(e){ toast("Couldn't send the code \u2014 " + (e.message || "try again")); }
+      };
+    } else {
+      el.innerHTML = `<div class="si-name" style="font-size:13px;margin-bottom:3px">Account</div>
+        <div class="si-desc" style="margin-bottom:8px">Enter the 6-digit code we sent to <b>${acctEmail}</b></div>
+        <input class="import-area" id="acctCodeIn" inputmode="numeric" autocomplete="one-time-code" placeholder="123456" style="min-height:0;padding:12px;font-family:inherit;font-size:19px;font-weight:800;letter-spacing:.3em;text-align:center;margin-bottom:8px">
+        <div class="data-btns"><button id="acctVerify">Sign in</button><button id="acctBack">Different email</button></div>`;
+      document.getElementById("acctVerify").onclick = async () => {
+        const code = (document.getElementById("acctCodeIn").value || "").trim();
+        if (code.length < 6){ toast("Enter the 6-digit code"); return; }
+        try {
+          const { data, error } = await sb.auth.verifyOtp({ email: acctEmail, token: code, type: "email" });
+          if (error) throw error;
+          sbUser = (data && data.user) || (data && data.session && data.session.user) || null;
+          if (!sbUser) throw new Error("no session");
+          acctStage = "email";
+          await cloudPull();
+          scheduleCloudPush(true);
+          save(); render(); renderAccount();
+          confetti(30);
+          toast("Signed in \u2014 your data now follows you", true);
+        } catch(e){ toast("Code didn't work \u2014 " + (e.message || "check and retry")); }
+      };
+      document.getElementById("acctBack").onclick = () => { acctStage = "email"; renderAccount(); };
+    }
+  } else {
+    el.innerHTML = `<div class="si-desc">Cloud sync isn't configured in this build.</div>`;
+  }
+}
+
 window.addEventListener("error", e => {
   /* Same-origin app errors arrive with filename+line; masked "Script error." from
      foreign scripts (e.g. a preview shell) carries none \u2014 ignore those. */
@@ -1795,6 +1940,7 @@ async function load(){
   applyTheme(state.theme);
   viewDate = todayISO();
   checkProgramExpiry();
+  initSync();
   $("sndBtn").innerHTML = state.sound === false ? ico("spkOff") : ico("spk");
   if (!state.session) state.session = buildSession("push");
   if (state.session.pastDate) state.session = buildSession(suggestDay());
@@ -1861,6 +2007,7 @@ function saveLocal(json){
 async function doSave(attempt){
   const json = JSON.stringify(state);
   const localSaved = saveLocal(json);          /* device layer: always attempted */
+  if (typeof scheduleCloudPush === "function") scheduleCloudPush();
   if (!storageOK){
     if (localSaved){
       setSaveStatus("Saved on device ✓", "ok");
@@ -2251,6 +2398,7 @@ function renderBody(){
   renderReadiness();
   renderNudge();
   renderBackupNudge();
+  renderAccount();
   renderSweat();
   renderProgramCard();
   const blw = document.getElementById("bodyLogWorkout");
