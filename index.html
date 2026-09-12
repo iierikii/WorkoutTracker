@@ -37,6 +37,29 @@
     border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);padding:6px 12px;border-radius:99px;display:none;
     font-variant-numeric:tabular-nums}
   .duration.on{display:block}
+  .set-row{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;border-bottom:1px solid var(--line)}
+  .set-row:last-of-type{border-bottom:none}
+  .set-row:active{background:var(--card2)}
+  .set-ic{flex:0 0 36px;width:36px;height:36px;border-radius:11px;background:var(--card2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center}
+  .set-ic svg{width:17px;height:17px}
+  .set-main{flex:1;min-width:0}
+  .set-name{font-size:13.5px;font-weight:800}
+  .set-sub{font-size:11.5px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .set-chev{color:var(--muted);font-weight:900;font-size:13px}
+  .set-tog{font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:5px 10px;
+    background:var(--card2);border:1px solid var(--line);color:var(--muted)}
+  .set-tog.on{background:var(--accent-dim);color:var(--accent);border-color:color-mix(in srgb, var(--accent) 30%, transparent)}
+  .set-foot{text-align:center;font-size:10.5px;color:var(--muted);padding:12px 0 4px;font-weight:600}
+  .acct-pill{display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:900;letter-spacing:.08em;
+    color:var(--accent);background:var(--accent-dim);border:1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    border-radius:99px;padding:5px 10px;text-transform:uppercase;font-style:italic}
+  .acct-dot{width:7px;height:7px;border-radius:99px;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  .acct-title{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;font-style:italic}
+  .acct-cta{width:100%;margin-top:8px}
+  .acct-link{background:none;border:none;color:var(--muted);font-family:inherit;font-size:12px;font-weight:700;
+    text-decoration:underline;cursor:pointer;padding:9px 0 0;display:block;margin:0 auto}
+  .acct-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
   .sync-badge{position:fixed;top:calc(34px + env(safe-area-inset-top));right:12px;z-index:90;font-size:10px;font-weight:800;
     border-radius:99px;padding:4px 9px;display:none;align-items:center;background:var(--card);border:1px solid var(--line);color:var(--muted)}
   .sync-badge.ok{color:var(--accent);border-color:color-mix(in srgb, var(--accent) 35%, transparent)}
@@ -453,6 +476,11 @@
   #cfgSheet{top:0;height:100%;max-height:none;border-radius:0;flex-direction:column;
     padding-top:calc(10px + env(safe-area-inset-top))}
   #cfgSheet.on{display:flex}
+  #acctSheet.on{display:flex}
+  .acct-banner{position:sticky;top:calc(6px + env(safe-area-inset-top));z-index:85;margin:6px 12px 2px;
+    display:flex;align-items:center;gap:9px;background:var(--accent);color:var(--accent-ink);
+    border-radius:99px;padding:10px 14px;font-size:12.5px;font-weight:800;cursor:pointer;
+    box-shadow:0 4px 18px color-mix(in srgb, var(--accent) 30%, transparent)}
   #cfgSheet .cal-grab{display:none}
   #cfgBody{flex:1;max-height:none;overflow-y:auto;padding-bottom:40px}
   .cfg-add{border:none;background:var(--accent);color:var(--accent-ink);border-radius:12px;
@@ -565,6 +593,7 @@
     <div class="duration" id="duration">0:00</div>
   </div>
 </header>
+<div class="acct-banner" id="acctBanner" style="display:none"></div>
 
 <div class="player" id="playerCard"></div>
 
@@ -654,7 +683,6 @@
 
 <div class="data-sec tab-body">
   <h3>Your data</h3>
-  <div class="form-ex" id="acctBox" style="margin-bottom:12px;display:none"></div>
   <div class="data-btns">
     <button id="dataView">View & export</button>
     <button id="dataJson">JSON backup</button>
@@ -740,6 +768,24 @@
   <div class="shop-bal" id="shopBal"></div>
   <div class="shop-body" id="shopBody"></div>
   <div class="cal-foot"><button class="cf-close" id="shopClose">Close</button></div>
+</div>
+
+<div class="cal-overlay" id="setOverlay"></div>
+<div class="cal-sheet" id="setSheet">
+  <div class="cal-head"><div class="cal-title" style="cursor:default">Settings</div>
+    <button class="snd" id="setClose" style="margin:0;width:40px;height:40px;font-size:17px">✕</button></div>
+  <div id="setBody" style="padding:4px 0 10px"></div>
+</div>
+
+<div class="cal-overlay" id="acctOverlay"></div>
+<div class="cal-sheet" id="acctSheet" style="top:0;height:100%;max-height:none;border-radius:0;padding-top:calc(10px + env(safe-area-inset-top));flex-direction:column">
+  <div class="cal-head" style="align-items:center">
+    <div class="cal-title" style="cursor:default;flex:1">My Account<small>sign in once · your data follows you everywhere</small></div>
+    <button class="snd" id="acctClose" style="margin:0;width:40px;height:40px;font-size:17px">✕</button>
+  </div>
+  <div class="form-body" style="flex:1;max-height:none;overflow-y:auto;padding-bottom:40px">
+    <div class="form-ex" id="acctBox" style="display:none"></div>
+  </div>
 </div>
 
 <div class="flash-cue" id="flashCue"></div>
@@ -1524,6 +1570,7 @@ async function initSync(){
     sbUser = (data && data.session && data.session.user) || null;
     if (sbUser){ await cloudPull(); setSyncBadge("Synced", "ok"); }
     else setSyncBadge(null);
+    renderAcctBanner(); renderAccount();
   } catch(e){ sb = null; setSyncBadge(null); }
 }
 
@@ -1569,6 +1616,81 @@ async function doCloudPush(){
   } catch(e){ setSyncBadge("Sync failed \u2014 will retry", "err"); }
 }
 
+
+/* ---------- Settings hub & account screen ---------- */
+let acctBannerHide = false;
+function openSettings(){
+  const cloudSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.6A4 4 0 0 0 7 19h10.5z"/></svg>`;
+  const soundOnNow = state.sound !== false;
+  const rows = [];
+  if (SYNC_ENABLED) rows.push(`<div class="set-row" data-go="acct">
+    <span class="set-ic">${cloudSvg}</span>
+    <div class="set-main"><div class="set-name">My Account</div>
+    <div class="set-sub">${sbUser ? sbUser.email + " \u00b7 synced" : "Sign in to sync across devices"}</div></div>
+    ${sbUser ? '<span class="acct-dot"></span>' : ""}<span class="set-chev">\u25B8</span></div>`);
+  rows.push(`<div class="set-row" data-go="lib">
+    <span class="set-ic">${ico("cog")}</span>
+    <div class="set-main"><div class="set-name">Exercise Library</div>
+    <div class="set-sub">Muscles, equipment, tracking modes</div></div><span class="set-chev">\u25B8</span></div>`);
+  rows.push(`<div class="set-row" data-go="shop">
+    <span class="set-ic">${ico("coin")}</span>
+    <div class="set-main"><div class="set-name">Shop & Rewards</div>
+    <div class="set-sub">Themes, passes, and your reward vault</div></div><span class="set-chev">\u25B8</span></div>`);
+  rows.push(`<div class="set-row" data-go="snd">
+    <span class="set-ic">${ico(soundOnNow ? "spk" : "spkOff")}</span>
+    <div class="set-main"><div class="set-name">Sound</div>
+    <div class="set-sub">${soundOnNow ? "Chimes and voice coach on" : "Silent \u2014 timers flash the screen instead"}</div></div>
+    <span class="set-tog ${soundOnNow ? "on" : ""}">${soundOnNow ? "On" : "Off"}</span></div>`);
+  rows.push(`<div class="set-row" data-go="data">
+    <span class="set-ic">${ico("chart")}</span>
+    <div class="set-main"><div class="set-name">Data & Export</div>
+    <div class="set-sub">JSON backups and CSV \u00b7 lives on the Body tab</div></div><span class="set-chev">\u25B8</span></div>`);
+  $("setBody").innerHTML = rows.join("")
+    + `<div class="set-foot">AddPlates \u00b7 ${SYNC_ENABLED ? (sbUser ? "cloud sync on" : "local \u2014 not signed in") : "demo build"} \u00b7 programs-v3</div>`;
+  $("setOverlay").classList.add("on");
+  $("setSheet").classList.add("on");
+  $("setBody").querySelectorAll(".set-row").forEach(r => r.onclick = () => {
+    const go = r.dataset.go;
+    if (go === "snd"){
+      state.sound = state.sound === false ? true : false;
+      save(); render();
+      openSettings();                       /* refresh in place */
+      return;
+    }
+    closeSettings();
+    if (go === "acct") openAcctSheet();
+    else if (go === "lib") openCfg();
+    else if (go === "shop") openShop();
+    else if (go === "data"){ setTab("body"); toast("Backups & exports are at the bottom of Body"); }
+  });
+}
+function closeSettings(){
+  $("setOverlay").classList.remove("on");
+  $("setSheet").classList.remove("on");
+}
+function openAcctSheet(){
+  $("acctOverlay").classList.add("on");
+  $("acctSheet").classList.add("on");
+  renderAccount();
+}
+function closeAcctSheet(){
+  $("acctOverlay").classList.remove("on");
+  $("acctSheet").classList.remove("on");
+}
+function renderAcctBanner(){
+  const el = document.getElementById("acctBanner");
+  if (!el) return;
+  const show = SYNC_ENABLED && sb && !sbUser && !acctBannerHide;
+  el.style.display = show ? "flex" : "none";
+  if (!show) return;
+  el.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.6A4 4 0 0 0 7 19h10.5z"/></svg>
+    <span style="flex:1">Sign in to sync your workouts across devices</span>
+    <span style="font-weight:900">\u25B8</span>
+    <button id="acctBannerX" style="background:none;border:none;color:var(--accent-ink);font-family:inherit;font-weight:900;font-size:14px;padding:2px 2px 2px 8px;cursor:pointer;opacity:.7">\u2715</button>`;
+  el.onclick = openAcctSheet;
+  const x = document.getElementById("acctBannerX");
+  if (x) x.onclick = (e) => { e.stopPropagation(); acctBannerHide = true; renderAcctBanner(); };
+}
 function renderAccount(){
   const el = document.getElementById("acctBox");
   if (!el) return;
@@ -1576,22 +1698,29 @@ function renderAccount(){
   el.style.display = "block";
   if (sb && sbUser){
     const m = syncMeta();
-    el.innerHTML = `<div class="si-name" style="font-size:13px;margin-bottom:3px">Account</div>
-      <div class="si-desc" style="margin-bottom:8px">${sbUser.email} \u00b7 syncing to the cloud${m.ts ? " \u00b7 last sync " + new Date(m.ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) : ""}</div>
-      <div class="data-btns"><button id="acctOut">Sign out</button><button id="acctPush">Sync now</button></div>`;
+    el.innerHTML = `<div class="acct-row">
+        <span class="acct-pill"><span class="acct-dot"></span>Synced</span>
+        <button class="mini-btn" id="acctOut">Sign out</button>
+      </div>
+      <div class="acct-title" style="text-transform:none;font-style:normal;letter-spacing:0">${sbUser.email}</div>
+      <div class="si-desc" style="margin:3px 0 10px">Every workout follows you to any device you sign into.${m.ts ? " Last sync " + new Date(m.ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) + "." : ""}</div>
+      <button class="mini-btn" id="acctPush">Sync now</button>`;
     document.getElementById("acctOut").onclick = async () => {
       try { await sb.auth.signOut(); } catch(e){}
       sbUser = null; setSyncMeta({}); setSyncBadge(null);
-      renderAccount();
+      renderAccount(); renderAcctBanner();
       toast("Signed out \u2014 data stays on this device");
     };
     document.getElementById("acctPush").onclick = () => { scheduleCloudPush(true); };
   } else if (sb){
     if (acctStage === "email"){
-      el.innerHTML = `<div class="si-name" style="font-size:13px;margin-bottom:3px">Account</div>
-        <div class="si-desc" style="margin-bottom:8px">Sign in to sync your data across devices. We email you a 6-digit code \u2014 no password.</div>
-        <input class="import-area" id="acctEmailIn" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" style="min-height:0;padding:12px;font-family:inherit;font-size:15px;margin-bottom:8px" value="${acctEmail}">
-        <div class="data-btns"><button id="acctSend">Email me a code</button></div>`;
+      el.innerHTML = `<div class="acct-row" style="justify-content:flex-start;margin-bottom:4px">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.6A4 4 0 0 0 7 19h10.5z"/></svg>
+        <span class="acct-title">Sync across devices</span>
+      </div>
+      <div class="si-desc" style="margin-bottom:10px">One account, every device \u2014 phone, laptop, the works. No password: we email you a 6-digit code.</div>
+      <input class="import-area" id="acctEmailIn" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" style="min-height:0;padding:13px;font-family:inherit;font-size:15px;font-weight:600" value="${acctEmail}">
+      <button class="p-btn confirm acct-cta" id="acctSend">Email me a code</button>`;
       document.getElementById("acctSend").onclick = async () => {
         const em = (document.getElementById("acctEmailIn").value || "").trim();
         if (!em || em.indexOf("@") < 1){ toast("Enter your email first"); return; }
@@ -1604,10 +1733,11 @@ function renderAccount(){
         } catch(e){ toast("Couldn't send the code \u2014 " + (e.message || "try again")); }
       };
     } else {
-      el.innerHTML = `<div class="si-name" style="font-size:13px;margin-bottom:3px">Account</div>
-        <div class="si-desc" style="margin-bottom:8px">Enter the 6-digit code we sent to <b>${acctEmail}</b></div>
-        <input class="import-area" id="acctCodeIn" inputmode="numeric" autocomplete="one-time-code" placeholder="123456" style="min-height:0;padding:12px;font-family:inherit;font-size:19px;font-weight:800;letter-spacing:.3em;text-align:center;margin-bottom:8px">
-        <div class="data-btns"><button id="acctVerify">Sign in</button><button id="acctBack">Different email</button></div>`;
+      el.innerHTML = `<div class="acct-title" style="margin-bottom:4px">Check your email</div>
+      <div class="si-desc" style="margin-bottom:10px">We sent a 6-digit code to <b style="color:var(--ink)">${acctEmail}</b></div>
+      <input class="import-area" id="acctCodeIn" inputmode="numeric" autocomplete="one-time-code" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022" style="min-height:0;padding:13px;font-family:inherit;font-size:22px;font-weight:900;letter-spacing:.35em;text-align:center">
+      <button class="p-btn confirm acct-cta" id="acctVerify">Sign in</button>
+      <button class="acct-link" id="acctBack">Use a different email</button>`;
       document.getElementById("acctVerify").onclick = async () => {
         const code = (document.getElementById("acctCodeIn").value || "").trim();
         if (code.length < 6){ toast("Enter the 6-digit code"); return; }
@@ -1619,7 +1749,7 @@ function renderAccount(){
           acctStage = "email";
           await cloudPull();
           scheduleCloudPush(true);
-          save(); render(); renderAccount();
+          save(); render(); renderAccount(); renderAcctBanner();
           confetti(30);
           toast("Signed in \u2014 your data now follows you", true);
         } catch(e){ toast("Code didn't work \u2014 " + (e.message || "check and retry")); }
@@ -1627,7 +1757,11 @@ function renderAccount(){
       document.getElementById("acctBack").onclick = () => { acctStage = "email"; renderAccount(); };
     }
   } else {
-    el.innerHTML = `<div class="si-desc">Cloud sync isn't configured in this build.</div>`;
+    el.innerHTML = `<div class="acct-title" style="margin-bottom:4px">Can't reach the sync service</div>
+      <div class="si-desc" style="margin-bottom:10px">Sign-in needs a connection to the cloud. If you're on the preview, external services are blocked there \u2014 open <b style="color:var(--ink)">addplates.app</b> instead. Otherwise check your connection and retry.</div>
+      <button class="p-btn confirm acct-cta" id="acctRetry">Retry connection</button>`;
+    const rb = document.getElementById("acctRetry");
+    if (rb) rb.onclick = () => { initSync().then(() => renderAccount()); toast("Reconnecting\u2026"); };
   }
 }
 
@@ -2404,6 +2538,7 @@ function renderBody(){
   renderNudge();
   renderBackupNudge();
   renderAccount();
+  renderAcctBanner();
   renderSweat();
   renderProgramCard();
   const blw = document.getElementById("bodyLogWorkout");
@@ -4546,7 +4681,11 @@ function closeCfg(){
   $("cfgOverlay").classList.remove("on");
   $("cfgSheet").classList.remove("on");
 }
-$("cfgBtn").onclick = openCfg;
+$("cfgBtn").onclick = openSettings;
+$("setClose").onclick = closeSettings;
+$("setOverlay").onclick = closeSettings;
+$("acctClose").onclick = closeAcctSheet;
+$("acctOverlay").onclick = closeAcctSheet;
 $("cfgClose").onclick = closeCfg;
 $("cfgPlus").onclick = () => {
   if (cfgMode !== "ex"){
