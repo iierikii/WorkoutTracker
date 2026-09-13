@@ -4534,12 +4534,21 @@ function playClip(key){
   if (!packOn()) { fallback(); return; }
   const c = ac(); if (!c){ fallback(); return; }
   const playBuf = buf => {
-    try{
-      const src = c.createBufferSource(), g = c.createGain();
-      g.gain.value = 0.95;
-      src.buffer = buf; src.connect(g); g.connect(c.destination);
-      src.start();
-    }catch(e){ fallback(); }
+    const go = () => {
+      try{
+        const src = c.createBufferSource(), g = c.createGain();
+        g.gain.value = 0.95;
+        src.buffer = buf; src.connect(g); g.connect(c.destination);
+        src.start();
+      }catch(e){ fallback(); }
+    };
+    /* iOS parks contexts non-running (suspended/interrupted) and buffers play silently there —
+       wait for a running context or hand the line to the system voice. Silence is never an option. */
+    if (c.state === "running"){ go(); return; }
+    let done = false;
+    const finish = ok => { if (done) return; done = true; ok ? go() : fallback(); };
+    try{ c.resume().then(() => finish(true)).catch(() => finish(false)); }catch(e){ finish(false); }
+    setTimeout(() => finish(c.state === "running"), 700);
   };
   if (packBuffers.has(key)){ playBuf(packBuffers.get(key)); return; }
   fetch("voice/" + def.f)
