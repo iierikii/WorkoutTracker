@@ -490,6 +490,8 @@
     box-shadow:0 12px 40px rgba(0,0,0,.5)}
   #tourBar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;
     padding:12px 16px calc(14px + env(safe-area-inset-bottom))}
+  #tourBar.flip{bottom:auto;top:0;padding:calc(10px + env(safe-area-inset-top)) 16px 12px;
+    background:linear-gradient(to bottom, rgba(10,12,10,.92), rgba(10,12,10,0))}
   .tour-skip{background:none;border:none;color:rgba(255,255,255,.55);font-family:inherit;font-size:12px;
     font-weight:700;text-decoration:underline;cursor:pointer;padding:8px 4px}
   .tour-nav{font-family:inherit;font-weight:900;font-size:12.5px;border-radius:99px;padding:11px 18px;cursor:pointer;
@@ -2066,6 +2068,7 @@ const TOUR = [
 
 /* ---- Deep-dive mini tours: guided demonstrations ---- */
 let tourMode = "main", tourSeen = {};
+let tourGeom = { has: false };
 const TOPICS = {
   lib: { name:"Exercise Library", desc:"Make the app match your gym",
     enter(){ openCfg(); },
@@ -2180,12 +2183,11 @@ function positionTour(s){
     spot.style.left = (Math.max(4, r.left - pad)) + "px";
     spot.style.width = (Math.min(r.width + pad * 2, (window.innerWidth || 400) - 8)) + "px";
     spot.style.height = (r.height + pad * 2) + "px";
-    if (r.top < vh * 0.5){ card.style.top = (r.bottom + 16) + "px"; card.style.bottom = "auto"; }
-    else { card.style.bottom = (vh - r.top + 16) + "px"; card.style.top = "auto"; }
+    tourGeom = { has: true, r, below: r.top < vh * 0.5 };
   } else {
     spot.style.opacity = "1";
     spot.style.top = "38%"; spot.style.left = "50%"; spot.style.width = "0px"; spot.style.height = "0px";
-    card.style.top = "22%"; card.style.bottom = "auto";
+    tourGeom = { has: false };
   }
   card.innerHTML = `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
@@ -2209,6 +2211,21 @@ function positionTour(s){
       <button class="p-btn cancel" data-ob="go" style="flex:1">Start training</button>
       <button class="p-btn confirm" data-ob="sync" style="flex:1.3">Sign in & sync</button>
     </div></div>` : ""}`;
+  {
+    const barH = Math.max(56, bar.offsetHeight || 64);
+    const flip = !!(tourGeom.has && tourGeom.r.bottom > vh - barH - 6);
+    bar.classList.toggle("flip", flip && !s.final && !s.hub);
+    const topEdge = flip ? barH + 8 : 8;
+    const botEdge = flip ? vh - 8 : vh - barH - 8;
+    const ch = card.offsetHeight || 0;
+    let ct = tourGeom.has
+      ? (tourGeom.below ? tourGeom.r.bottom + 16 : tourGeom.r.top - 16 - ch)
+      : vh * 0.22;
+    ct = Math.min(ct, botEdge - ch);
+    ct = Math.max(ct, topEdge);
+    card.style.top = Math.round(ct) + "px";
+    card.style.bottom = "auto";
+  }
   const seq = tourSeq();
   const inTopic = tourMode !== "main";
   bar.innerHTML = (s.final || s.hub) ? "" : `
@@ -4354,10 +4371,13 @@ function packOn(){ return packState === "yes" && state && state.voicePackOff !==
 function playClip(key){
   const def = VOICE_PACK[key];
   if (!def) return;
-  const fallback = () => say(def.t);
   if (!soundOn()) return;
-  if (!packOn()) { fallback(); return; }
-  const c = ac(); if (!c){ fallback(); return; }
+  /* pack off: the system voice IS the coach */
+  if (!packOn()) { say(def.t); return; }
+  /* pack on: Brian or nothing — a missing or broken clip stays silent rather than
+     letting a second voice on stage. Check files in the voice sheet lists what's missing. */
+  const quiet = why => console.log("[pack] silent (" + why + "):", key);
+  const c = ac(); if (!c){ quiet("no audio context"); return; }
   const playBuf = buf => {
     const go = () => {
       try{
@@ -4365,22 +4385,21 @@ function playClip(key){
         g.gain.value = 0.95;
         src.buffer = buf; src.connect(g); g.connect(c.destination);
         src.start();
-      }catch(e){ fallback(); }
+      }catch(e){ quiet("play error"); }
     };
-    /* iOS parks contexts non-running (suspended/interrupted) and buffers play silently there —
-       wait for a running context or hand the line to the system voice. Silence is never an option. */
+    /* iOS parks contexts non-running (suspended/interrupted) — wait for a running context */
     if (c.state === "running"){ go(); return; }
     let done = false;
-    const finish = ok => { if (done) return; done = true; ok ? go() : fallback(); };
+    const finish = ok => { if (done) return; done = true; ok ? go() : quiet("context not running"); };
     try{ c.resume().then(() => finish(true)).catch(() => finish(false)); }catch(e){ finish(false); }
     setTimeout(() => finish(c.state === "running"), 700);
   };
   if (packBuffers.has(key)){ playBuf(packBuffers.get(key)); return; }
   fetch("voice/" + def.f)
-    .then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); })
+    .then(r => { if (!r.ok || ((r.headers.get("content-type") || "").includes("text/html"))) throw 0; return r.arrayBuffer(); })
     .then(ab => new Promise((res, rej) => c.decodeAudioData(ab, res, rej)))
     .then(buf => { packBuffers.set(key, buf); playBuf(buf); })
-    .catch(() => { fallback(); });
+    .catch(() => { quiet("clip missing or undecodable"); });
 }
 function sayP(key){
   if (packState === "unknown"){ probeVoicePack().then(() => playClip(key)); return; }
@@ -4463,9 +4482,11 @@ function openVoiceSheet(){
     <div style="display:flex;align-items:center;gap:9px">
       <div class="si-main" style="min-width:0"><div class="si-name">\uD83C\uDF99 Studio voice pack ${state.voicePackOff ? "\u00b7 off" : "\u00b7 active"}</div>
       <div class="si-desc">Real recorded coach lines \u2014 the voices below are only the fallback for anything dynamic.</div></div>
+      <button class="mini-btn" id="packChk" style="flex:0 0 auto">Check files</button>
       <button class="mini-btn" id="packPrev" style="flex:0 0 auto">Preview</button>
       <button class="mini-btn" id="packTgl" style="flex:0 0 auto">${state.voicePackOff ? "Turn on" : "Turn off"}</button>
     </div>
+    <div id="packChkOut"></div>
   </div>` : (packState === "no" ? `<div class="si-desc" style="padding:2px 4px 8px;opacity:.7">No studio voice pack installed \u2014 the app speaks with the system voices below. (Owner: add mp3 clips to /voice/ in the repo \u2014 see voice-pack-guide.md.)</div>` : "");
   const total = window.speechSynthesis ? speechSynthesis.getVoices().length : 0;
   const truthLine = `<div class="si-desc" style="text-align:center;padding:9px 4px 2px;opacity:.75">iPhone is reporting ${vs.length} English ${vs.length === 1 ? "voice" : "voices"} to this app (${total} total). Downloaded voices don't appear here — Apple gives web apps this fixed set only.</div>`;
@@ -4480,6 +4501,23 @@ function openVoiceSheet(){
       <button class="v-pick" data-v="${v.voiceURI || v.name}">${active ? "\u2713" : "Try"}</button>
     </div>`;
   }).join("") : '<div class="chart-empty">Waking the iPhone speech engine… if nothing appears in a few seconds, close this sheet and reopen it.</div>') + truthLine;
+  const pc = document.getElementById("packChk");
+  if (pc) pc.onclick = async () => {
+    pc.textContent = "Checking\u2026";
+    const keys = Object.keys(VOICE_PACK);
+    const missing = [];
+    await Promise.all(keys.map(k =>
+      fetch("voice/" + VOICE_PACK[k].f, { method: "HEAD" })
+        .then(r => { if (!r.ok || ((r.headers.get("content-type") || "").includes("text/html"))) missing.push(VOICE_PACK[k].f); })
+        .catch(() => missing.push(VOICE_PACK[k].f))
+    ));
+    missing.sort();
+    const el = document.getElementById("packChkOut");
+    if (el) el.innerHTML = missing.length
+      ? `<div class="si-desc" style="margin-top:8px;color:var(--ink)"><b>${keys.length - missing.length} of ${keys.length} clips found.</b> Missing from the server \u2014 these lines fall back to the system voice:<br><span style="font-family:ui-monospace,monospace;font-size:11px;line-height:1.8">${missing.join("<br>")}</span></div>`
+      : `<div class="si-desc" style="margin-top:8px;color:var(--ink)"><b>All ${keys.length} clips found \u2014 the server is complete.</b> If a line still plays in the system voice, tell Erik which one.</div>`;
+    pc.textContent = "Check files";
+  };
   const pp = document.getElementById("packPrev");
   if (pp) pp.onclick = () => { if (!soundOn()){ state.sound = true; save(); } playClip("coach-hello"); };
   const pt = document.getElementById("packTgl");
