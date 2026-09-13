@@ -485,10 +485,11 @@
   #tourSpot{position:fixed;border-radius:14px;pointer-events:none;opacity:0;
     box-shadow:0 0 0 9999px rgba(7,9,7,.82), 0 0 0 2px var(--accent), 0 0 24px color-mix(in srgb, var(--accent) 45%, transparent);
     transition:top .35s ease, left .35s ease, width .35s ease, height .35s ease}
-  #tourCard{position:fixed;left:14px;right:14px;max-width:440px;margin:0 auto;background:var(--card);
+  #tourCard{z-index:3;position:fixed;left:14px;right:14px;max-width:440px;margin:0 auto;background:var(--card);
     border:1px solid var(--line);border-radius:14px;padding:14px 16px;transition:top .3s ease, bottom .3s ease;
     box-shadow:0 12px 40px rgba(0,0,0,.5)}
-  #tourBar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;
+  #tourBar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;z-index:6;
+    background:linear-gradient(to top, rgba(10,12,10,.94), rgba(10,12,10,0));
     padding:12px 16px calc(14px + env(safe-area-inset-bottom))}
   #tourBar.flip{bottom:auto;top:0;padding:calc(10px + env(safe-area-inset-top)) 16px 12px;
     background:linear-gradient(to bottom, rgba(10,12,10,.92), rgba(10,12,10,0))}
@@ -2217,7 +2218,11 @@ function positionTour(s){
     bar.classList.toggle("flip", flip && !s.final && !s.hub);
     const topEdge = flip ? barH + 8 : 8;
     const botEdge = flip ? vh - 8 : vh - barH - 8;
-    const ch = card.offsetHeight || 0;
+    const zone = botEdge - topEdge;
+    card.style.maxHeight = Math.round(zone) + "px";
+    card.style.overflowY = "auto";
+    card.style.webkitOverflowScrolling = "touch";
+    const ch = Math.min(card.offsetHeight || 0, zone);
     let ct = tourGeom.has
       ? (tourGeom.below ? tourGeom.r.bottom + 16 : tourGeom.r.top - 16 - ch)
       : vh * 0.22;
