@@ -4440,6 +4440,8 @@ function openVoiceSheet(){
       <button class="mini-btn" id="packTgl" style="flex:0 0 auto">${state.voicePackOff ? "Turn on" : "Turn off"}</button>
     </div>
   </div>` : (packState === "no" ? `<div class="si-desc" style="padding:2px 4px 8px;opacity:.7">No studio voice pack installed \u2014 the app speaks with the system voices below. (Owner: add mp3 clips to /voice/ in the repo \u2014 see voice-pack-guide.md.)</div>` : "");
+  const total = window.speechSynthesis ? speechSynthesis.getVoices().length : 0;
+  const truthLine = `<div class="si-desc" style="text-align:center;padding:9px 4px 2px;opacity:.75">iPhone is reporting ${vs.length} English ${vs.length === 1 ? "voice" : "voices"} to this app (${total} total). Downloaded voices don't appear here — Apple gives web apps this fixed set only.</div>`;
   $("voiceBody").innerHTML = packRow + sndBanner + helper + (vs.length ? vs.map(v => {
     const n = v.name.toLowerCase();
     const defCount = vs.filter(x => x.default).length;
@@ -4450,7 +4452,7 @@ function openVoiceSheet(){
       <div class="si-desc">${v.lang}${tag ? " \u00b7 " + tag : ""}</div></div>
       <button class="v-pick" data-v="${v.voiceURI || v.name}">${active ? "\u2713" : "Try"}</button>
     </div>`;
-  }).join("") : '<div class="chart-empty">Waking the iPhone speech engine… if nothing appears in a few seconds, close this sheet and reopen it.</div>');
+  }).join("") : '<div class="chart-empty">Waking the iPhone speech engine… if nothing appears in a few seconds, close this sheet and reopen it.</div>') + truthLine;
   const pp = document.getElementById("packPrev");
   if (pp) pp.onclick = () => { if (!soundOn()){ state.sound = true; save(); } playClip("coach-hello"); };
   const pt = document.getElementById("packTgl");
@@ -4470,8 +4472,6 @@ function openVoiceSheet(){
     sayP("coach-hello");
     openVoiceSheet();
   });
-  const total = window.speechSynthesis ? speechSynthesis.getVoices().length : 0;
-  $("voiceBody").innerHTML += `<div class="si-desc" style="text-align:center;padding:9px 4px 2px;opacity:.75">iPhone is reporting ${vs.length} English ${vs.length === 1 ? "voice" : "voices"} to this app (${total} total). Downloaded voices don't appear here — Apple gives web apps this fixed set only.</div>`;
   $("voiceOverlay").classList.add("on");
   $("voiceSheet").classList.add("on");
 }
