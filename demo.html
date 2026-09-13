@@ -1382,7 +1382,7 @@ function startProgram(id, len){
   save(); render();
   confetti(40);
   toast(prog.name + " started \u2014 " + len + " days. Let's go.", true);
-  say("Program started. " + prog.name + ". Day one.");
+  sayP("program-start");
 }
 let pgQuitArm = false;
 function endProgram(finished){
@@ -1399,7 +1399,7 @@ function endProgram(finished){
     state.coins = (state.coins || 0) + 50;
     confetti(90);
     toast("PROGRAM COMPLETE: " + p.name + "  +150 XP \u00b7 +50 coins", true);
-    say("Program complete. " + p.name + ". Outstanding work.");
+    sayP("program-done");
     save();
   } else {
     toast("Left " + p.name + " \u2014 back to your weekly split");
@@ -2213,8 +2213,8 @@ function positionTour(s){
   const inTopic = tourMode !== "main";
   bar.innerHTML = (s.final || s.hub) ? "" : `
     <button class="tour-skip" data-ob="skip">Skip</button>
-    <div style="flex:1;display:flex;gap:5px;justify-content:center">${seq.map((_, i) =>
-      `<span style="width:${i === obStep ? 16 : 5}px;height:5px;border-radius:99px;background:${i === obStep ? "var(--accent)" : "rgba(255,255,255,.28)"};transition:all .25s"></span>`).join("")}</div>
+    <div style="flex:1;height:4px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden;margin:0 4px">
+      <i style="display:block;height:100%;width:${Math.round((obStep + 1) / seq.length * 100)}%;background:var(--accent);border-radius:99px;transition:width .3s ease"></i></div>
     ${(obStep > 0 || inTopic) ? '<button class="tour-nav" data-ob="back">Back</button>' : ""}
     <button class="tour-nav volt" data-ob="next">${inTopic && obStep === seq.length - 1 ? "Back to menu" : (s.cta || "Next")}</button>`;
 }
@@ -3050,7 +3050,7 @@ function tick(){
     if (left <= 0){
       restEnd = null;
       $("rest").classList.remove("on");
-      if (soundOn()){ sndRestOver(); say("Rest is over. Next set."); } else flashCue();
+      if (soundOn()){ sndRestOver(); sayP("rest-over"); } else flashCue();
       toast("Rest over — next set!");
     } else {
       $("restTime").textContent = fmt(left);
@@ -4089,6 +4089,7 @@ function renderShop(){
     if (spendable() < PASS_PRICE) return;
     state.coins -= PASS_PRICE;
     state.history.unshift({date: todayISO(), day:"rest", shield:true});
+    sayP("shield-used");
     state.history.sort((a,b) => b.date.localeCompare(a.date));
     save(); render(); renderShop();
     toast("Rest day protected");
@@ -4494,6 +4495,65 @@ function flashCue(){
 function sndRestOver(){ beep(880, .12); beep(880, .12, .18); beep(1100, .2, .36); }
 function sndTick(){ beep(1000, .07, 0, .18); }
 function sndFanfare(){ beep(523, .12); beep(659, .12, .11); beep(784, .12, .22); beep(1047, .3, .33); }
+
+/* ---------- Voice pack: studio clips with TTS fallback ---------- */
+const VOICE_PACK = {
+  "coach-hello":     { f: "coach-hello.mp3",     t: "Let's get to work. This is your coach speaking." },
+  "sound-back":      { f: "sound-back.mp3",      t: "Sound is back on. This is your coach speaking." },
+  "rest-over":       { f: "rest-over.mp3",       t: "Rest is over. Next set." },
+  "timer-done":      { f: "timer-done.mp3",      t: "Time!" },
+  "halfway":         { f: "halfway.mp3",         t: "Halfway there. Keep it up." },
+  "quarter-left":    { f: "quarter-left.mp3",    t: "Quarter left. Finish strong." },
+  "personal-best":   { f: "personal-best.mp3",   t: "New personal best!" },
+  "light-logged":    { f: "light-logged.mp3",    t: "Logged. That was a light one. It won't count until you do more." },
+  "sweat-accepted":  { f: "sweat-accepted.mp3",  t: "Sweat day accepted. Let us see what you have got." },
+  "sweat-cleared":   { f: "sweat-cleared.mp3",   t: "Sweat day cleared. You absolute machine." },
+  "program-start":   { f: "program-start.mp3",   t: "Program started. Day one." },
+  "program-done":    { f: "program-done.mp3",    t: "Program complete. Outstanding work." },
+  "shield-used":     { f: "shield-used.mp3",     t: "Streak shield used. Your streak is safe." },
+  "finish-1":        { f: "finish-1.mp3",        t: "Workout complete. That is how it is done." },
+  "finish-2":        { f: "finish-2.mp3",        t: "Session logged. Go get your protein." },
+  "finish-3":        { f: "finish-3.mp3",        t: "Done. Future you says thanks." },
+  "finish-4":        { f: "finish-4.mp3",        t: "Another brick in the wall. Nice work." }
+};
+const FINISH_KEYS = ["finish-1","finish-2","finish-3","finish-4"];
+let packState = "unknown";              /* unknown | yes | no */
+const packBuffers = new Map();
+function probeVoicePack(){
+  if (packState !== "unknown") return Promise.resolve(packState);
+  return fetch("voice/coach-hello.mp3", { method: "HEAD" })
+    .then(r => { packState = (r.ok && !((r.headers.get("content-type") || "").includes("text/html"))) ? "yes" : "no"; return packState; })
+    .catch(() => { packState = "no"; return packState; });
+}
+function packOn(){ return packState === "yes" && state && state.voicePackOff !== true; }
+function playClip(key){
+  const def = VOICE_PACK[key];
+  if (!def) return;
+  const fallback = () => say(def.t);
+  if (!soundOn()) return;
+  if (!packOn()) { fallback(); return; }
+  const c = ac(); if (!c){ fallback(); return; }
+  const playBuf = buf => {
+    try{
+      const src = c.createBufferSource(), g = c.createGain();
+      g.gain.value = 0.95;
+      src.buffer = buf; src.connect(g); g.connect(c.destination);
+      src.start();
+    }catch(e){ fallback(); }
+  };
+  if (packBuffers.has(key)){ playBuf(packBuffers.get(key)); return; }
+  fetch("voice/" + def.f)
+    .then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); })
+    .then(ab => new Promise((res, rej) => c.decodeAudioData(ab, res, rej)))
+    .then(buf => { packBuffers.set(key, buf); playBuf(buf); })
+    .catch(() => { fallback(); });
+}
+function sayP(key){
+  if (packState === "unknown"){ probeVoicePack().then(() => playClip(key)); return; }
+  playClip(key);
+}
+setTimeout(() => { probeVoicePack(); }, 1500);
+
 function say(text){
   if (!soundOn() || !window.speechSynthesis) return;
   try{
@@ -4514,10 +4574,13 @@ function enVoices(){
   if (!window.speechSynthesis) return [];
   return speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith("en"));
 }
+const VOICE_NOVELTY = ["bahh","bells","boing","bubbles","cellos","bad news","good news","jester","organ","trinoids","whisper","zarvox","wobble","albert","fred","ralph","junior","kathy","superstar"];
+function isNovelty(v){ const n = v.name.toLowerCase(); return VOICE_NOVELTY.some(x => n.includes(x)); }
 const VOICE_FAVES = ["ava","zoe","evan","samantha","allison","joelle","nathan","karen","daniel","moira","serena"];
 function voiceRank(v){
   const n = v.name.toLowerCase();
   let r = 0;
+  if (isNovelty(v)) r += 200;
   if (n.includes("premium")) r -= 100;
   if (n.includes("enhanced")) r -= 50;
   const fi = VOICE_FAVES.findIndex(f => n.includes(f));
@@ -4538,6 +4601,7 @@ function bestVoice(){
   return [...vs].sort((a,b) => voiceRank(a) - voiceRank(b))[0];
 }
 function openVoiceSheet(){
+  if (packState === "unknown"){ probeVoicePack().then(() => { const sh = document.getElementById("voiceSheet"); if (sh && sh.classList.contains("on")) openVoiceSheet(); }); }
   /* iOS loads the voice list lazily — wake the engine, then re-render when voices arrive */
   if (window.speechSynthesis && !speechSynthesis.getVoices().length){
     try{
@@ -4553,21 +4617,26 @@ function openVoiceSheet(){
   }
   const vs = [...enVoices()].sort((a,b) => voiceRank(a) - voiceRank(b));
   const helper = `<div class="shop-item" style="display:block;padding:11px 13px;margin-bottom:8px">
-    <div class="si-name" style="margin-bottom:5px">Want a much better voice? <span style="color:var(--muted);font-weight:600">(free, ~2 min)</span></div>
-    <div class="si-desc" style="line-height:1.7">These are the voices installed on this phone. Apple ships far nicer ones \u2014 downloaded in the <b>iPhone's own Settings app</b>, not in AddPlates:<br>
-    1. Open the <b>Settings</b> app (grey gears on your home screen)<br>
-    2. Pull down to search and type <b>\u201cVoices\u201d</b> \u2014 or find it under <b>Accessibility</b> as <b>Read & Speak</b>, <b>Live Speech</b>, or <b>Spoken Content</b> (the name varies by iOS version; they all reach the same voice library)<br>
-    3. Pick a named voice like Evan, Ava or Zoe and tap its <b>download</b> \u21e3 \u2014 \u2728 Enhanced or \u2B50 Premium sound best. (Siri voices are Apple-only and never show up for web apps.)<br>
-    4. <b>Close AddPlates completely</b> (swipe it away) and reopen \u2014 iPhone hands over the new voice list only on a fresh start. It'll be in this list.</div>
+    <div class="si-name" style="margin-bottom:5px">About this list</div>
+    <div class="si-desc" style="line-height:1.7">These are the voices Apple lets web apps use \u2014 a fixed set. Voices downloaded in iPhone settings (Enhanced, Premium, Siri) don't join this list on current iOS; that's an Apple limit, not a setting. Tap <b>Try</b> to audition \u2014 the serious voices are at the top, the joke ones at the bottom.</div>
   </div>`;
   const sndBanner = soundOn() ? "" : `<div class="shop-item" style="display:block;padding:12px 13px;margin-bottom:8px;border-color:color-mix(in srgb, var(--accent) 45%, transparent);background:color-mix(in srgb, var(--accent) 9%, var(--card))">
     <div class="si-name" style="margin-bottom:4px">\uD83D\uDD07 Sound is off in AddPlates</div>
     <div class="si-desc" style="margin-bottom:9px">The coach can't speak until it's back on \u2014 that's the app's own sound toggle, nothing to do with your phone.</div>
     <button class="p-btn confirm" id="voiceSndOn" style="width:100%">Turn sound on</button>
   </div>`;
-  $("voiceBody").innerHTML = sndBanner + helper + (vs.length ? vs.map(v => {
+  const packRow = packState === "yes" ? `<div class="shop-item" style="display:block;padding:12px 13px;margin-bottom:8px;border-color:color-mix(in srgb, var(--accent) 40%, transparent)">
+    <div style="display:flex;align-items:center;gap:9px">
+      <div class="si-main" style="min-width:0"><div class="si-name">\uD83C\uDF99 Studio voice pack ${state.voicePackOff ? "\u00b7 off" : "\u00b7 active"}</div>
+      <div class="si-desc">Real recorded coach lines \u2014 the voices below are only the fallback for anything dynamic.</div></div>
+      <button class="mini-btn" id="packPrev" style="flex:0 0 auto">Preview</button>
+      <button class="mini-btn" id="packTgl" style="flex:0 0 auto">${state.voicePackOff ? "Turn on" : "Turn off"}</button>
+    </div>
+  </div>` : (packState === "no" ? `<div class="si-desc" style="padding:2px 4px 8px;opacity:.7">No studio voice pack installed \u2014 the app speaks with the system voices below. (Owner: add mp3 clips to /voice/ in the repo \u2014 see voice-pack-guide.md.)</div>` : "");
+  $("voiceBody").innerHTML = packRow + sndBanner + helper + (vs.length ? vs.map(v => {
     const n = v.name.toLowerCase();
-    const tag = [v.default ? "System default" : "", n.includes("premium") ? "\u2B50 Premium" : n.includes("enhanced") ? "\u2728 Enhanced" : ""].filter(Boolean).join(" \u00b7 ");
+    const defCount = vs.filter(x => x.default).length;
+    const tag = [(v.default && defCount === 1) ? "System default" : "", n.includes("premium") ? "\u2B50 Premium" : n.includes("enhanced") ? "\u2728 Enhanced" : "", isNovelty(v) ? "novelty" : ""].filter(Boolean).join(" \u00b7 ");
     const active = state.voiceName === v.voiceURI || state.voiceName === v.name || (!state.voiceName && bestVoice() && bestVoice().name === v.name);
     return `<div class="shop-item"><span class="si-icon"></span>
       <div class="si-main"><div class="si-name">${v.name}${active ? " \u00b7 active" : ""}</div>
@@ -4575,23 +4644,27 @@ function openVoiceSheet(){
       <button class="v-pick" data-v="${v.voiceURI || v.name}">${active ? "\u2713" : "Try"}</button>
     </div>`;
   }).join("") : '<div class="chart-empty">Waking the iPhone speech engine… if nothing appears in a few seconds, close this sheet and reopen it.</div>');
+  const pp = document.getElementById("packPrev");
+  if (pp) pp.onclick = () => { if (!soundOn()){ state.sound = true; save(); } playClip("coach-hello"); };
+  const pt = document.getElementById("packTgl");
+  if (pt) pt.onclick = () => { state.voicePackOff = !state.voicePackOff; save(); openVoiceSheet(); toast(state.voicePackOff ? "Voice pack off \u2014 system voice" : "Voice pack on"); };
   const vb = document.getElementById("voiceSndOn");
   if (vb) vb.onclick = () => {
     state.sound = true;
     save();
     openVoiceSheet();
-    say("Sound is back on. This is your coach speaking.");
+    sayP("sound-back");
     toast("Sound on");
   };
   document.querySelectorAll(".v-pick").forEach(b => b.onclick = () => {
     if (!soundOn()){ state.sound = true; toast("Sound on"); }
     state.voiceName = b.dataset.v;
     save();
-    say("Let's get to work. This is your coach speaking.");
+    sayP("coach-hello");
     openVoiceSheet();
   });
   const total = window.speechSynthesis ? speechSynthesis.getVoices().length : 0;
-  $("voiceBody").innerHTML += `<div class="si-desc" style="text-align:center;padding:9px 4px 2px;opacity:.75">iPhone is reporting ${vs.length} English ${vs.length === 1 ? "voice" : "voices"} to this app (${total} total). If a voice you downloaded isn't listed here, iPhone isn't sharing it with web apps yet — Apple limits which voices Safari can see.</div>`;
+  $("voiceBody").innerHTML += `<div class="si-desc" style="text-align:center;padding:9px 4px 2px;opacity:.75">iPhone is reporting ${vs.length} English ${vs.length === 1 ? "voice" : "voices"} to this app (${total} total). Downloaded voices don't appear here — Apple gives web apps this fixed set only.</div>`;
   $("voiceOverlay").classList.add("on");
   $("voiceSheet").classList.add("on");
 }
@@ -4627,7 +4700,7 @@ function tickTimer(){
   const left = Math.round((activeTimer.end - Date.now())/1000);
   if (left <= 0){
     const done = activeTimer.onDone;
-    if (soundOn()){ sndFanfare(); say("Time!"); } else flashCue();
+    if (soundOn()){ sndFanfare(); sayP("timer-done"); } else flashCue();
     stopWorkTimer();
     if (done) done();
     return;
@@ -4635,8 +4708,8 @@ function tickTimer(){
   $("wtTime").textContent = fmt(left);
   const t = activeTimer;
   if (t.total >= 120){
-    if (!t.half && left <= t.total/2){ t.half = true; beep(784,.2); say("Halfway there. Keep it up."); }
-    if (!t.quarter && left <= t.total/4){ t.quarter = true; beep(784,.2); say("Quarter left. Finish strong."); }
+    if (!t.half && left <= t.total/2){ t.half = true; beep(784,.2); sayP("halfway"); }
+    if (!t.quarter && left <= t.total/4){ t.quarter = true; beep(784,.2); sayP("quarter-left"); }
   }
   if (left <= 5 && t.lastTick !== left){ t.lastTick = left; sndTick(); }
 }
@@ -4721,7 +4794,7 @@ function renderSweat(){
       const last = e.sets[e.sets.length - 1];
       e.sets.push({w: last ? last.w : "", r: last ? last.r : "", done:false});
     });
-    say("Sweat day accepted. Let us see what you have got.");
+    sayP("sweat-accepted");
     confetti(30);
     save(); render();
     toast(" Sweat Day on \u2014 every exercise +1 set");
@@ -6188,7 +6261,7 @@ function wireEvents(){
       const best = bestPerf(ex.n);
       if (Number(s.w) > 0 && (!best || Number(s.w) > best.w)){
         state.coins = (state.coins || 0) + 5;
-        sndFanfare(); say("New personal best!");
+        sndFanfare(); sayP("personal-best");
         toast(" New PR on " + ex.n + "! +25 XP +5 coins", true);
         confetti(30);
       }
@@ -6343,7 +6416,7 @@ async function completeWorkout(overall){
   await save();
   render();
   if (light){
-    say("Logged. That was a light one \u2014 it won't count until you do more.");
+    sayP("light-logged");
     sndSet();
     toast("Light session logged \u2014 below the workout floor, so no XP, coins, or streak credit", false);
     checkAchievements();
@@ -6362,9 +6435,9 @@ async function completeWorkout(overall){
     state.coins += 30;
     state.sweat = {date: todayISO(), status: "done"};
     setTimeout(() => { confetti(80); toast(" SWEAT DAY CLEARED! +100 XP +30 coins", true); }, 900);
-    say("Sweat day cleared. You absolute machine.");
+    sayP("sweat-cleared");
   } else {
-    say(FINISH_LINES[Math.floor(Math.random()*FINISH_LINES.length)]);
+    sayP(FINISH_KEYS[Math.floor(Math.random()*FINISH_KEYS.length)]);
   }
   sndFanfare();
   toast("Workout logged  +" + gained + " XP · " + coinMsg);
