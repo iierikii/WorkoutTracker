@@ -2218,16 +2218,28 @@ function positionTour(s){
     bar.classList.toggle("flip", flip && !s.final && !s.hub);
     const topEdge = flip ? barH + 8 : 8;
     const botEdge = flip ? vh - 8 : vh - barH - 8;
-    const zone = botEdge - topEdge;
-    card.style.maxHeight = Math.round(zone) + "px";
+    /* band layout: the card lives entirely above or below the target, never on it */
+    const gap = 12, minBand = 140;
+    let bandTop, bandH, hugBottom = false;
+    if (tourGeom.has){
+      const aboveH = tourGeom.r.top - gap - topEdge;
+      const belowH = botEdge - (tourGeom.r.bottom + gap);
+      const useBelow = belowH >= minBand && (belowH >= aboveH || aboveH < minBand);
+      if (useBelow){ bandTop = tourGeom.r.bottom + gap; bandH = belowH; }
+      else if (aboveH >= minBand){ bandTop = topEdge; bandH = aboveH; hugBottom = true; }
+      else if (aboveH >= belowH){ bandTop = topEdge; bandH = Math.max(120, aboveH); hugBottom = true; }
+      else { bandH = Math.max(120, belowH); bandTop = botEdge - bandH; }
+      bandH = Math.min(bandH, botEdge - bandTop);
+    } else { bandTop = topEdge; bandH = botEdge - topEdge; }
+    card.style.maxHeight = Math.round(bandH) + "px";
     card.style.overflowY = "auto";
     card.style.webkitOverflowScrolling = "touch";
-    const ch = Math.min(card.offsetHeight || 0, zone);
+    const ch = Math.min(card.offsetHeight || 0, bandH);
     let ct = tourGeom.has
-      ? (tourGeom.below ? tourGeom.r.bottom + 16 : tourGeom.r.top - 16 - ch)
-      : vh * 0.22;
+      ? (hugBottom ? bandTop + bandH - ch : bandTop)
+      : Math.max(topEdge, vh * 0.22);
     ct = Math.min(ct, botEdge - ch);
-    ct = Math.max(ct, topEdge);
+    ct = Math.max(ct, bandTop >= 0 ? Math.max(topEdge, hugBottom ? topEdge : bandTop) : topEdge);
     card.style.top = Math.round(ct) + "px";
     card.style.bottom = "auto";
   }
