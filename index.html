@@ -714,7 +714,7 @@
 <div class="cal-overlay" id="voiceOverlay"></div>
 <div class="cal-sheet" id="voiceSheet">
   <div class="cal-grab"></div>
-  <div class="cal-head"><div class="cal-title" style="cursor:default">Coach voice<small>tap one to hear it · best voices come from Settings → Accessibility → Spoken Content → Voices</small></div></div>
+  <div class="cal-head"><div class="cal-title" style="cursor:default">Coach voice<small>tap any voice to hear it speak</small></div></div>
   <div class="form-body" id="voiceBody"></div>
   <div class="cal-foot"><button class="cf-close" id="voiceClose">Close</button></div>
 </div>
@@ -4336,8 +4336,34 @@ function bestVoice(){
   return [...vs].sort((a,b) => voiceRank(a) - voiceRank(b))[0];
 }
 function openVoiceSheet(){
+  /* iOS loads the voice list lazily — wake the engine, then re-render when voices arrive */
+  if (window.speechSynthesis && !speechSynthesis.getVoices().length){
+    try{
+      const u = new SpeechSynthesisUtterance(" ");
+      u.volume = 0;
+      speechSynthesis.speak(u);
+      speechSynthesis.cancel();
+    }catch(e){}
+    setTimeout(() => {
+      const sh = document.getElementById("voiceSheet");
+      if (sh && sh.classList.contains("on") && enVoices().length) openVoiceSheet();
+    }, 400);
+  }
   const vs = [...enVoices()].sort((a,b) => voiceRank(a) - voiceRank(b));
-  $("voiceBody").innerHTML = vs.length ? vs.map(v => {
+  const helper = `<div class="shop-item" style="display:block;padding:11px 13px;margin-bottom:8px">
+    <div class="si-name" style="margin-bottom:5px">Want a much better voice? <span style="color:var(--muted);font-weight:600">(free, ~2 min)</span></div>
+    <div class="si-desc" style="line-height:1.7">These are the voices installed on this phone. Apple ships far nicer ones \u2014 downloaded in the <b>iPhone's own Settings app</b>, not in AddPlates:<br>
+    1. Open the <b>Settings</b> app (grey gears on your home screen)<br>
+    2. Pull down to search and type <b>\u201cVoices\u201d</b> \u2014 or find it under <b>Accessibility</b> as <b>Read & Speak</b>, <b>Live Speech</b>, or <b>Spoken Content</b> (the name varies by iOS version; they all reach the same voice library)<br>
+    3. Pick a named voice like Evan, Ava or Zoe and tap its <b>download</b> \u21e3 \u2014 \u2728 Enhanced or \u2B50 Premium sound best. (Siri voices are Apple-only and never show up for web apps.)<br>
+    4. <b>Close AddPlates completely</b> (swipe it away) and reopen \u2014 iPhone hands over the new voice list only on a fresh start. It'll be in this list.</div>
+  </div>`;
+  const sndBanner = soundOn() ? "" : `<div class="shop-item" style="display:block;padding:12px 13px;margin-bottom:8px;border-color:color-mix(in srgb, var(--accent) 45%, transparent);background:color-mix(in srgb, var(--accent) 9%, var(--card))">
+    <div class="si-name" style="margin-bottom:4px">\uD83D\uDD07 Sound is off in AddPlates</div>
+    <div class="si-desc" style="margin-bottom:9px">The coach can't speak until it's back on \u2014 that's the app's own sound toggle, nothing to do with your phone.</div>
+    <button class="p-btn confirm" id="voiceSndOn" style="width:100%">Turn sound on</button>
+  </div>`;
+  $("voiceBody").innerHTML = sndBanner + helper + (vs.length ? vs.map(v => {
     const n = v.name.toLowerCase();
     const tag = [v.default ? "System default" : "", n.includes("premium") ? "\u2B50 Premium" : n.includes("enhanced") ? "\u2728 Enhanced" : ""].filter(Boolean).join(" \u00b7 ");
     const active = state.voiceName === v.voiceURI || state.voiceName === v.name || (!state.voiceName && bestVoice() && bestVoice().name === v.name);
@@ -4346,13 +4372,24 @@ function openVoiceSheet(){
       <div class="si-desc">${v.lang}${tag ? " \u00b7 " + tag : ""}</div></div>
       <button class="v-pick" data-v="${v.voiceURI || v.name}">${active ? "\u2713" : "Try"}</button>
     </div>`;
-  }).join("") : '<div class="chart-empty">No voices found. On iPhone, download voices in Settings \u2192 Accessibility \u2192 Spoken Content \u2192 Voices.</div>';
+  }).join("") : '<div class="chart-empty">Waking the iPhone speech engine… if nothing appears in a few seconds, close this sheet and reopen it.</div>');
+  const vb = document.getElementById("voiceSndOn");
+  if (vb) vb.onclick = () => {
+    state.sound = true;
+    save();
+    openVoiceSheet();
+    say("Sound is back on. This is your coach speaking.");
+    toast("Sound on");
+  };
   document.querySelectorAll(".v-pick").forEach(b => b.onclick = () => {
+    if (!soundOn()){ state.sound = true; toast("Sound on"); }
     state.voiceName = b.dataset.v;
     save();
     say("Let's get to work. This is your coach speaking.");
     openVoiceSheet();
   });
+  const total = window.speechSynthesis ? speechSynthesis.getVoices().length : 0;
+  $("voiceBody").innerHTML += `<div class="si-desc" style="text-align:center;padding:9px 4px 2px;opacity:.75">iPhone is reporting ${vs.length} English ${vs.length === 1 ? "voice" : "voices"} to this app (${total} total). If a voice you downloaded isn't listed here, iPhone isn't sharing it with web apps yet — Apple limits which voices Safari can see.</div>`;
   $("voiceOverlay").classList.add("on");
   $("voiceSheet").classList.add("on");
 }
