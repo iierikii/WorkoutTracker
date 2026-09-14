@@ -5105,25 +5105,77 @@ function probeVoicePack(){
     .catch(() => { packState = "no"; return packState; });
 }
 function packOn(){ return packState === "yes" && state && state.voicePackOff !== true; }
+/* ---------- One voice at a time ----------
+   Three triggers can land on a single tap: the day intro (fires when the first
+   set of the session is logged), a coach verdict on that set, and the first rest
+   timer. Each used to open its own buffer source, so all three played at once and
+   Brian talked over himself. It only happened on the opening tap because the day
+   intro and the rest-start line each fire once.
+   One channel now. Whatever matters most gets the mic, at most one line waits its
+   turn, and a line that only means something at this exact second is dropped
+   rather than played late. */
+const CLIP_PRIO = {
+  "coach-earned":9, "coach-more-reps":9, "coach-hold-ready":9, "coach-backoff":9,
+  "coach-deload":9, "coach-pain":9, "coach-beat":9, "coach-beat-big":9,
+  "personal-best":8, "all-sets":8, "level-up":8, "program-done":8, "program-start":7,
+  "shield-used":7, "sweat-accepted":6, "sweat-cleared":6, "light-logged":5,
+  "coach-hello":5, "sound-back":5,
+  "rest-start":2, "rest-over":2, "halfway":2, "quarter-left":2, "three-two-one":2
+};
+/* worthless if they arrive late - a countdown played after the timer is noise */
+const CLIP_NOW = ["three-two-one", "halfway", "quarter-left", "rest-over", "timer-done", "rest-start"];
+function clipPrio(k){
+  if (CLIP_PRIO[k] != null) return CLIP_PRIO[k];
+  if (/^finish-|^streak-/.test(k)) return 8;
+  if (/^ex-done-/.test(k)) return 4;
+  if (/^day-/.test(k)) return 2;
+  return 3;
+}
+let clipCur = null;    /* what is playing right now */
+let clipNext = null;   /* the one line allowed to wait */
+function clipStart(job){
+  try{
+    const c = job.c;
+    const src = c.createBufferSource(), g = c.createGain();
+    g.gain.value = 0.95;
+    src.buffer = job.buf; src.connect(g); g.connect(c.destination);
+    src.onended = () => {
+      if (!clipCur || clipCur.src !== src) return;   /* we were replaced; not our turn to hand off */
+      clipCur = null;
+      const n = clipNext; clipNext = null;
+      if (n) clipStart(n);
+    };
+    src.start();
+    clipCur = {key: job.key, prio: clipPrio(job.key), src: src, at: Date.now()};
+  }catch(e){ clipCur = null; job.quiet("play error"); }
+}
+function channelPlay(key, buf, c, quiet){
+  const job = {key: key, buf: buf, c: c, quiet: quiet};
+  if (!clipCur){ clipStart(job); return; }
+  if (clipCur.key === key || (clipNext && clipNext.key === key)) return;   /* no echo */
+  /* barely started and something more important showed up - swap before anyone
+     hears a word, so a day intro cannot bury the coach's verdict */
+  if (clipPrio(key) > clipCur.prio && Date.now() - clipCur.at < 400){
+    try{ clipCur.src.onended = null; clipCur.src.stop(); }catch(e){}
+    clipCur = null; clipStart(job); return;
+  }
+  if (CLIP_NOW.indexOf(key) !== -1){ quiet("channel busy"); return; }
+  if (!clipNext || clipPrio(key) > clipPrio(clipNext.key)) clipNext = job;
+  else quiet("channel busy");
+}
 function playClip(key){
   const def = VOICE_PACK[key];
   if (!def) return;
   if (!soundOn()) return;
   /* pack off: the system voice IS the coach */
   if (!packOn()) { say(def.t); return; }
-  /* pack on: Brian or nothing — a missing or broken clip stays silent rather than
-     letting a second voice on stage. Check files in the voice sheet lists what's missing. */
+  /* pack on: Brian holds the mic. A clip the server does not have falls back to the
+     system voice rather than going silent — which is what the voice sheet has always
+     told you it does. Check files lists exactly which ones are covering. */
   const quiet = why => console.log("[pack] silent (" + why + "):", key);
   const c = ac(); if (!c){ quiet("no audio context"); return; }
   const playBuf = buf => {
-    const go = () => {
-      try{
-        const src = c.createBufferSource(), g = c.createGain();
-        g.gain.value = 0.95;
-        src.buffer = buf; src.connect(g); g.connect(c.destination);
-        src.start();
-      }catch(e){ quiet("play error"); }
-    };
+    const go = () => { channelPlay(key, buf, c, quiet); };
     /* iOS parks contexts non-running (suspended/interrupted) — wait for a running context */
     if (c.state === "running"){ go(); return; }
     let done = false;
@@ -5136,7 +5188,7 @@ function playClip(key){
     .then(r => { if (!r.ok || ((r.headers.get("content-type") || "").includes("text/html"))) throw 0; return r.arrayBuffer(); })
     .then(ab => new Promise((res, rej) => c.decodeAudioData(ab, res, rej)))
     .then(buf => { packBuffers.set(key, buf); playBuf(buf); })
-    .catch(() => { quiet("clip missing or undecodable"); });
+    .catch(() => { quiet("clip missing — system voice covering"); say(def.t); });
 }
 function sayP(key){
   if (packState === "unknown"){ probeVoicePack().then(() => playClip(key)); return; }
