@@ -36,6 +36,17 @@
     border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);padding:6px 12px;border-radius:99px;display:none;
     font-variant-numeric:tabular-nums}
   .duration.on{display:block}
+  /* NOTE: ".set-row" is used by two unrelated things - this settings row, and
+     the 5-column weight/reps grid on the workout screen further down. The grid
+     is declared later, so it was winning here and squeezing every settings row
+     into its 1fr column (118px on a phone), which is why subtitles were being
+     truncated to "Using your system v...". Scoped to #setBody so the settings
+     sheet keeps its own layout and the workout grid is untouched. */
+  #setBody .set-row{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;
+    border-bottom:1px solid var(--line);grid-template-columns:none}
+  #setBody .set-row:last-of-type{border-bottom:none}
+  #setBody .set-row:active{background:var(--card2)}
+  #setBody .set-main{flex:1;min-width:0}
   .set-row{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;border-bottom:1px solid var(--line)}
   .set-row:last-of-type{border-bottom:none}
   .set-row:active{background:var(--card2)}
@@ -68,6 +79,8 @@
   .coach-row{cursor:default}
   .coach-row:active{background:transparent}
   .coach-pick{display:flex;gap:6px;margin-top:8px}
+  .coach-pick.wrap{flex-wrap:wrap}
+  .coach-pick.wrap button{flex:0 0 auto;padding:6px 9px}
   .coach-pick button{flex:1;padding:7px 4px;border-radius:9px;border:1px solid var(--line);
     background:transparent;color:var(--muted);font:inherit;font-size:11px;font-weight:800;
     text-transform:uppercase;letter-spacing:.04em;cursor:pointer}
@@ -79,6 +92,11 @@
   .set-main{flex:1;min-width:0}
   .set-name{font-size:13.5px;font-weight:800}
   .set-sub{font-size:11.5px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* A row with a picker has something to explain, so its subtitle wraps instead
+     of ellipsing, and the icon sits at the top rather than floating mid-block. */
+  #setBody .set-row.coach-row{align-items:flex-start}
+  #setBody .set-row.coach-row .set-ic{margin-top:2px}
+  #setBody .set-row.coach-row .set-sub{white-space:normal;overflow:visible;line-height:1.45}
   .set-chev{color:var(--muted);font-weight:900;font-size:13px}
   .set-tog{font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:5px 10px;
     background:var(--card2);border:1px solid var(--line);color:var(--muted)}
@@ -145,8 +163,13 @@
   .name{font-size:15px;font-weight:800;line-height:1.25}
   .meta{font-size:12px;color:var(--muted);margin-top:3px;font-weight:600}
   .meta .pr{color:var(--gold);font-weight:800}
+  /* The base badge carries no colour of its own - up/stall/plan supply it. A
+     verdict with no class used to fall through to bare card text, which reads as
+     a different kind of message rather than an unstyled one. Give the base a
+     neutral pill so a missing class degrades quietly instead of misleading. */
   .badge{display:inline-block;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:99px;
-    margin-top:6px;margin-right:5px;text-transform:uppercase;letter-spacing:.04em}
+    margin-top:6px;margin-right:5px;text-transform:uppercase;letter-spacing:.04em;
+    background:var(--card2);color:var(--muted);border:1px solid var(--line)}
   .badge.up{background:var(--accent-dim);color:var(--accent);border:1px solid color-mix(in srgb, var(--accent) 30%, transparent)}
   .badge.stall{background:var(--danger-soft);color:var(--danger);border:1px solid rgba(255,107,94,.3)}
   .badge.plan{background:var(--plan-soft);color:var(--plan);border:1px solid rgba(185,156,255,.3)}
@@ -493,6 +516,57 @@
     border-radius:99px;padding:7px 11px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
   .chips button.on{background:var(--danger-soft);color:var(--danger);border-color:color-mix(in srgb, var(--danger) 40%, transparent)}
   .form-body{max-height:56vh;overflow-y:auto}
+  /* Every logged set keeps its rating on screen. The prompt card is a one-shot
+     nudge that clears when you log the next set; this strip is the record, and
+     it stays tappable so a mis-tap can be fixed without redoing the set. */
+  .set-rates{padding:2px 14px 0;display:flex;flex-direction:column;gap:1px}
+  .sr-row{display:flex;align-items:center;gap:8px;min-height:24px;flex-wrap:wrap}
+  .sr-n{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--muted);flex:0 0 40px}
+  .sr-stars{display:flex;gap:1px}
+  .sr-stars button{background:none;border:0;padding:2px 3px;cursor:pointer;
+    font-size:13px;line-height:1;color:var(--line)}
+  .sr-stars button.on{color:var(--gold,#E8B84B)}
+  .sr-flags{font-size:10px;color:var(--muted);font-weight:600}
+  .a2hs-ico{display:inline-flex;vertical-align:-4px;color:var(--accent)}
+  .a2hs-ico svg{width:15px;height:15px}
+  .prev-rate{font-weight:800;color:var(--gold,#E8B84B);font-size:11px;white-space:nowrap}
+  .prev-rate.low{color:var(--danger)}
+  .stat-note{display:block;font-style:normal;font-size:9.5px;font-weight:800;
+    text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:3px}
+  .stat-note.hot{color:var(--accent)}
+  .stat-note.near{color:var(--gold,#E8B84B)}
+  .wtimer .wt-now{background:var(--card2);color:var(--accent);
+    border:1px solid color-mix(in srgb, var(--accent) 35%, transparent);display:none}
+  .wtimer.lead .wt-now{display:block}
+  .wtimer.lead .wt-done{display:none}
+  .a2hs-card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:15px 16px 14px;margin-bottom:12px}
+  .a2hs-head{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--accent);display:flex;align-items:center;gap:7px}
+  .a2hs-head svg{width:15px;height:15px}
+  .a2hs-why{font-size:12.5px;color:var(--muted);margin-top:5px;font-weight:600;line-height:1.5}
+  .a2hs-steps{margin:9px 0 0;padding-left:20px;font-size:12.5px;color:var(--text);line-height:1.6}
+  .a2hs-steps li{margin-bottom:2px}
+  .a2hs-steps li::marker{color:var(--accent);font-weight:800}
+  .a2hs-btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .done-card{display:flex;gap:13px;align-items:flex-start;background:var(--card);
+    border:1px solid color-mix(in srgb, var(--accent) 35%, transparent);border-radius:16px;
+    padding:16px 16px 14px;margin-bottom:12px}
+  .done-tick{flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:var(--accent-dim);
+    color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900}
+  .done-tick svg{width:18px;height:18px}
+  .done-main{flex:1;min-width:0}
+  .done-head{font-size:16px;font-weight:800;font-style:italic;text-transform:uppercase;
+    letter-spacing:-.01em;color:var(--accent)}
+  .done-sub{font-size:12.5px;color:var(--muted);margin-top:2px;font-weight:600}
+  .done-btns{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
+  .fold-stars{display:flex;align-items:center;gap:2px;margin-top:3px}
+  .fold-stars button{background:none;border:0;padding:1px 2px;cursor:pointer;
+    font-size:13px;line-height:1;color:var(--line)}
+  .fold-stars button.on{color:var(--gold,#E8B84B)}
+  .fold-ask{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--muted);margin-left:6px}
   .form-inline{border-top:1px solid var(--line);padding:11px 14px 13px}
   .form-inline .fi-label{font-size:10px;color:var(--muted);font-weight:800;
     text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px}
@@ -651,9 +725,9 @@
 <div class="player" id="playerCard"></div>
 
 <div class="stats">
-  <div class="stat"><b id="statTotal">0</b><span>Workouts</span></div>
-  <div class="stat"><b id="statWeek">0</b><span>This week</span></div>
-  <div class="stat"><b id="statStreak">0</b><span>Day streak</span></div>
+  <div class="stat"><b id="statTotal">0</b><span>Workouts all time</span></div>
+  <div class="stat"><b id="statWeek">0</b><span>Days this week</span></div>
+  <div class="stat"><b id="statStreak">0</b><span>Current streak</span><em class="stat-note" id="statStreakNote"></em></div>
 </div>
 
 <div class="preview" id="preview"></div>
@@ -720,6 +794,7 @@
 <div class="wtimer" id="wtimer">
   <b id="wtTime">0:00</b>
   <span class="wt-label" id="wtLabel"></span>
+  <button class="wt-now" id="wtNow">Start now</button>
   <button class="wt-done" id="wtDone">Done</button>
   <button class="wt-cancel" id="wtCancel">✕</button>
 </div>
@@ -990,6 +1065,8 @@ function origName(n){ return (state && state.exOrig && state.exOrig[n]) || n; }
 
 /* ---------- SVG icon set (currentColor, inline) ---------- */
 const ICO = {
+  share:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>',
+  kebab:'<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg>',
   train:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3 9v6M21 9v6M6.5 12h11"/></svg>',
   chart:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 5-7"/></svg>',
   ruler:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="9" width="18" height="6" rx="1"/><path d="M7 9v3M11 9v3M15 9v3"/></svg>',
@@ -1169,6 +1246,155 @@ function coachLevel(){
   return COACH_LEVELS[(state && state.coachLevel) || "balanced"] || COACH_LEVELS.balanced;
 }
 function coachSay(lvl, v){ return v[lvl] || v.balanced; }
+
+/* ---------- What gear do you actually have? ----------
+   Rotation is only worth anything if it hands you movements you can do. The
+   library has always carried equipment tags; the app has never asked which of
+   them you own, because with 16 fixed exercises it never needed to. Infer it
+   from what you already train, then let you correct it - the same derive-then-
+   overrule pattern the Workout field uses.
+   Tags are alternatives ("Clean" reads Kettlebell OR Dumbbell OR Barbell), so
+   owning any one of them counts. A few entries mix in a co-requisite (bench
+   press lists Bench alongside Barbell); treating tags as alternatives can
+   therefore be over-generous, which is the right way to be wrong - it offers
+   something you can swap rather than hiding something you can do. */
+function inferEquip(){
+  const seen = {"Bodyweight": 1};
+  const add = n => (equipTags(n) || []).forEach(e => seen[e] = 1);
+  for (const d in (state.plan || {})) (state.plan[d] || []).forEach(e => add(e.n));
+  for (const h of (state.history || []).slice(0, 80)) for (const e of (h.ex || [])) add(e.n);
+  return equipList().filter(e => seen[e]);
+}
+function myEquip(){
+  const m = state && state.myEquip;
+  return (m && m.length) ? m : equipList();          /* unset = no filter */
+}
+function equipOK(n){
+  const t = equipTags(n);
+  if (!t || !t.length) return true;
+  const mine = myEquip();
+  return t.some(x => mine.indexOf(x) !== -1);
+}
+/* how many workouts ago did you last do this? bigger = staler = better to pick */
+function sinceDone(name){
+  const H = state.history || [];
+  for (let i = 0; i < H.length; i++) if (H[i].ex && H[i].ex.some(e => e.n === name)) return i;
+  return 9999;
+}
+
+/* ---------- Rotation ----------
+   The plan you train from was seeded once from a hardcoded default and then
+   never changed again: 16 exercises out of 330, because genDayList only runs
+   the recipe engine when no saved plan exists, and one always does.
+   Rotating EVERYTHING is the wrong fix. You cannot progressively overload a
+   lift you do once, and Coach needs repeated exposure before it can say
+   anything useful - swap every movement every session and coachFor() has no
+   history to read. So the lifts you LEAD with stay put and the accessories
+   behind them cycle.
+   Baz-Valle 2019 (PLOS ONE, 21 trained men, 8 weeks) randomised every exercise
+   every session from an 80-movement database. Muscle thickness matched a fixed
+   programme and motivation was higher - but bench press gained 4.0 kg against
+   7.1 kg fixed. One small study, so that strength gap is a caution rather than
+   a finding; it points the same way as the principle, which is why the lifts
+   you are trying to add weight to are the ones that do not move. */
+const ROT_ANCHORS = 2;            /* this many lifts are yours to progress */
+/* Which slots are anchors? The HEAVIEST movements, not the first ones.
+   "First two slots" only works if the day is ordered heaviest-first, which a
+   generated day is and a hand-built one is not: a day saved as
+   [calf raises, plank, back squat, deadlift] would have anchored the calf
+   raises and rotated the squat out from under you. Class first, then position
+   as the tie-break, which reproduces "the first two" on any ordered day. */
+/* Is this movement a clean measuring stick?
+   The steady lifts are how the app knows you are progressing, so among equally
+   heavy candidates it should keep the one whose weight moves for the fewest
+   reasons. A machine or cable holds you in position; a goblet squat's load also
+   swings with balance, grip and technique on the day. Same reasoning as
+   Rutherford & Jones: on unsupported lifts most of the early load increase is
+   coordination, not muscle. Class still comes first - this only breaks ties. */
+function rotSteady(e){
+  const t = equipTags(e.n) || [];
+  return (t.indexOf("Machine") !== -1 || t.indexOf("Cable") !== -1) ? 1 : 0;
+}
+function rotAnchors(plan){
+  return plan
+    .map((e, i) => ({i: i, r: CLASS_RANK[exBand({n: e.n, g: e.g})] || 0, s: rotSteady(e)}))
+    .sort((a, b) => (b.r - a.r) || (b.s - a.s) || (a.i - b.i))
+    .slice(0, ROT_ANCHORS)
+    .map(x => x.i);
+}
+/* Default 8 sessions of a day type, which is roughly six weeks of training.
+   The old default of 4 was about three weeks, and that is too fast: the first
+   few times you do a movement the weight goes up because you are learning the
+   movement, not because you got stronger. Rutherford & Jones (1986, EJAP, n=32)
+   is the stark version - over 12 weeks the training weight on unsupported lifts
+   rose about 200% while isolated force rose 15-20%. Swap too often and Coach
+   spends its whole life reading that learning curve. Studies showing
+   exercise-specific gains run 8-12 weeks, so a block wants to be 6-10. */
+function rotateEvery(){
+  const r = state && state.rotate;
+  if (r === false || r === 0) return 0;
+  return (typeof r === "number" && r > 0) ? r : 8;
+}
+/* Roughly how long is a block, in weeks? Days come round about 1.3 times a week. */
+function rotWeeks(n){ return Math.round(n / 1.3); }
+/* Which direction must this slot keep?
+   Anchored to the DAY, not to whatever is standing in the slot. Reading it
+   from the slot lets the day drift: a movement tagged both ways (Seated wall
+   angels) removes the constraint, and every rotation after that is free to
+   walk into push work on pull day. One ambiguous pick and it never comes back.
+   Days that are not a single direction (legs, upper, lower) have no day-level
+   answer, so they fall back to the movement's own unambiguous direction. */
+const DAY_FORCE = {push: "Push", pull: "Pull"};
+function rotForce(dayK, n){
+  if (DAY_FORCE[dayK]) return DAY_FORCE[dayK];
+  const t = dayTags(n) || [];
+  const push = t.indexOf("Push") !== -1, pull = t.indexOf("Pull") !== -1;
+  return push && !pull ? "Push" : pull && !push ? "Pull" : null;
+}
+/* One completed workout's worth of bookkeeping. Split out of completeWorkout
+   on purpose: the prompt-budget bug got through because the rule was only ever
+   tested one set at a time, and a counter that fires every Nth session can only
+   be checked by walking a sequence. Returns a message, or null. */
+function rotTick(day, light){
+  if (state.rotLast && state.rotLast.day === day) delete state.rotLast;
+  const every = rotateEvery();
+  if (light || !every) return null;                 /* a light session is not a session */
+  state.rotN = state.rotN || {};
+  state.rotN[day] = (state.rotN[day] || 0) + 1;
+  if (state.rotN[day] < every) return null;
+  state.rotN[day] = 0;
+  const ch = rotateDay(day);
+  if (!ch) return null;
+  state.rotLast = {day: day, changes: ch};
+  return ch.map(c => c[0] + " \u2192 " + c[1]).join(" \u00b7 ");
+}
+function rotateDay(dayK){
+  const plan = (state.plan || {})[dayK];
+  if (!plan || !plan.length) return null;
+  /* Walk further down the ranked list each time. Without this the day
+     ping-pongs between the same two movements forever: the ranking barely
+     shifts between rotations, so the top of it is always the same name. */
+  state.rotSeq = state.rotSeq || {};
+  const seq = state.rotSeq[dayK] = (state.rotSeq[dayK] || 0) + 1;
+  const anchors = rotAnchors(plan);
+  const taken = plan.map(e => e.n);
+  const changes = [];
+  plan.forEach((e, i) => {
+    if (e.pin || anchors.indexOf(i) !== -1) return;
+    /* Constraints come from the movement standing in the slot, not from the
+       recipe. A hand-built day has no recipe to read and its shape is still
+       the user's: same muscle, same direction, same class of movement.
+       This is also what lets leg day rotate at all - every slot on it is a
+       structural lift, and the old rule froze all of them. */
+    const n = pickForGroup(e.g, taken, seq + i, {
+      force: rotForce(dayK, e.n), klass: exBand({n: e.n, g: e.g}),
+      exact: true, fresh: true, strict: true
+    });
+    if (n && n !== e.n){ changes.push([e.n, n]); taken.push(n); e.n = n; }
+  });
+  return changes.length ? changes : null;
+}
+
 
 
 /* ---------- How taxing is this movement? ----------
@@ -1886,18 +2112,43 @@ function pickForGroup(g, exclude, rank, want){
   let names = (getLib()[g] || []).filter(n => isOn(n) && !exclude.includes(n));
   if (!names.length) return null;
   want = want || {};
-  /* Direction first: a pull day must not hand you an overhead press. */
+  /* Never offer a movement you have no way of doing. Falls back to the full
+     list rather than returning nothing if the filter empties a group. */
+  const owned = names.filter(equipOK);
+  if (owned.length) names = owned;
+  /* Direction first: a pull day must not hand you an overhead press.
+     When BUILDING a day, an imperfect exercise beats an empty slot, so this
+     falls back. When ROTATING (strict), the slot already holds something that
+     works - a group with no candidate left in the right direction means the
+     honest answer is to leave it alone rather than put a lateral raise on
+     pull day. The Shoulders group is mostly presses and raises, so this is
+     reached often, not rarely. */
   if (want.force){
     const dir = names.filter(n => dayTags(n).includes(want.force));
     if (dir.length) names = dir;
+    else if (want.strict) return null;
   }
-  /* Then movement class: lead with the compound while you are fresh. */
+  /* Then movement class. BUILDING a day wants a floor - lead with the compound
+     while you are fresh. SWAPPING one movement for another wants a match: a
+     lateral raise should become another raise, not a barbell press, or the day
+     quietly gets heavier every time it rotates. */
   if (want.klass){
-    const need = CLASS_RANK[want.klass] || 0;
-    const heavy = names.filter(n => (CLASS_RANK[exBand({n: n, g: g})] || 0) >= need);
-    if (heavy.length) names = heavy;
+    if (want.exact){
+      const same = names.filter(n => exBand({n: n, g: g}) === want.klass);
+      if (same.length) names = same;
+    }
+    if (!want.exact || names.length < 2){
+      const need = CLASS_RANK[want.klass] || 0;
+      const heavy = names.filter(n => (CLASS_RANK[exBand({n: n, g: g})] || 0) >= need);
+      if (heavy.length) names = heavy;
+    }
   }
-  const score = n => (lastPerf(n) ? 2 : 0) + (Object.values(state.plan).flat().some(e => e.n === n) ? 1 : 0);
+  const inPlan = n => Object.values(state.plan).flat().some(e => e.n === n);
+  /* Building a day favours what you know. Rotating a slot wants the opposite -
+     the staler the better, and never something already sitting in another day. */
+  const score = want.fresh
+    ? n => sinceDone(n) - (inPlan(n) ? 5000 : 0)
+    : n => (lastPerf(n) ? 2 : 0) + (inPlan(n) ? 1 : 0);
   const ranked = [...names].sort((a, b) => score(b) - score(a));
   return ranked[(rank || 0) % ranked.length];
 }
@@ -2574,6 +2825,33 @@ function openSettings(){
     <div class="coach-pick">${Object.keys(COACH_LEVELS).map(k =>
       `<button data-cl="${k}" class="${k === CL.id ? "on" : ""}">${COACH_LEVELS[k].name}</button>`).join("")}</div>
     </div></div>`);
+  const rotN = rotateEvery();
+  rows.push(`<div class="set-row coach-row">
+    <span class="set-ic">${ico("chart")}</span>
+    <div class="set-main"><div class="set-name">Variety</div>
+    <div class="set-sub">${rotN
+      ? "Accessories swap every " + rotN + " sessions of a day \u2014 about " + rotWeeks(rotN) + " weeks. Your two steadiest lifts stay put, so you can keep adding weight to them."
+      : "Your days never change on their own"}</div>
+    <div class="coach-pick">${[["0","Off"],["8","~6 weeks"],["4","~3 weeks"]].map(([v,lab]) =>
+      `<button data-rot="${v}" class="${String(rotN) === v ? "on" : ""}">${lab}</button>`).join("")}</div>
+    </div></div>`);
+  const mine = myEquip();
+  rows.push(`<div class="set-row coach-row">
+    <span class="set-ic">${ico("medal")}</span>
+    <div class="set-main"><div class="set-name">My equipment</div>
+    <div class="set-sub">${mine.length} of ${equipList().length} \u2014 nothing outside this gets suggested</div>
+    <div class="coach-pick wrap">${equipList().map(e =>
+      `<button data-eq="${e}" class="${mine.indexOf(e) !== -1 ? "on" : ""}">${e}</button>`).join("")}</div>
+    </div></div>`);
+  if (!a2hsInstalled()){
+    rows.push(`<div class="set-row coach-row" id="a2hsRow">
+      <span class="set-ic">${ico("bolt")}</span>
+      <div class="set-main"><div class="set-name">Add to Home Screen</div>
+      <div class="set-sub">${a2hsWhy()}</div>
+      <ol class="a2hs-steps">${a2hsSteps().map(x => `<li>${x}</li>`).join("")}</ol>
+      ${a2hsPrompt ? `<div class="coach-pick"><button id="a2hsInstall2">Install now</button></div>` : ""}
+      </div></div>`);
+  }
   rows.push(`<div class="set-row" data-go="voice">
     <span class="set-ic">${ico("mic")}</span>
     <div class="set-main"><div class="set-name">Voice Coach</div>
@@ -2590,7 +2868,29 @@ function openSettings(){
     + `<div class="set-foot">AddPlates \u00b7 ${SYNC_ENABLED ? (sbUser ? "cloud sync on" : "local \u2014 not signed in") : "demo build"} \u00b7 programs-v3</div>`;
   $("setOverlay").classList.add("on");
   $("setSheet").classList.add("on");
-  $("setBody").querySelectorAll(".coach-pick button").forEach(b => b.onclick = ev => {
+  const i2 = document.getElementById("a2hsInstall2");
+  if (i2) i2.onclick = async ev => {
+    ev.stopPropagation();
+    if (!a2hsPrompt) return;
+    try{ a2hsPrompt.prompt(); await a2hsPrompt.userChoice; }catch(e){}
+    a2hsPrompt = null; openSettings();
+  };
+  $("setBody").querySelectorAll(".coach-pick button[data-rot]").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    state.rotate = Number(b.dataset.rot) || false;
+    save(); render(); openSettings();
+  });
+  $("setBody").querySelectorAll(".coach-pick button[data-eq]").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    const e = b.dataset.eq;
+    let cur = (state.myEquip && state.myEquip.length) ? state.myEquip.slice() : equipList().slice();
+    const i = cur.indexOf(e);
+    if (i === -1) cur.push(e); else cur.splice(i, 1);
+    if (!cur.length){ toast("Keep at least one \u2014 otherwise there is nothing to suggest"); return; }
+    state.myEquip = equipList().filter(x => cur.indexOf(x) !== -1);
+    save(); render(); openSettings();
+  });
+  $("setBody").querySelectorAll(".coach-pick button[data-cl]").forEach(b => b.onclick = ev => {
     ev.stopPropagation();
     state.coachLevel = b.dataset.cl;
     if (state.session && !state.session.list.some(e => e.sets.some(x => x.done)))
@@ -2638,6 +2938,8 @@ function provenanceLine(){
   if (isProgDay) parts.push("Scheduled by " + prog.name);
   if (state.plan[day]) parts.push(isProgDay || parts.length ? "built from your saved " + dayLabel(day) + " template \u2014 \u21c4 edits it" : "Your saved " + dayLabel(day) + " template \u2014 \u21c4 edits it, changes stick");
   else parts.push("Suggested from your exercise library \u2014 nothing saved yet, \u21bb re-rolls it");
+  const rl = state.rotLast;
+  if (rl && rl.day === day) parts.push(rl.changes.length + (rl.changes.length === 1 ? " accessory is" : " accessories are") + " new \u2014 \u21c4 to keep the old one");
   return `<div class="prov-line">${parts.join(" \u00b7 ")}</div>`;
 }
 
@@ -2734,8 +3036,14 @@ const TOUR = [
   {tab:"progress", loc:"Progress tab \u00b7 achievements", sample:true, sel:"#achGrid", alt:".prog-sec", t:"Achievements", b:"Milestones unlock as you train \u2014 first workout, streaks, volume landmarks. They live here on Progress; the sample lifter has a few lit, yours start today."},
   {tab:"progress", loc:"Bottom navigation", open(){ tourSampleOff(); }, sel:'.bottomnav button[data-tab="train"]', alt:".bottomnav", t:"Back to home base", b:"Train is where you'll live day to day \u2014 first button brings you home. One last thing up top."},
   {tab:"train", loc:"Top-right corner", open(){ tourReset(); render(); }, sel:"#cfgBtn", t:"Settings", b:"The gear in the corner holds account & sync, the exercise library, sound, voice, and your data exports."},
+  /* Skipped outright for anyone already installed. The steps come from
+     a2hsSteps() so the tour, the Train card and Settings can never drift. */
+  {tab:"train", sel:null, cta:"Got it", skip(){ return a2hsInstalled(); },
+   t:"Put it on your home screen",
+   b(){ return a2hsWhy() + "\n" + a2hsSteps().map((x, i) => (i + 1) + ". " + x).join("\n") +
+              "\n\nNo rush \u2014 this lives in Settings too."; }},
   {tab:"train", sel:null, hub:true, t:"Want a deeper look?", b:"We've packed a lot in. Pick a quick tour \u2014 or skip straight to training."},
-  {tab:"train", sel:null, final:true, t:"Make it yours", b:"Sign in to sync across your devices \u2014 or explore first; everything saves on this phone either way.\n\nTip: in Safari, tap Share \u2192 \u201cAdd to Home Screen\u201d and AddPlates becomes a real app icon.\n\nYour first workout is ready behind this card \u2014 warm-up first, then straight down the list. See you at Finish."}
+  {tab:"train", sel:null, final:true, t:"Make it yours", b:"Sign in to sync across your devices \u2014 or explore first; everything saves on this phone either way.\n\nYour first workout is ready behind this card \u2014 warm-up first, then straight down the list. See you at Finish."}
 ];
 
 /* ---- Deep-dive mini tours: guided demonstrations ---- */
@@ -2792,7 +3100,14 @@ const TOPICS = {
     {loc:"Train tab · stat strip", sample:true, open(){ if (typeof closeShop === "function") closeShop(); }, sel:".stats", alt:"#playerCard", t:"The streak itself", b:"Those sample numbers \u2014 days in a row, workouts this week, lifetime count \u2014 live here. Scheduled rest days never break a streak; only true no-shows do."}
   ]}
 };
-function tourSeq(){ return tourMode === "main" ? TOUR : TOPICS[tourMode].steps; }
+/* A step can opt out of itself. Used by the home-screen step, which has nothing
+   to say to someone already running from their home screen. Everything that
+   walks the tour must go through here rather than indexing TOUR directly, or the
+   step numbers drift apart the moment one is skipped. */
+function tourSeq(){
+  const all = tourMode === "main" ? TOUR : TOPICS[tourMode].steps;
+  return all.filter(x => !x.skip || !x.skip());
+}
 function openOb(){
   obStep = 0;
   tourMode = "main";
@@ -2805,7 +3120,7 @@ function exitTopic(){
   const tp = TOPICS[tourMode];
   try { tp.exit && tp.exit(); } catch(e){}
   tourMode = "main";
-  obStep = TOUR.findIndex(x => x.hub);
+  obStep = tourSeq().findIndex(x => x.hub);
   setTab("train");
 }
 function closeOb(markDone){
@@ -2884,7 +3199,7 @@ function positionTour(s){
       ${s.loc ? `<div style="font-size:9.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);opacity:.9">${s.loc}</div>` : ""}
     </div>
     <div style="font-size:17px;font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:.02em;margin-bottom:7px">${s.t}</div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.6;white-space:pre-line">${s.b}</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;white-space:pre-line">${typeof s.b === "function" ? s.b() : s.b}</div>
     ${s.media === "video" ? VIDEO_MOCK : ""}
     ${s.hub ? `<div style="display:flex;flex-direction:column;gap:7px;margin-top:13px">
       ${Object.entries(TOPICS).map(([k, tp]) => `<button class="p-btn cancel" data-ob="topic:${k}" style="display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;padding:11px 14px">
@@ -3087,6 +3402,11 @@ let openPanel = null;
 let dayDDOpen = false;
 let regenArm = false;
 let exExpand = new Set();
+/* Folded by hand. Collapsing used to be reserved for exercises rated 4 stars or
+   better - anything you rated 3, or had not rated yet, was stuck open with no
+   way to tidy it away mid-workout. Now anything finished can be folded, and the
+   stars come with it so a rating is never more than one tap away. */
+let exFold = new Set();
 let openChart = null;
 let viewDate = null;      /* ISO date being viewed; equals today for normal training */
 let previewList = null;   /* working list when previewing a future day */
@@ -3507,6 +3827,8 @@ async function load(){
     DAYS.forEach(d => state.plan[d.id] = d.defaults.map(e => ({...e})));
   }
   if (!state.planned) state.planned = {};
+  if (!state.myEquip) state.myEquip = inferEquip();
+  if (!state.rotN) state.rotN = {};
   if (!state.profile || typeof state.profile !== "object") state.profile = {};
   if (!state.body) state.body = [];
   if (!state.readiness) state.readiness = {};
@@ -3723,6 +4045,135 @@ function scheduledRest(dateISO){
   /* no program covering it: the default week's Cardio/Rest day is scheduled rest too */
   return dayForDate(dateISO) === "cardio";
 }
+/* Everything logged for today that actually counted.
+   NOT named doneToday: render() already has a local `const doneToday` Set for the
+   day-picker dots, and a block-scoped const shadows a hoisted function for the
+   whole function body - the call read as "doneToday is not a function". */
+function todayLogged(){
+  const t = todayISO();
+  return (state.history || []).filter(h => h.date === t && !h.light && !h.shield);
+}
+function doneCardHTML(entries){
+  const sets = entries.reduce((n, h) => n + (h.ex || []).reduce((m, e) => m + e.sets.length, 0), 0);
+  const vol = entries.reduce((n, h) => n + (h.ex || []).reduce((m, e) =>
+    m + e.sets.reduce((v, s) => v + (Number(s.w) || 0) * (Number(s.r) || 0), 0), 0), 0);
+  const names = entries.map(h => dayLabel(h.day)).join(" + ");
+  const mins = entries.reduce((n, h) => n + (h.dur || 0), 0);
+  const bits = [sets + (sets === 1 ? " set" : " sets")];
+  if (vol > 0) bits.push(Math.round(vol).toLocaleString() + " lb");
+  if (mins > 0) bits.push(Math.round(mins / 60) + " min");
+  return `<div class="done-card">
+    <div class="done-tick">${ico("check") || "\u2713"}</div>
+    <div class="done-main">
+      <div class="done-head">${names} done</div>
+      <div class="done-sub">${bits.join(" \u00b7 ")}${entries.length > 1 ? " \u00b7 " + entries.length + " sessions" : ""}</div>
+      <div class="done-btns">
+        <button class="mini-btn" id="againBtn">Do another workout</button>
+        <button class="mini-btn" id="seeBtn">See it on Progress</button>
+      </div>
+    </div>
+  </div>`;
+}
+/* ---------- Add to Home Screen ----------
+   The app already ships the meta tags that make it behave like a real app once
+   installed - full screen, its own icon, no browser chrome eating the top of the
+   screen. Nothing ever told anyone to install it.
+   iOS has no install API at all: Safari (and, since iOS 16.4, other iOS browsers)
+   only offer it through the Share menu, so the honest answer there is
+   instructions. Chrome on Android and desktop fire beforeinstallprompt, so those
+   get a real one-tap button and the instructions become the fallback. */
+let a2hsPrompt = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); a2hsPrompt = e; });
+window.addEventListener("appinstalled", () => { a2hsPrompt = null; render(); });
+function a2hsInstalled(){
+  try{
+    if (window.navigator && window.navigator.standalone) return true;            /* iOS */
+    return !!(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+  }catch(e){ return false; }
+}
+function a2hsPlatform(){
+  const ua = (navigator.userAgent || "").toLowerCase();
+  if (/iphone|ipad|ipod/.test(ua) || (/macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return "ios";
+  if (/android/.test(ua)) return "android";
+  return "desktop";
+}
+/* Steps, in the words the person will see on their own screen. */
+function a2hsSteps(){
+  const p = a2hsPlatform();
+  if (p === "ios") return [
+    `Tap the Share button <span class="a2hs-ico">${ico("share")}</span> at the bottom of the screen.`,
+    "Scroll down and tap Add to Home Screen.",
+    "Tap Add. It lands on your home screen like any other app."
+  ];
+  if (p === "android") return [
+    `Tap the menu <span class="a2hs-ico">${ico("kebab")}</span> at the top right.`,
+    "Tap Add to Home screen (or Install app).",
+    "Confirm, and it lands on your home screen."
+  ];
+  return [
+    "Look for the install icon in the address bar, or open the browser menu.",
+    "Choose Install AddPlates.",
+    "It opens in its own window from then on."
+  ];
+}
+function a2hsWhy(){
+  return "Runs full screen with no browser bar, keeps your workout on one tap, and your data stays exactly where it is.";
+}
+function a2hsDismissed(){ return state && state.a2hs === "off"; }
+/* Offer it once there is something worth keeping - a stranger who has logged
+   nothing does not need a banner. Dismissing it is permanent. */
+function a2hsShow(){
+  return !a2hsInstalled() && !a2hsDismissed() && realWorkouts() >= 1;
+}
+function a2hsCardHTML(){
+  if (!a2hsShow()) return "";
+  const steps = a2hsSteps();
+  return `<div class="a2hs-card">
+    <div class="a2hs-head">${ico("bolt")} Put AddPlates on your home screen</div>
+    <div class="a2hs-why">${a2hsWhy()}</div>
+    <ol class="a2hs-steps">${steps.map(x => `<li>${x}</li>`).join("")}</ol>
+    <div class="a2hs-btns">
+      ${a2hsPrompt ? `<button class="mini-btn" id="a2hsInstall">Install</button>` : ""}
+      <button class="mini-btn" id="a2hsNo">Don't show this again</button>
+    </div>
+  </div>`;
+}
+function wireA2hs(){
+  const inst = document.getElementById("a2hsInstall");
+  if (inst) inst.onclick = async () => {
+    if (!a2hsPrompt) return;
+    try{ a2hsPrompt.prompt(); await a2hsPrompt.userChoice; }catch(e){}
+    a2hsPrompt = null; render();
+  };
+  const no = document.getElementById("a2hsNo");
+  if (no) no.onclick = () => { state.a2hs = "off"; save(); render(); toast("Hidden — it's still in Settings if you change your mind"); };
+}
+/* The longest run you have ever put together. Same rules as the current streak:
+   a logged day extends it, a scheduled rest day bridges without adding, anything
+   else ends it. Knowing the number is what makes the current one worth chasing. */
+function bestStreak(){
+  const logged = new Set(state.history.filter(h => !h.light).map(h => h.date));
+  if (!logged.size) return 0;
+  const first = [...logged].sort()[0];
+  const iso2 = d => d.toISOString().slice(0,10);
+  let run = 0, best = 0;
+  const cur = new Date(first + "T12:00:00"), today = new Date();
+  for (let guard = 0; guard < 4000 && cur <= today; guard++){
+    const d = iso2(cur);
+    if (logged.has(d)){ run++; if (run > best) best = run; }
+    else if (!scheduledRest(d)) run = 0;
+    cur.setDate(cur.getDate() + 1);
+  }
+  return best;
+}
+function streakNote(){
+  const now = streak(), best = bestStreak();
+  if (best < 2) return {txt: "", cls: ""};
+  if (now >= best) return {txt: "All-time best", cls: "hot"};
+  const gap = best - now;
+  if (gap <= 3) return {txt: gap + " to beat " + best, cls: "near"};
+  return {txt: "Best " + best, cls: ""};
+}
 function streak(){
   const logged = new Set(state.history.filter(h => !h.light).map(h => h.date));
   if (!logged.size) return 0;
@@ -3732,9 +4183,13 @@ function streak(){
   if (!logged.has(iso2(cursor)) && !scheduledRest(iso2(cursor))) cursor.setDate(cursor.getDate() - 1);
   for (let guard = 0; guard < 730; guard++){
     const d = iso2(cursor);
-    if (logged.has(d)){ s++; }
-    else if (scheduledRest(d)){ /* on-plan rest keeps the chain and counts */ s++; }
-    else break;
+    /* A rest day BRIDGES the chain but does not add to it. It used to add, so
+       "2 day streak" could mean one workout and one day off - the number went up
+       on a day you did nothing, which is the opposite of what a streak is for.
+       The app's own tour already described it this way: rest days never break a
+       streak. Never breaking is not the same as counting. */
+    if (logged.has(d)) s++;
+    else if (!scheduledRest(d)) break;
     cursor.setDate(cursor.getDate() - 1);
   }
   return s;
@@ -3855,6 +4310,10 @@ function render(){
   $("statTotal").textContent = realWorkouts();
   $("statWeek").textContent = weekCount();
   $("statStreak").textContent = streak();
+  {
+    const sn = streakNote(), el = $("statStreakNote");
+    if (el){ el.textContent = sn.txt; el.className = "stat-note" + (sn.cls ? " " + sn.cls : ""); }
+  }
   renderPlayer();
   renderAch();
 
@@ -3919,24 +4378,47 @@ function render(){
   const regenArmed = canRegen && !!state.plan[dayK2];
   const provNote = provenanceLine();
   const genNote = (canRegen ? `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 8px">${provNote || "<span></span>"}<button class="mini-btn" id="shuffleDay" style="flex:0 0 auto;${regenArm ? "color:var(--danger);border-color:var(--danger)" : ""}">${regenArm ? "Tap again to rebuild this day" : "↻ " + (regenArmed ? "Regenerate day" : "New suggestions")}</button></div>` : provNote);
-  $("exerciseList").innerHTML = pastNote + lowNote + restNote + genNote + auxCard("wu") + state.session.list.map((ex,i) => {
+  /* Today already logged? Say so, instead of handing back a fresh empty card that
+     looks like unfinished work. The session object has already rolled on to the
+     next suggested day by this point, so nothing on screen said today was done. */
+  const doneEntries = (!state.session.pastDate && state.againOn !== todayISO()) ? todayLogged() : [];
+  if (doneEntries.length){
+    $("exerciseList").innerHTML = doneCardHTML(doneEntries) + a2hsCardHTML();
+    wireA2hs();
+    const ag = $("againBtn");
+    if (ag) ag.onclick = () => { state.againOn = todayISO(); save(); render(); };
+    const se = $("seeBtn");
+    if (se) se.onclick = () => setTab("progress");
+    $("progressLabel").innerHTML = "";
+    $("barFill").style.width = "100%";
+    $("finishBtn").style.display = "none";
+    return;
+  }
+  $("exerciseList").innerHTML = a2hsCardHTML() + pastNote + lowNote + restNote + genNote + auxCard("wu") + state.session.list.map((ex,i) => {
     const allDone = ex.sets.length > 0 && ex.sets.every(s => s.done);
     const prev = lastPerf(ex.n);
     const best = bestPerf(ex.n);
-    const meta = [muscleMini(ex.g) + " " + ex.g, best ? `<span class="pr">Best: ${best.w}×${best.r}</span>` : null].filter(Boolean).join(" · ");
+    const lastF = lastFormMeta(ex.n);
+    const meta = [muscleMini(ex.g) + " " + ex.g,
+      best ? `<span class="pr">Best: ${best.w}×${best.r}</span>` : null,
+      (lastF && lastF.form) ? `<span class="prev-rate${lastF.form <= 2 ? " low" : ""}">Last: ${lastF.form}★</span>` : null
+    ].filter(Boolean).join(" · ");
     const isStalled = false;   /* the coach reason now carries this */
     const badges =
       (ex.prog ? `<span class="badge ${coachBadgeClass(ex.verdict)}">${ex.prog}</span>` : "") +
       (isStalled ? `<span class="badge stall">Stalled × 3 sessions — drop 10% and build back, or swap it</span>` : "");
     const chart = openChart === i ? chartSVG(ex.n) : null;
-    const collapsed = allDone && ex.form >= 4 && !exExpand.has(ex.n);
+    const collapsed = allDone && !exExpand.has(ex.n) && (ex.form >= 4 || exFold.has(ex.n));
     if (collapsed){
       const sum = ex.sets.map(x => (x.w ? x.w + "×" + x.r : x.r)).join(" · ");
       return `<div class="exercise done collapsed">
         <div class="ex-head ex-reopen" data-n="${ex.n.replace(/"/g,"&quot;")}" style="cursor:pointer">
           <div class="ex-info">
             <div class="name">${ex.n}</div>
-            <div class="meta">${ex.sets.length} sets · ${sum} · <span style="color:var(--gold,#E8B84B)">${"★".repeat(ex.form)}</span></div>
+            <div class="meta">${ex.sets.length} sets · ${sum}</div>
+            <div class="stars sm fold-stars">${[1,2,3,4,5].map(v =>
+              `<button data-i="${i}" data-v="${v}" class="${ex.form && v <= ex.form ? "on" : ""}">★</button>`).join("")}${
+              ex.form ? "" : `<span class="fold-ask">rate it</span>`}</div>
           </div>
           <span class="chev">▸</span>
         </div>
@@ -3953,14 +4435,19 @@ function render(){
           <button class="icon-btn chart-btn" data-i="${i}" title="Progress chart">${ico("chart")}</button>
           <a class="icon-btn" href="${demoURL(ex.n)}" target="_blank" rel="noopener" title="Watch demo">▶</a>
           <button class="icon-btn swap" data-i="${i}" title="Swap exercise">⇄</button>
-          ${allDone && ex.form >= 4 ? `<button class="icon-btn ex-fold" data-n="${ex.n.replace(/"/g,"&quot;")}" title="Collapse">▴</button>` : ""}
+          ${allDone ? `<button class="icon-btn ex-fold" data-n="${ex.n.replace(/"/g,"&quot;")}" title="Collapse">▴</button>` : ""}
         </div>
       </div>
       ${openChart === i ? `<div class="chart-panel"><h4>Best set over time</h4>${chart ? chart + '<div class="chart-cap">Tap any dot for details</div>' : '<div class="chart-empty">Log this exercise in at least 2 workouts to see your trend.</div>'}</div>` : ""}
       <div class="sets">
         <div class="set-labels"><span>Set</span><span>Previous</span><span>${wLabel(ex)}</span><span>${unitLabel(ex)}</span><span></span></div>
         ${ex.sets.map((s,j) => {
-          const p = prev && prev[j] ? `${prev[j].w||"—"} × ${prev[j].r||"—"}` : "—";
+          /* how it went last time, not just what the numbers were - a set you
+             rated 2 stars reads very differently from the same weight at 5 */
+          const psf = prev && prev[j] && prev[j].sf ? Number(prev[j].sf) : 0;
+          const p = prev && prev[j]
+            ? `${prev[j].w||"—"} × ${prev[j].r||"—"}${psf ? ` <span class="prev-rate${psf <= 2 ? " low" : ""}">${psf}★</span>` : ""}`
+            : "—";
           const ph = prev && prev[j] ? prev[j] : {w:"", r:""};
           const tmode = trackMode(ex.n, ex.g);
           const tsec = tmode === "sec" ? (Number(s.r)||0) : tmode === "min" ? Math.round((Number(s.r)||0) * 60) : 0;
@@ -3982,6 +4469,14 @@ function render(){
           </div></div>`;
         }).join("")}
       </div>
+      ${ex.sets.some(s => s.done) ? `<div class="set-rates" data-i="${i}">
+        ${ex.sets.map((s,j) => !s.done ? "" : `<div class="sr-row">
+          <span class="sr-n">Set ${j+1}</span>
+          <div class="sr-stars">${[1,2,3,4,5].map(v =>
+            `<button data-i="${i}" data-j="${j}" data-v="${v}" class="${s.sf && v <= s.sf ? "on" : ""}">★</button>`).join("")}</div>
+          ${(s.si && s.si.length) ? `<span class="sr-flags">${s.si.join(" · ")}</span>` : ""}
+        </div>`).join("")}
+      </div>` : ""}
       ${(state.session.ask && state.session.ask.i === i) ? askHTML(state.session.ask, ex) : ""}
       <div class="set-btns">
         <button class="mini-btn add-set" data-i="${i}">+ Add set</button>
@@ -4411,6 +4906,8 @@ $("importBtn").onclick = async () => {
   }
   state = parsed;
   if (!state.planned) state.planned = {};
+  if (!state.myEquip) state.myEquip = inferEquip();
+  if (!state.rotN) state.rotN = {};
   if (!state.profile || typeof state.profile !== "object") state.profile = {};
   if (!state.body) state.body = [];
   if (!state.readiness) state.readiness = {};
@@ -4972,6 +5469,10 @@ function auxGapBest(kind, gaps){
 let auxSwapOpen = null;
 let auxAddOpen = null;
 let auxRmWarn = null;
+/* Does this movement have two halves? "20 sec each side", "each arm", "each leg",
+   "each direction" all mean the timer has to run twice before it is finished. */
+const AUX_TWO_SIDED = /\beach (side|arm|leg|direction)\b|\bper (side|arm|leg)\b|\beach way\b/i;
+function auxSides(s){ return AUX_TWO_SIDED.test(String(s || "")) ? 2 : 1; }
 const AUX_MIN = {wu: 5, cd: 4};
 function auxAddPanel(kind){
   const ws = DAYWS(state.session.day);
@@ -5057,7 +5558,7 @@ function auxCard(kind){
       <div class="aux-wrap"><div class="aux-del">${ico("trash")}<span>Remove</span></div>
       <div class="aux-row ${checks[j] ? "done" : ""}" data-aux="${kind}" data-j="${j}">
         <div class="ar-main"><div class="ar-name">${it.n}</div><div class="ar-spec">${it.s}</div></div>
-        ${!checks[j] && parseAuxSeconds(it.s) > 0 ? `<button class="a-timer" data-kind="${kind}" data-j="${j}" data-sec="${parseAuxSeconds(it.s)}">${fmt(parseAuxSeconds(it.s))}</button>` : ""}
+        ${!checks[j] && parseAuxSeconds(it.s) > 0 ? `<button class="a-timer" data-kind="${kind}" data-j="${j}" data-sec="${parseAuxSeconds(it.s)}">${fmt(parseAuxSeconds(it.s))}${auxSides(it.s) > 1 ? " \u00d72" : ""}</button>` : ""}
         ${!checks[j] ? `<button class="icon-btn a-swap" data-kind="${kind}" data-j="${j}" title="Swap">${ico("swap")}</button>` : ""}
 
         <a class="icon-btn" href="${auxDemoURL(it.n)}" target="_blank" rel="noopener" title="How to">▶</a>
@@ -5197,21 +5698,34 @@ function wireAux(){
   document.querySelectorAll(".a-timer").forEach(b => b.onclick = e => {
     e.stopPropagation();
     const kind = b.dataset.kind, j = +b.dataset.j, sec = +b.dataset.sec;
-    const label = (state.session[kind === "wu" ? "wuList" : "cdList"][j] || {}).n || "";
-    markStarted();
+    const it = (state.session[kind === "wu" ? "wuList" : "cdList"][j] || {});
+    const label = it.n || "";
+    const sides = auxSides(it.s);
+    markStarted(kind === "cd");
     if (soundOn()) ac();   /* no AudioContext in silent mode — keeps background audio alive */
-    startWorkTimer(sec, label, () => {
+    /* "20 sec each side" is two rounds. Running once and ticking the box meant
+       unticking it to get the timer back for the other side, which is exactly
+       the kind of fiddling you should not be doing mid-stretch. The timer now
+       does both and tells you when to swap; only the last round marks it done. */
+    const runRound = round => startWorkTimer(sec, sides > 1 ? label + " \u00b7 side " + round + " of " + sides : label, () => {
+      if (round < sides){
+        sayP("switch-sides");
+        toast("Switch sides \u2014 " + fmt(sec) + " to go", false);
+        runRound(round + 1);
+        return;
+      }
       state.session[kind][j] = true;
       sndSet();
       save(); render();
     });
+    runRound(1);
   });
   document.querySelectorAll(".a-checkbtn").forEach(b => b.onclick = e => {
     e.stopPropagation();
     const k = b.dataset.aux, j = +b.dataset.j;
     if (!state.session[k]) state.session[k] = [];
     state.session[k][j] = !state.session[k][j];
-    if (state.session[k][j]) markStarted();
+    if (state.session[k][j]) markStarted(k === "cd");
     if (state.session[k].length && state.session[k].every(Boolean)){
       if (k === "wu") wuOpen = false; else cdOpen = false;
     }
@@ -5263,6 +5777,7 @@ const VOICE_PACK = {
   "coach-pain":      { f: "coach-pain.mp3",      t: "You flagged pain here. Same weight, fewer reps. Watch it." },
   "coach-beat":      { f: "coach-beat.mp3",      t: "More than I asked for. That is the way." },
   "coach-beat-big":  { f: "coach-beat-big.mp3",  t: "Strong. Keep the form honest. Do not chase the number." },
+  "switch-sides":    { f: "switch-sides.mp3",    t: "Switch sides." },
   "sound-back":      { f: "sound-back.mp3",      t: "Sound is back on. This is your coach speaking." },
   "rest-over":       { f: "rest-over.mp3",       t: "Rest is over. Next set." },
   "timer-done":      { f: "timer-done.mp3",      t: "Time!" },
@@ -5299,9 +5814,14 @@ const VOICE_PACK = {
   "finish-4":        { f: "finish-4.mp3",        t: "Another brick in the wall. Nice work." }
 };
 const FINISH_KEYS = ["finish-1","finish-2","finish-3","finish-4"];
-function markStarted(){
+/* First activity of the session starts the clock. The day greeting rides along,
+   EXCEPT from the cooldown: that is the end of a workout, and tapping a cooldown
+   timer as your first action should not get you "Pull day, let's get after it."
+   The clock still starts - you did start moving - it just stays quiet. */
+function markStarted(quiet){
   if (state.session.started) return;
   state.session.started = Date.now();
+  if (quiet) return;
   const k = "day-" + (state.session.day || "");
   if (VOICE_PACK[k]) sayP(k);
 }
@@ -5330,10 +5850,11 @@ const CLIP_PRIO = {
   "personal-best":8, "all-sets":8, "level-up":8, "program-done":8, "program-start":7,
   "shield-used":7, "sweat-accepted":6, "sweat-cleared":6, "light-logged":5,
   "coach-hello":5, "sound-back":5,
-  "rest-start":2, "rest-over":2, "halfway":2, "quarter-left":2, "three-two-one":2
+  "rest-start":2, "rest-over":2, "halfway":2, "quarter-left":2, "three-two-one":2,
+  "switch-sides":7
 };
 /* worthless if they arrive late - a countdown played after the timer is noise */
-const CLIP_NOW = ["three-two-one", "halfway", "quarter-left", "rest-over", "timer-done", "rest-start"];
+const CLIP_NOW = ["three-two-one", "halfway", "quarter-left", "rest-over", "timer-done", "rest-start", "switch-sides"];
 function clipPrio(k){
   if (CLIP_PRIO[k] != null) return CLIP_PRIO[k];
   if (/^finish-|^streak-/.test(k)) return 8;
@@ -5561,19 +6082,61 @@ function coachExerciseDone(name){
 
 /* ---------- Workout / stretch countdown timer ---------- */
 let activeTimer = null;
-function startWorkTimer(seconds, label, onDone){
-  activeTimer = { end: Date.now() + seconds*1000, total: seconds, label, onDone,
-    half:false, quarter:false, lastTick:null };
+/* Drop the rest countdown without announcing it. Rest ending is only news when
+   the rest actually ran out. */
+function stopRest(){
+  if (!restEnd) return;
+  restEnd = null;
+  const el = $("rest");
+  if (el) el.classList.remove("on");
+}
+/* Seconds of "get into position" before a timed piece of work actually starts.
+   Tapping a timer and being instantly three seconds into a plank is no use when
+   you are still standing up. Impatient? Start now skips it. */
+const WT_LEAD = 3;
+function startWorkTimer(seconds, label, onDone, opts){
+  /* Starting a timed piece of work ends the rest, silently. The two used to run
+     side by side, so kicking off a cooldown timer while the last set's rest was
+     still counting gave you "rest is over" and then "three, two, one" over the
+     top of each other. Tapping a timer IS the decision to stop resting. */
+  stopRest();
+  const lead = (opts && opts.lead != null) ? opts.lead : WT_LEAD;
+  activeTimer = { end: Date.now() + (lead + seconds)*1000, total: seconds, label, onDone,
+    half:false, quarter:false, lastTick:null,
+    leadEnd: lead > 0 ? Date.now() + lead*1000 : null, lastLead: null };
   $("wtLabel").textContent = label;
   $("wtimer").classList.add("on");
+  $("wtimer").classList.toggle("lead", !!activeTimer.leadEnd);
   tickTimer();
 }
 function stopWorkTimer(){
   activeTimer = null;
   $("wtimer").classList.remove("on");
 }
+function wtGo(){
+  const t = activeTimer;
+  if (!t || !t.leadEnd) return;
+  t.leadEnd = null;
+  t.end = Date.now() + t.total*1000;
+  $("wtLabel").textContent = t.label;
+  $("wtimer").classList.remove("lead");
+  beep(880, .18);
+  tickTimer();
+}
 function tickTimer(){
   if (!activeTimer) return;
+  /* the lead-in: count down out loud, then hand over to the real clock */
+  if (activeTimer.leadEnd){
+    const l = Math.ceil((activeTimer.leadEnd - Date.now()) / 1000);
+    if (l > 0){
+      if (activeTimer.lastLead !== l){ activeTimer.lastLead = l; sndTick(); }
+      $("wtTime").textContent = String(l);
+      $("wtLabel").textContent = "Get set \u2014 " + activeTimer.label;
+      return;
+    }
+    wtGo();
+    return;
+  }
   const left = Math.round((activeTimer.end - Date.now())/1000);
   if (left <= 0){
     const done = activeTimer.onDone;
@@ -5600,6 +6163,7 @@ $("wtDone").onclick = () => {
   if (done) done();
 };
 $("wtCancel").onclick = stopWorkTimer;
+$("wtNow").onclick = wtGo;
 function parseAuxSeconds(spec){
   const m = spec.match(/(\d+)\s*min/); if (m) return +m[1]*60;
   const s2 = spec.match(/(\d+)\s*sec/); if (s2) return +s2[1];
@@ -6573,7 +7137,7 @@ $("tourRoot").addEventListener("click", e => {
   if (b) obAction(b.dataset.ob);
 });
 window.addEventListener("resize", () => {
-  if ($("tourRoot").classList.contains("on")) positionTour(TOUR[obStep]);
+  if ($("tourRoot").classList.contains("on")) positionTour(tourSeq()[obStep]);
 });
 $("acctOverlay").onclick = closeAcctSheet;
 $("cfgClose").onclick = closeCfg;
@@ -6881,7 +7445,11 @@ function renderAlt(mode){
     `<div class="pv-note"> This is your planned <b>${dayDef.name}</b> workout for ${dstr}. Adjust weights, reps, or exercises now — you can log sets when the day arrives. Projections assume your current numbers.</div>`
     + previewList.map((ex,i) => {
     const best = bestPerf(ex.n);
-    const meta = [muscleMini(ex.g) + " " + ex.g, best ? `<span class="pr">Best: ${best.w}×${best.r}</span>` : null].filter(Boolean).join(" · ");
+    const lastF = lastFormMeta(ex.n);
+    const meta = [muscleMini(ex.g) + " " + ex.g,
+      best ? `<span class="pr">Best: ${best.w}×${best.r}</span>` : null,
+      (lastF && lastF.form) ? `<span class="prev-rate${lastF.form <= 2 ? " low" : ""}">Last: ${lastF.form}★</span>` : null
+    ].filter(Boolean).join(" · ");
     const isStalled = false;   /* the coach reason now carries this */
     const badges =
       (ex.prog ? `<span class="badge ${coachBadgeClass(ex.verdict)}">${ex.prog}</span>` : "") +
@@ -7152,10 +7720,24 @@ function wireEvents(){
   if (exl && !exl._foldWired){
     exl._foldWired = true;
     exl.addEventListener("click", e => {
+      /* the stars sit inside the folded head, so they must be handled before
+         the head's own reopen click or rating would always expand the card */
+      const fs = e.target.closest(".fold-stars button");
+      if (fs){
+        e.stopPropagation();
+        const fx = state.session.list[+fs.dataset.i];
+        if (fx){
+          fx.form = +fs.dataset.v;
+          if (fx.form > 3) fx.issues = [];
+          else exExpand.add(fx.n);        /* 3 or less: open it so the chips are reachable */
+          save(); render();
+        }
+        return;
+      }
       const fo = e.target.closest(".ex-fold");
-      if (fo){ e.stopPropagation(); exExpand.delete(fo.dataset.n); render(); return; }
+      if (fo){ e.stopPropagation(); exExpand.delete(fo.dataset.n); exFold.add(fo.dataset.n); render(); return; }
       const ro = e.target.closest(".ex-reopen");
-      if (ro){ exExpand.add(ro.dataset.n); render(); }
+      if (ro){ exFold.delete(ro.dataset.n); exExpand.add(ro.dataset.n); render(); }
     });
   }
   function removeSetAt(i, j){
@@ -7245,12 +7827,22 @@ function wireEvents(){
       if (!s.r && prev && prev[j]) s.r = prev[j].r;
       s.done = true;
       markStarted();
-      /* PR check */
+      /* PR: say it now, pay for it later.
+         bestPerf() reads state.history, and history is only written when the
+         workout is finished - so the RECORD was always provisional. The reward
+         was not: coins landed the moment you ticked the box, so unticking and
+         re-ticking paid again, abandoning the session kept the coins for a PR
+         that never happened, and the toast promised +25 XP that nothing ever
+         granted. The celebration stays here where it belongs; the payment moved
+         to completeWorkout, where it is checked against what actually got
+         logged. Once per exercise per session - a coach does not set off the
+         fanfare twice for the same lift. */
       const best = bestPerf(ex.n);
-      if (Number(s.w) > 0 && (!best || Number(s.w) > best.w)){
-        state.coins = (state.coins || 0) + 5;
+      state.session.prSaid = state.session.prSaid || {};
+      if (Number(s.w) > 0 && (!best || Number(s.w) > best.w) && !state.session.prSaid[ex.n]){
+        state.session.prSaid[ex.n] = true;
         sndFanfare(); sayP("personal-best");
-        toast(" New PR on " + ex.n + "! +25 XP +5 coins", true);
+        toast("New PR on " + ex.n + " \u2014 locked in when you finish.", true);
         confetti(30);
       }
       sndSet();
@@ -7274,8 +7866,19 @@ function wireEvents(){
     }
     save(); render();
   });
+  wireA2hs();
   document.querySelectorAll(".ask-star").forEach(b => b.onclick = () =>
     rateSet(+b.dataset.i, +b.dataset.j, +b.dataset.v));
+  /* The always-on strip. Re-rating 3 or below reopens the prompt for that set so
+     the issue chips are reachable, which is where the useful detail lives. */
+  document.querySelectorAll(".set-rates .sr-stars button").forEach(b => b.onclick = () => {
+    const i = +b.dataset.i, j = +b.dataset.j, v = +b.dataset.v;
+    const ex = state.session.list[i]; if (!ex || !ex.sets[j]) return;
+    ex.sets[j].sf = v;
+    if (v > 3) ex.sets[j].si = [];
+    else state.session.ask = {kind: "rate", i: i, j: j};
+    save(); render();
+  });
   document.querySelectorAll(".ask-chip").forEach(b => b.onclick = () =>
     flagSet(+b.dataset.i, +b.dataset.j, b.dataset.x));
   document.querySelectorAll(".drop-chip").forEach(b => b.onclick = () =>
@@ -7341,15 +7944,15 @@ function wireEvents(){
     const g = panel.querySelector(".sel-group").value;
     const n = panel.querySelector(".sel-ex").value;
     if (b.dataset.idx === "add"){
-      if (!state.session.pastDate){ const pl = ensurePlanDay(state.session.day); if (pl) pl.push({g, n}); }
+      if (!state.session.pastDate){ const pl = ensurePlanDay(state.session.day); if (pl) pl.push({g, n, pin: true}); }
       const bs = buildSets({g, n});
-      state.session.list.push({g, n, sets: bs.sets, prog: bs.prog});
+      state.session.list.push({g, n, sets: bs.sets, prog: bs.prog, verdict: bs.verdict, speak: bs.speak});
       toast("Exercise added");
     } else {
       const i = +b.dataset.idx;
-      if (!state.session.pastDate){ const pl = ensurePlanDay(state.session.day); if (pl && pl[i]) pl[i] = {g, n}; }
+      if (!state.session.pastDate){ const pl = ensurePlanDay(state.session.day); if (pl && pl[i]) pl[i] = {g, n, pin: true}; }
       const bs = buildSets({g, n});
-      state.session.list[i] = {g, n, sets: bs.sets, prog: bs.prog};
+      state.session.list[i] = {g, n, sets: bs.sets, prog: bs.prog, verdict: bs.verdict, speak: bs.speak};
       toast("Exercise swapped");
     }
     openPanel = null;
@@ -7410,6 +8013,17 @@ async function completeWorkout(overall){
   const exDetail = s.list.map(exRecord).filter(e => e.sets.length);
   const light = sessionScore(s.list) < workFloor(s.day);
   const sweatCleared = !light && !!s.sweatDay && s.list.length > 0 && s.list.every(e => e.sets.every(x => x.done));
+  /* Which PRs actually survived to the log? Checked BEFORE the unshift below, so
+     bestPerf() still reflects the previous record. A set that was unticked, edited
+     down, or never finished simply is not in exDetail and earns nothing. */
+  const prs = [];
+  for (const e of exDetail){
+    const before = bestPerf(e.n);
+    const top = e.sets.reduce((m, x) => Math.max(m, Number(x.w) || 0), 0);
+    if (top > 0 && (!before || top > before.w)) prs.push(e.n);
+  }
+  const prCoins = prs.length * 5;
+  if (prCoins) state.coins = (state.coins || 0) + prCoins;
   const wuDone = s.wu && s.wu.length >= AUX_MIN.wu && s.wu.every(Boolean);
   const cdDone = s.cd && s.cd.length >= AUX_MIN.cd && s.cd.every(Boolean);
   state.history.unshift({
@@ -7420,6 +8034,7 @@ async function completeWorkout(overall){
     ex: exDetail
   });
   if (state.planned) delete state.planned[s.day];
+  const rotMsg = rotTick(s.day, light);
   state.session = buildSession(suggestDay());
   wuOpen = true; cdOpen = false;
   openPanel = null;
@@ -7431,15 +8046,19 @@ async function completeWorkout(overall){
   if (light){
     sayP("light-logged");
     sndSet();
-    toast("Light session logged \u2014 below the workout floor, so no XP, coins, or streak credit", false);
+    toast(prCoins
+      ? "Light session \u2014 no XP or streak credit, but that PR counts. +" + prCoins + " coins"
+      : "Light session logged \u2014 below the workout floor, so no XP, coins, or streak credit", false);
     checkAchievements();
     return;
   }
+  if (rotMsg) setTimeout(() => toast("Fresh on " + dayLabel(s.day) + " next time \u2014 " + rotMsg, false), 1800);
   confetti(45);
   const lvBefore = levelInfo().lv;
   const gained = 50 + exDetail.reduce((t,e) => t + e.sets.length, 0) * 5 + (wuDone ? 10 : 0) + (cdDone ? 5 : 0);
   state.coins = (state.coins || 0) + 10;
-  let coinMsg = "+10 coins";
+  let coinMsg = "+" + (10 + prCoins) + " coins";
+  if (prCoins) coinMsg += " \u00b7 " + prs.length + (prs.length === 1 ? " new PR" : " new PRs");
   /* weekly goal bonus: this finish is the 5th distinct training day this week */
   if (weekCount() === WEEKLY_GOAL){
     state.coins += 25;
