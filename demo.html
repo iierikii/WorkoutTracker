@@ -39,6 +39,40 @@
   .set-row{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;border-bottom:1px solid var(--line)}
   .set-row:last-of-type{border-bottom:none}
   .set-row:active{background:var(--card2)}
+  .ask-card{background:var(--card2);border:1px solid var(--line);border-radius:12px;
+    padding:11px 13px;margin:2px 0 10px;display:flex;flex-direction:column;gap:9px}
+  .ask-label{font-size:12.5px;font-weight:700;color:var(--text)}
+  .ask-stars{display:flex;gap:6px}
+  .ask-stars button{background:none;border:none;font-size:23px;line-height:1;padding:0 2px;
+    color:var(--line);cursor:pointer}
+  .ask-stars button.on{color:var(--gold,#E8B84B)}
+  .ask-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .ask-chips button{font:inherit;font-size:11px;font-weight:700;padding:5px 9px;border-radius:99px;
+    border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+  .ask-chips button.on{background:var(--danger-soft);color:var(--danger);border-color:rgba(255,107,94,.4)}
+  .ask-card.watch{border-color:rgba(245,197,66,.45);background:var(--gold-soft,rgba(245,197,66,.1))}
+  .ask-card.watch .ask-label{color:var(--gold,#E8B84B)}
+  .ask-btns{display:flex;gap:8px}
+  .ask-btns button{flex:1;font:inherit;font-size:12px;font-weight:800;text-transform:uppercase;
+    letter-spacing:.04em;padding:9px;border-radius:10px;cursor:pointer;border:1px solid var(--line);
+    background:transparent;color:var(--muted)}
+  .ask-btns .ask-yes{background:var(--accent-dim);color:var(--accent);
+    border-color:color-mix(in srgb, var(--accent) 40%, transparent)}
+  .req{color:var(--danger);font-weight:800;margin-left:2px}
+  .lbl-row{display:flex;margin-bottom:5px}
+  .fld-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .ddbtn.bad{border-color:var(--danger)}
+  .req-err{color:var(--danger);font-size:12px;font-weight:700;margin-top:6px}
+  .req-hint{color:var(--muted);font-size:12px;margin-top:6px}
+  .import-area.bad{border-color:var(--danger)}
+  .coach-row{cursor:default}
+  .coach-row:active{background:transparent}
+  .coach-pick{display:flex;gap:6px;margin-top:8px}
+  .coach-pick button{flex:1;padding:7px 4px;border-radius:9px;border:1px solid var(--line);
+    background:transparent;color:var(--muted);font:inherit;font-size:11px;font-weight:800;
+    text-transform:uppercase;letter-spacing:.04em;cursor:pointer}
+  .coach-pick button.on{background:var(--accent-dim);color:var(--accent);
+    border-color:color-mix(in srgb, var(--accent) 40%, transparent)}
   .set-ic{flex:0 0 36px;width:36px;height:36px;border-radius:11px;background:var(--card2);border:1px solid var(--line);
     display:flex;align-items:center;justify-content:center}
   .set-ic svg{width:17px;height:17px}
@@ -832,8 +866,30 @@ const RAWLIB = {
   "Calves":[["Calf press",["Machine"]],["Standing calf raises",["Bodyweight", "Dumbbell", "Barbell", "Machine", "Box/step"]],["Single-leg calf raises",["Bodyweight", "Dumbbell", "Barbell", "Machine", "Box/step"]],["Seated calf raises",["Dumbbell", "Barbell", "Plate", "Bench"]],["Donkey calf raises",["Bodyweight", "Bench", "Plate", "Dumbbell"]],["Tibialis raises",["Bodyweight", "Band"]],["Farmer walk on toes",["Dumbbell", "Kettlebell", "Plate"]]],
   "Abs & Core":[["Ab crunch",["Machine", "Bodyweight", "Band", "Plate"]],["Oblique crunch",["Machine", "Bodyweight", "Band", "Plate"]],["Plank",["Bodyweight"]],["Side plank",["Bodyweight"]],["Hanging knee raises",["Pull-up bar"]],["Hanging leg raises",["Pull-up bar"]],["Russian twists",["Bodyweight", "Kettlebell", "Dumbbell", "Plate"]],["Dead bugs",["Bodyweight"]],["Bicycle crunches",["Bodyweight"]],["Mountain climbers",["Bodyweight"]],["V-ups",["Bodyweight"]],["Ab rollout",["Barbell"]],["Pallof press",["Band"]],["Windmills",["Kettlebell", "Dumbbell"]],["Farmer's carries",["Dumbbell", "Kettlebell", "Plate"]],["Hollow body hold",["Bodyweight"]],["Sit-ups",["Bodyweight", "Plate", "Dumbbell"]],["Weighted sit-ups",["Plate", "Dumbbell", "Bodyweight"]],["Crunches",["Bodyweight", "Band", "Plate"]],["Reverse crunches",["Bodyweight"]],["Toe touches",["Bodyweight"]],["Flutter kicks",["Bodyweight"]],["Scissor kicks",["Bodyweight"]],["Plank shoulder taps",["Bodyweight"]],["Plank up-downs",["Bodyweight"]],["Side plank hip dips",["Bodyweight"]],["Copenhagen plank (bench)",["Bench", "Bodyweight"]],["L-sit hold (dip station)",["Dip station", "Bodyweight"]],["Dragon flag negatives (bench)",["Bench", "Bodyweight"]],["Hanging windshield wipers",["Pull-up bar"]],["Turkish get-up",["Kettlebell", "Dumbbell"]],["Suitcase carries",["Dumbbell", "Kettlebell", "Plate"]],["Bird dogs",["Bodyweight"]]],
   "Plyometrics":[["Box jumps (sturdy box/step)",["Box/step"]],["Broad jumps",["Bodyweight"]],["Tuck jumps",["Bodyweight"]],["Jump squats",["Bodyweight"]],["Jumping lunges",["Bodyweight", "Dumbbell"]],["Lateral bounds (skater hops)",["Bodyweight"]],["Squat jump to stick landing",["Bodyweight"]],["Clap push-ups",["Bodyweight", "Band", "Plate"]],["Plyo push-ups (hands leave floor)",["Bodyweight", "Band", "Plate"]],["Depth drops (step down, stick landing)",["Box/step"]],["Star jumps",["Bodyweight"]],["Pogo hops",["Bodyweight"]],["Single-leg hops",["Bodyweight"]]],
-  "Cardio":[["Treadmill walk",["Treadmill"]],["Treadmill jog",["Treadmill"]],["Treadmill run",["Treadmill"]],["Treadmill incline intervals",["Treadmill"]],["Treadmill sprints",["Treadmill"]],["Peloton endurance ride",["Bike"]],["Peloton HIIT ride",["Bike"]],["Cross trainer steady state",["Elliptical"]],["Cross trainer intervals",["Elliptical"]],["Kettlebell swing intervals",["Kettlebell", "Dumbbell"]],["Burpees",["Bodyweight"]],["Jumping jacks",["Bodyweight"]],["High knees",["Bodyweight"]],["Kettlebell complex",["Kettlebell"]],["Bodyweight circuit",["Bodyweight"]],["Zone 2 bike ride",["Bike"]],["Bike sprint intervals",["Bike"]],["12-3-30 treadmill",["Treadmill"]],["Incline treadmill hike",["Treadmill"]],["Elliptical hill climb",["Elliptical"]],["Shadow boxing",["Bodyweight"]],["EMOM bodyweight circuit",["Bodyweight"]],["Ruck walk",["Plate"]]],
+  "Cardio":[["Treadmill walk",["Treadmill"]],["Treadmill jog",["Treadmill"]],["Treadmill run",["Treadmill"]],["Treadmill incline intervals",["Treadmill"]],["Treadmill sprints",["Treadmill"]],["Bike ride",["Bike"]],["HIIT bike ride",["Bike"]],["Cross trainer steady state",["Elliptical"]],["Cross trainer intervals",["Elliptical"]],["Kettlebell swing intervals",["Kettlebell", "Dumbbell"]],["Burpees",["Bodyweight"]],["Jumping jacks",["Bodyweight"]],["High knees",["Bodyweight"]],["Kettlebell complex",["Kettlebell"]],["Bodyweight circuit",["Bodyweight"]],["Zone 2 bike ride",["Bike"]],["Bike sprint intervals",["Bike"]],["12-3-30 treadmill",["Treadmill"]],["Incline treadmill hike",["Treadmill"]],["Elliptical hill climb",["Elliptical"]],["Shadow boxing",["Bodyweight"]],["EMOM bodyweight circuit",["Bodyweight"]],["Ruck walk",["Plate"]]],
 };
+/* ---------- Library additions ---------- */
+const ADDITIONS = {
+  "Forearms":[["Wrist curl",["Dumbbell","Barbell","EZ bar"]],["Reverse wrist curl",["Dumbbell","Barbell","EZ bar"]],["Behind-the-back wrist curl",["Barbell"]],["Wrist roller",["Plate"]],["Plate pinch hold",["Plate"]],["Dead hang",["Pull-up bar"]],["Farmer hold",["Dumbbell","Kettlebell"]],["Towel pull-ups",["Pull-up bar"]]],
+  "Chest":[["Landmine press",["Barbell"]],["Guillotine press",["Barbell","Bench"]],["Larsen press",["Barbell","Bench"]],["Reverse-grip bench press",["Barbell","Bench"]],["TRX push-ups",["Suspension trainer"]],["Archer push-ups",["Bodyweight"]],["Pseudo planche push-ups",["Bodyweight"]],["One-arm push-ups (assisted)",["Bodyweight"]],["Ring push-ups",["Suspension trainer"]]],
+  "Back":[["T-bar row",["Barbell","Machine"]],["Meadows row",["Barbell"]],["Seal row",["Dumbbell","Bench","Barbell"]],["Chest-supported machine row",["Machine"]],["Single-arm lat pulldown",["Cable","Machine"]],["Reverse-grip lat pulldown",["Cable","Machine"]],["Back extension",["Bodyweight","Plate"]],["Reverse hyperextension",["Bodyweight","Bench"]],["Smith machine row",["Machine"]],["TRX row",["Suspension trainer"]],["Archer pull-ups",["Pull-up bar"]],["Typewriter pull-ups",["Pull-up bar"]],["Negative pull-ups",["Pull-up bar"]],["Muscle-ups",["Pull-up bar"]],["Skin the cat",["Pull-up bar"]],["Tuck front lever hold",["Pull-up bar"]],["Back lever hold (tucked)",["Pull-up bar"]],["Archer rows",["Suspension trainer","Barbell"]]],
+  "Shoulders":[["Cable lateral raise",["Cable"]],["Machine lateral raise",["Machine"]],["Landmine shoulder press",["Barbell"]],["Behind-the-neck press",["Barbell"]],["Viking press",["Barbell","Machine"]],["Scaption raise",["Dumbbell"]],["Powell raise",["Dumbbell","Bench"]],["Handstand push-ups (wall)",["Bodyweight"]],["Tuck planche hold",["Bodyweight"]]],
+  "Biceps":[["Preacher curl",["EZ bar","Barbell","Dumbbell","Bench"]],["EZ bar curl",["EZ bar"]],["Bayesian cable curl",["Cable"]],["Incline hammer curl",["Dumbbell","Bench"]]],
+  "Triceps":[["Overhead cable extension",["Cable"]],["Reverse-grip pushdown",["Cable"]],["California press",["Barbell","EZ bar","Bench"]],["Korean dips",["Dip station"]],["Ring dips",["Suspension trainer"]]],
+  "Quads & Glutes":[["Hack squat",["Machine","Barbell"]],["Belt squat",["Machine"]],["Smith machine squat",["Machine"]],["Hip abduction",["Machine","Band","Cable"]],["Hip adduction",["Machine","Band","Cable"]],["Cable glute kickback",["Cable","Band"]],["Step-downs",["Box/step","Dumbbell","Bodyweight"]],["Reverse Nordic curl",["Bodyweight"]],["Split squat",["Dumbbell","Barbell","Bodyweight"]],["TRX pistol squat",["Suspension trainer"]],["Shrimp squats",["Bodyweight"]]],
+  "Hamstrings":[["Seated leg curl",["Machine"]],["Lying leg curl",["Machine"]],["45-degree back extension",["Bodyweight","Plate"]],["Glute-ham raise",["Bodyweight"]],["TRX hamstring curl",["Suspension trainer"]]],
+  "Calves":[["Leg press calf raise",["Machine"]],["Smith machine calf raise",["Machine"]]],
+  "Abs & Core":[["Cable crunch",["Cable"]],["Cable woodchopper",["Cable","Band"]],["Toes to bar",["Pull-up bar"]],["Hollow rocks",["Bodyweight"]],["Side bends",["Dumbbell","Kettlebell","Plate"]],["Landmine rotation",["Barbell"]],["TRX fallout",["Suspension trainer"]],["Human flag (tucked)",["Pull-up bar"]]],
+  "Cardio":[["Rowing machine steady state",["Rower"]],["Rowing machine intervals",["Rower"]],["Jump rope",["Jump rope"]],["Double unders",["Jump rope"]],["Stair climber",["Machine"]],["Sled push",["Machine"]],["Battle ropes",["Band"]],["Swimming",["Bodyweight"]]],
+  "Plyometrics":[["Medicine ball slams",["Plate"]],["Rotational medicine ball throw",["Plate"]],["Depth jumps",["Box/step"]],["Bounding",["Bodyweight"]]]
+};
+/* same name in two groups made findGroup() order-dependent, and let a day offer it twice */
+const RAW_REMOVE = {"Triceps":["Floor press"],"Hamstrings":["Deadlift","Leg curls"],"Plyometrics":["Jump squats"]};
+for (const g in RAW_REMOVE) if (RAWLIB[g]) RAWLIB[g] = RAWLIB[g].filter(e => RAW_REMOVE[g].indexOf(e[0]) === -1);
+for (const g in ADDITIONS){ if (!RAWLIB[g]) RAWLIB[g] = []; for (const e of ADDITIONS[g]) RAWLIB[g].push(e); }
+/* curated additions - established lifts, permutations deliberately left out */
+const ADDITIONS2 = {"Quads & Glutes":[["Clean",["Kettlebell","Dumbbell","Barbell"]],["Power clean",["Barbell","Dumbbell"]],["Hang clean",["Barbell","Kettlebell","Dumbbell"]],["Snatch",["Kettlebell","Dumbbell","Barbell"]],["Power snatch",["Barbell","Dumbbell"]],["Thrusters",["Dumbbell","Kettlebell","Barbell"]],["Skater squats",["Bodyweight","Dumbbell"]]],"Shoulders":[["Push press",["Barbell","Dumbbell","Kettlebell"]],["Push jerk",["Barbell","Dumbbell","Kettlebell"]],["Devil press",["Dumbbell"]],["Bent press",["Kettlebell","Dumbbell"]],["Arm bar",["Kettlebell","Dumbbell"]],["Standing shoulder external rotation",["Band","Cable","Dumbbell"]],["Cuban rotation",["Dumbbell","Band"]],["Shoulder dislocates",["Band"]],["Seated wall angels",["Bodyweight"]]],"Plyometrics":[["Lateral box jumps",["Box/step"]]],"Abs & Core":[["Turkish sit-ups",["Kettlebell","Dumbbell"]],["Side plank reach through",["Bodyweight"]],["Goblet carry",["Kettlebell","Dumbbell"]]]};
+for (const g in ADDITIONS2){ if (!RAWLIB[g]) RAWLIB[g] = []; for (const e of ADDITIONS2[g]) RAWLIB[g].push(e); }
 const LIB = {}; const EQUIP = {};
 for (const g in RAWLIB){
   LIB[g] = [];
@@ -842,6 +898,27 @@ for (const g in RAWLIB){
     for (const e of t) if (!EQUIP[n].includes(e)) EQUIP[n].push(e);
   }
 }
+
+
+/* ---------- Cable is not the same thing as a machine ----------
+   "Machine" was covering a lever press, a leg press AND a cable stack, which are
+   completely different pieces of kit to own. Split the cable-driven movements out.
+   Both tags can apply: a lat pulldown is a cable movement on most machines. */
+const CABLE_EX = ["Lat pulldown","Mid row","Low row","Straight-arm band pulldown","Reverse fly",
+  "Double-arm cable curl","Concentration cable curl","Biceps curl","Triceps pressdown",
+  "Triceps extension","Flyes","Crossover","Face pulls","Pallof press","Ab crunch","Oblique crunch",
+  "Kickbacks","Pull-throughs","Front raises","Lateral raises","Rear delt flyes"];
+/* these two are cable by definition - they were never a lever machine */
+const CABLE_ONLY = ["Double-arm cable curl","Concentration cable curl"];
+for (const n of CABLE_EX){
+  if (!EQUIP[n]) continue;
+  if (EQUIP[n].indexOf("Cable") === -1) EQUIP[n].unshift("Cable");
+}
+for (const n of CABLE_ONLY){
+  if (EQUIP[n]) EQUIP[n] = EQUIP[n].filter(x => x !== "Machine");
+}
+/* an ab wheel is not a barbell */
+if (EQUIP["Ab rollout"]) EQUIP["Ab rollout"] = ["Ab wheel"].concat(EQUIP["Ab rollout"]);
 
 const MUSCLES = {
   "Deadlift":["Back","Hamstrings","Quads & Glutes"],"Deadlift":["Back","Hamstrings","Quads & Glutes"],
@@ -905,8 +982,8 @@ const ADD_EQUIP = {
 for (const n in ADD_EQUIP){
   if (EQUIP[n]) for (const e of ADD_EQUIP[n]) if (!EQUIP[n].includes(e)) EQUIP[n].push(e);
 }
-const NAME_MIGRATE = {"Pectoral fly": "Flyes","Flat bench press (barbell)": "Bench press","Flat bench press (dumbbell)": "Bench press","Incline bench press (barbell)": "Incline bench press","Incline bench press (dumbbell)": "Incline bench press","Dumbbell flyes": "Flyes","Banded push-ups": "Push-ups","Band chest press": "Chest press","Band flyes": "Flyes","Kettlebell floor press": "Floor press","Dumbbell pullover": "Pullover","Weighted push-ups (plate on back)": "Weighted push-ups","Band crossover": "Crossover","Barbell bent-over row": "Bent-over row","Barbell deadlift": "Deadlift","Kettlebell row": "Rows","Band pull-aparts": "Pull-aparts","Band lat pulldown": "Lat pulldown","Dumbbell deadlift": "Deadlift","Inverted rows (bar in rack)": "Inverted rows","Band rows": "Rows","Lateral raises (dumbbell)": "Lateral raises","Lateral raises (band)": "Lateral raises","Rear delt flyes (dumbbell)": "Rear delt flyes","Face pulls (band)": "Face pulls","Upright row (barbell)": "Upright row","Upright row (dumbbell)": "Upright row","Shrugs (barbell)": "Shrugs","Shrugs (dumbbell)": "Shrugs","Shrugs (kettlebell)": "Shrugs","Kettlebell overhead press": "Overhead press","Band overhead press": "Overhead press","Band upright row": "Upright row","Kettlebell halos": "Halos","Barbell curl": "Biceps curl","Concentration curl (dumbbell)": "Concentration curl","Band curls": "Biceps curl","Kettlebell curls": "Biceps curl","Reverse curls (barbell)": "Reverse curls","Reverse curls (dumbbell)": "Reverse curls","21s (barbell)": "21s","Skull crushers (barbell)": "Skull crushers","Skull crushers (dumbbell)": "Skull crushers","Dumbbell kickbacks": "Kickbacks","Band pressdowns": "Triceps pressdown","Floor press (barbell)": "Floor press","Floor press (dumbbell)": "Floor press","Bodyweight skull crushers (bar in rack)": "Bodyweight skull crushers","Back squat (barbell)": "Back squat","Front squat (barbell)": "Front squat","Goblet squat (dumbbell)": "Goblet squat","Goblet squat (kettlebell)": "Goblet squat","Walking lunges (dumbbell)": "Walking lunges","Hip thrusts (barbell)": "Hip thrusts","Hip thrusts (dumbbell)": "Hip thrusts","Kettlebell front squats": "Front squat","Barbell lunges": "Lunges","Banded lateral walks": "Lateral walks","Romanian deadlift (barbell)": "Romanian deadlift","Romanian deadlift (dumbbell)": "Romanian deadlift","Conventional deadlift (barbell)": "Deadlift","Kettlebell swings": "Swings","Good mornings (barbell)": "Good mornings","Band leg curls": "Leg curls","Band pull-throughs": "Pull-throughs","Sliding leg curls (towels)": "Sliding leg curls","Standing calf raises (dumbbell)": "Standing calf raises","Standing calf raises (barbell)": "Standing calf raises","Seated calf raises (dumbbells on knees)": "Seated calf raises","Donkey calf raises (bench lean)": "Donkey calf raises","Russian twists (kettlebell)": "Russian twists","Ab rollout (barbell)": "Ab rollout","Pallof press (band)": "Pallof press","Kettlebell windmills": "Windmills","Band crunches": "Crunches","Kettlebell swing intervals": "Kettlebell swing intervals","Kettlebell complex": "Kettlebell complex","Ruck walk (weighted pack)": "Ruck walk"};
-const EQUIPMENT = ["Machine","Barbell","Dumbbell","Kettlebell","Band","Bodyweight","Pull-up bar","Dip station","Bench","Plate","Box/step","Treadmill","Bike","Elliptical"];
+const NAME_MIGRATE = {"Pectoral fly": "Flyes","Flat bench press (barbell)": "Bench press","Flat bench press (dumbbell)": "Bench press","Incline bench press (barbell)": "Incline bench press","Incline bench press (dumbbell)": "Incline bench press","Dumbbell flyes": "Flyes","Banded push-ups": "Push-ups","Band chest press": "Chest press","Band flyes": "Flyes","Kettlebell floor press": "Floor press","Dumbbell pullover": "Pullover","Weighted push-ups (plate on back)": "Weighted push-ups","Band crossover": "Crossover","Barbell bent-over row": "Bent-over row","Barbell deadlift": "Deadlift","Kettlebell row": "Rows","Band pull-aparts": "Pull-aparts","Band lat pulldown": "Lat pulldown","Dumbbell deadlift": "Deadlift","Inverted rows (bar in rack)": "Inverted rows","Band rows": "Rows","Lateral raises (dumbbell)": "Lateral raises","Lateral raises (band)": "Lateral raises","Rear delt flyes (dumbbell)": "Rear delt flyes","Face pulls (band)": "Face pulls","Upright row (barbell)": "Upright row","Upright row (dumbbell)": "Upright row","Shrugs (barbell)": "Shrugs","Shrugs (dumbbell)": "Shrugs","Shrugs (kettlebell)": "Shrugs","Kettlebell overhead press": "Overhead press","Band overhead press": "Overhead press","Band upright row": "Upright row","Kettlebell halos": "Halos","Barbell curl": "Biceps curl","Concentration curl (dumbbell)": "Concentration curl","Band curls": "Biceps curl","Kettlebell curls": "Biceps curl","Reverse curls (barbell)": "Reverse curls","Reverse curls (dumbbell)": "Reverse curls","21s (barbell)": "21s","Skull crushers (barbell)": "Skull crushers","Skull crushers (dumbbell)": "Skull crushers","Dumbbell kickbacks": "Kickbacks","Band pressdowns": "Triceps pressdown","Floor press (barbell)": "Floor press","Floor press (dumbbell)": "Floor press","Bodyweight skull crushers (bar in rack)": "Bodyweight skull crushers","Back squat (barbell)": "Back squat","Front squat (barbell)": "Front squat","Goblet squat (dumbbell)": "Goblet squat","Goblet squat (kettlebell)": "Goblet squat","Walking lunges (dumbbell)": "Walking lunges","Hip thrusts (barbell)": "Hip thrusts","Hip thrusts (dumbbell)": "Hip thrusts","Kettlebell front squats": "Front squat","Barbell lunges": "Lunges","Banded lateral walks": "Lateral walks","Romanian deadlift (barbell)": "Romanian deadlift","Romanian deadlift (dumbbell)": "Romanian deadlift","Conventional deadlift (barbell)": "Deadlift","Kettlebell swings": "Swings","Good mornings (barbell)": "Good mornings","Band leg curls": "Leg curls","Band pull-throughs": "Pull-throughs","Sliding leg curls (towels)": "Sliding leg curls","Standing calf raises (dumbbell)": "Standing calf raises","Standing calf raises (barbell)": "Standing calf raises","Seated calf raises (dumbbells on knees)": "Seated calf raises","Donkey calf raises (bench lean)": "Donkey calf raises","Russian twists (kettlebell)": "Russian twists","Ab rollout (barbell)": "Ab rollout","Pallof press (band)": "Pallof press","Kettlebell windmills": "Windmills","Band crunches": "Crunches","Kettlebell swing intervals": "Kettlebell swing intervals","Kettlebell complex": "Kettlebell complex","Ruck walk (weighted pack)": "Ruck walk","Leg curls": "Leg curl","Peloton endurance ride": "Bike ride","Peloton HIIT ride": "HIIT bike ride"};
+const EQUIPMENT = ["Machine","Cable","Barbell","EZ bar","Dumbbell","Kettlebell","Band","Bodyweight","Pull-up bar","Dip station","Bench","Plate","Box/step","Ab wheel","Suspension trainer","Treadmill","Bike","Rower","Elliptical","Jump rope"];
 
 const TIMED = new Set(["Plank","Side plank","Wall sit","Hollow body hold","Mountain climbers","Jumping jacks","High knees","Superman hold","Handstand hold (wall)","Isometric curl hold","Side plank hip dips","Copenhagen plank (bench)","L-sit hold (dip station)","Plank shoulder taps",...LIB["Cardio"]]);
 function origName(n){ return (state && state.exOrig && state.exOrig[n]) || n; }
@@ -963,7 +1040,7 @@ const GROUP_SUGGEST = {
   "Calves":{w:25,r:15},"Abs & Core":{w:"",r:15},"Plyometrics":{w:"",r:5},"Cardio":{w:"",r:20}
 };
 const SUGGEST = {
-  /* EXM3000 stack (start light, the stack moves fast) */
+  /* Machine stack movements (start light, the stack moves fast) */
   "Chest press":{w:50,r:10},"Flyes":{w:40,r:12},
   "Lat pulldown":{w:60,r:10},"Mid row":{w:50,r:10},
   "Low row":{w:50,r:10},"Bent-over row":{w:40,r:10},
@@ -1044,7 +1121,7 @@ const SUGGEST = {
   /* Cardio (minutes) */
   "Treadmill walk":{w:"",r:30},"Treadmill jog":{w:"",r:20},"Treadmill run":{w:"",r:20},
   "Treadmill incline intervals":{w:"",r:20},"Treadmill sprints":{w:"",r:15},
-  "Peloton endurance ride":{w:"",r:30},"Peloton HIIT ride":{w:"",r:20},
+  "Bike ride":{w:"",r:30},"HIIT bike ride":{w:"",r:20},
   "Cross trainer steady state":{w:"",r:25},"Cross trainer intervals":{w:"",r:20},
   "Bodyweight circuit":{w:"",r:20},
   "Superman hold":{w:"",r:30},
@@ -1063,22 +1140,145 @@ const SUGGEST = {
 };
 function suggestFor(ex){
   const o = origName(ex.n);
-  return SUGGEST[o] || SUGGEST[o.replace(/\s*\(EXM3000\)/, "")] || SUGGEST[ex.n] || GROUP_SUGGEST[ex.g] || {w:"", r:10};
+  return SUGGEST[o] || SUGGEST[o.replace(/\s*\([^)]*\)$/, "")] || SUGGEST[ex.n] || GROUP_SUGGEST[ex.g] || {w:"", r:10};
 }
 
-/* ---------- Coaching: progression, stalls, history ---------- */
-/* Weight increment when you earn a bump */
-function increment(ex){
-  if (trackMode(ex.n, ex.g) !== "wr") return 0;       /* reps/time modes progress duration or reps */
-  if (equipTags(ex.n).includes("Machine") || origName(ex.n).includes("EXM3000")) return 10;  /* stack moves in 10s */
-  return 5;                                            /* barbell / dumbbell / kettlebell */
+/* ---------- Coach v1: one engine, stated reasons ---------- */
+/* Same at every aggressiveness level */
+const COACH = {
+  BACKOFF_PCT: 0.90,
+  DELOAD_PCT: 0.90,
+  ROUGH_RATING: 2,
+  BUMP_SMALL: 5,
+  BUMP_LARGE: 10,
+  BUMP_THRESHOLD: 75,   /* at or above this weight, jump by BUMP_LARGE */
+  SET_MISS: 2,          /* reps under target before we ease the rest of the sets */
+  SET_COLLAPSE: 4       /* reps under target that counts as a collapse */
+};
+/* How hard Brian pushes. Changes how fast you progress when things go well.
+   NEVER changes the safety rules - see coachFor rules 2 to 5 and 7. */
+const COACH_LEVELS = {
+  steady:   {id:"steady",   name:"Steady",   bumpAfter:3, stallSessions:4, stallDays:21, pushOnSoSo:false, repGoal:"bottom",
+             restFactor:1.33, sub:"Confirm twice over before adding weight \u00b7 longer rests"},
+  balanced: {id:"balanced", name:"Balanced", bumpAfter:2, stallSessions:3, stallDays:14, pushOnSoSo:false, repGoal:"bottom",
+             restFactor:1.0,  sub:"Add weight once you have earned it \u00b7 standard rests"},
+  push:     {id:"push",     name:"Push",     bumpAfter:1, stallSessions:2, stallDays:10, pushOnSoSo:true,  repGoal:"top",
+             restFactor:0.67, sub:"Progress the moment you earn it \u00b7 short rests"}
+};
+function coachLevel(){
+  return COACH_LEVELS[(state && state.coachLevel) || "balanced"] || COACH_LEVELS.balanced;
 }
-/* Rep range: base target from suggestion, top of range = base + 2 */
+function coachSay(lvl, v){ return v[lvl] || v.balanced; }
+
+
+/* ---------- How taxing is this movement? ----------
+   The NSCA's own classification, because the criteria are objective rather than
+   judgement calls:
+     CORE exercise      - two or more primary joints, large muscle area
+     STRUCTURAL         - a core exercise that loads the spine (squat, deadlift,
+                          standing press, carries, bent-over rows)
+     ASSISTANCE         - one primary joint, smaller muscle area (curls, raises)
+   Rest bands come from NSCA (strength 2-5 min, hypertrophy 30-90 s) tempered by
+   Schoenfeld 2016, which showed 3-minute rests beat 1-minute rests for BOTH
+   growth and strength - the old 30-90 s hypertrophy number is too short.
+   The aggressiveness setting moves you WITHIN a band. It can never take you
+   below the floor: under-resting a heavy compound does not make you tougher,
+   it makes the next set weaker, and Coach would then read that as failing. */
+const EX_SPINE = /squat|deadlift|rdl|romanian|lunge|step-up|step-down|good morning|clean|snatch|swing|carr|farmer walk|farmer hold|get-up|zercher|rack pull|pendlay row|yates row|meadows row|t-bar row|bent-over|ruck|sumo|overhead press|z press|push press|push jerk|jerk|thruster|bradford|stiff-leg|deficit rdl|b-stance|curtsy|cossack|pistol|box jump|broad jump|tuck jump|jumping lunge|bound|burpee|back extension|hyperextension|glute-ham|sled/i;
+const EX_NOT_SPINE = /sissy|wall sit|jump squat|squat jump|seated/i;
+const EX_SINGLE = /curl|raise|extension|fly|flye|pressdown|kickback|shrug|pullover|crossover|around-the-world|pull-apart|snow angel|leg curl|leg extension|calf|tibialis|windmill|halo|svend|y raise|face pull|reverse fly|delt|straight-arm|21s|isometric/i;
+const EX_MULTI = /press|row|pull-up|chin-up|pulldown|dip|push-up|pike|inverted|handstand|wall walk|rollout|renegade|thruster|leg press/i;
+const EX_HOLD = /plank|hold|hang|l-sit|superman|dead bug|bird dog|wall sit/i;
+const EX_BIGM = ["Quads & Glutes", "Hamstrings", "Back", "Chest"];
+/* seconds: [floor, ceiling] and where each level sits inside the band */
+const REST_BANDS = {
+  structural:   {lo:120, hi:180, push:120, balanced:150, steady:180},
+  core:         {lo: 90, hi:120, push: 90, balanced:105, steady:120},
+  assistance:   {lo: 60, hi: 90, push: 60, balanced: 75, steady: 90},
+  light:        {lo: 45, hi: 60, push: 45, balanced: 60, steady: 60},
+  conditioning: {lo: 60, hi:120, push: 60, balanced: 90, steady:120}
+};
+const BAND_OPTS = [
+  ["structural",   "Structural \u00b7 loads the spine \u00b7 2-3 min"],
+  ["core",         "Core \u00b7 multi-joint \u00b7 1.5-2 min"],
+  ["assistance",   "Assistance \u00b7 single joint \u00b7 1-1.5 min"],
+  ["light",        "Light \u00b7 holds and ab work \u00b7 45-60 sec"],
+  ["conditioning", "Conditioning \u00b7 1-2 min"]
+];
+const BAND_LABEL = {};
+BAND_OPTS.forEach(function(x){ BAND_LABEL[x[0]] = x[1]; });
+function exBand(ex){
+  const n = origName(ex.n);
+  if (state && state.band && state.band[ex.n]) return state.band[ex.n];
+  const g = ex.g || findGroup(ex.n);
+  const mode = trackMode(ex.n, g);
+  if (mode === "min") return "conditioning";
+  if (g === "Abs & Core" && !EX_SPINE.test(n)) return "light";
+  if (EX_HOLD.test(n) && !EX_SPINE.test(n)) return "light";
+  if (EX_SINGLE.test(n) && !EX_SPINE.test(n)) return "assistance";
+  if (EX_SPINE.test(n) && !EX_NOT_SPINE.test(n)) return "structural";
+  if (/hip thrust|glute bridge|bridge/i.test(n)) return "core";
+  if (EX_MULTI.test(n) && (EX_BIGM.indexOf(g) !== -1 ||
+      /press|dip|pull-up|chin-up|push-up|row|pulldown|thruster/i.test(n))) return "core";
+  if (EX_MULTI.test(n)) return "assistance";
+  return EX_BIGM.indexOf(g) !== -1 ? "core" : "assistance";
+}
+/* Timers land on quarter minutes - 2:00, 1:45, never 2:05. */
+function round15(sec){ return Math.max(15, Math.round(sec / 15) * 15); }
+
+/* Weight jump: +5 lbs, +10 once you are lifting 75 or more. No equipment cases. */
+function increment(ex, w){
+  if (trackMode(ex.n, ex.g) !== "wr") return 0;
+  const cur = Number(w);
+  return (isFinite(cur) && cur >= COACH.BUMP_THRESHOLD) ? COACH.BUMP_LARGE : COACH.BUMP_SMALL;
+}
+/* Rep range: base target from the suggestion table, top of range = base + 2 */
 function repRange(ex){
   const base = Number(suggestFor(ex).r) || 10;
   return {bottom: base, top: base + 2};
 }
-/* Full history of an exercise, oldest → newest: best set + volume per session */
+/* Ease a weight by about 10%, rounded down to a 5 */
+function easeW(w){
+  const n = Number(w) || 0;
+  if (n <= 0) return n;
+  return Math.max(5, Math.floor(n * COACH.BACKOFF_PCT / 5) * 5);
+}
+/* Does this session count for coaching? Not an easy day, not a rest-day pass,
+   not a deload week. Everything else in the app still sees the full history. */
+function coachReal(h){ return !!h && !!h.ex && !h.light && !h.shield && !h.dl; }
+function coachSoft(f){ return !!f && (f.soft || (f.issues || []).indexOf("Easing back in") !== -1); }
+function inDeload(){
+  const p = state && state.program;
+  if (!p) return false;
+  return String(p.id || "") === "deload" || /deload/i.test(String(p.name || ""));
+}
+/* Per-exercise history coaching is allowed to read, oldest -> newest */
+function coachHistory(name){
+  const out = [];
+  if (!state || !state.history) return out;
+  for (let i = state.history.length - 1; i >= 0; i--){
+    const h = state.history[i];
+    if (!coachReal(h)) continue;
+    const f = h.ex.find(e => e.n === name);
+    if (!f || !f.sets.length) continue;
+    let bw = 0, br = 0, vol = 0, minR = Infinity, worst = 0;
+    for (const s of f.sets){
+      const w = Number(s.w) || 0, r = Number(s.r) || 0;
+      if (w > bw || (w === bw && r > br)){ bw = w; br = r; }
+      vol += w * r;
+      if (r < minR) minR = r;
+      if (s.sf && (!worst || s.sf < worst)) worst = s.sf;
+    }
+    if (!worst && f.form) worst = f.form;
+    if (coachSoft(f)) continue;        /* you told us you were easing back in */
+    out.push({date: h.date, w: bw, r: br, vol: vol, minR: (minR === Infinity ? 0 : minR),
+              n: f.sets.length, form: f.form, issues: f.issues || [],
+              worstSf: worst, dirty: (worst > 0 && worst <= 3),
+              rating: h.rating, flags: h.flags || []});
+  }
+  return out;
+}
+/* Full history including easy days - charts and PRs still want everything */
 function exHistory(name){
   const out = [];
   for (let i = state.history.length - 1; i >= 0; i--){
@@ -1096,31 +1296,463 @@ function exHistory(name){
   }
   return out;
 }
-/* Progression check: did every set last session hit the top of the rep range? */
-function earnedBump(ex){
-  const prev = lastPerf(ex.n);
-  if (!prev || !prev.length) return null;
-  const {top, bottom} = repRange(ex);
-  const inc = increment(ex);
-  const allTop = prev.every(s => (Number(s.r)||0) >= top);
-  if (!allTop) return null;
-  if (inc > 0 && Number(prev[0].w) > 0){
-    return {type:"weight", newW: Number(prev[0].w) + inc, newR: bottom,
-            note:"↑ +" + inc + " lbs — you earned it"};
+/* How many of the most recent sessions had EVERY set at the top of the range */
+function cleanRun(hist, top){
+  let run = 0;
+  for (let i = hist.length - 1; i >= 0; i--){
+    if (hist[i].minR >= top && !hist[i].dirty) run++; else break;
   }
-  const m2 = trackMode(ex.n, ex.g);
-  const addU = m2 === "min" ? "min" : m2 === "sec" ? "sec" : "rep";
-  const addN = (m2 === "min" || m2 === "sec") ? 5 : 1;
-  return {type:"reps", addR: addN,
-          note:" +" + addN + " " + addU + " — you earned it"};
+  return run;
 }
-/* Stall: best weight (or reps) hasn't improved across last 3 sessions */
-function stalled(name){
-  const hist = exHistory(name);
-  if (hist.length < 3) return false;
-  const [a,b,c] = hist.slice(-3);
-  const metric = x => x.w > 0 ? x.w * 1000 + x.r : x.r;   /* weight first, reps tiebreak */
-  return metric(c) <= metric(b) && metric(b) <= metric(a);
+/* Stuck = no improvement across N real sessions AND at least M days elapsed.
+   More reps at the same weight counts as improvement. */
+function stuckState(hist, L){
+  if (hist.length < L.stallSessions) return null;
+  const win = hist.slice(-L.stallSessions);
+  const score = x => (x.w > 0 ? x.w * 1000 + x.r : x.r);
+  for (let i = 1; i < win.length; i++) if (score(win[i]) > score(win[i-1])) return null;
+  const d0 = new Date(win[0].date + "T12:00:00"), d1 = new Date(win[win.length-1].date + "T12:00:00");
+  const days = Math.round((d1 - d0) / 86400000);
+  if (days < L.stallDays) return null;
+  return {days: days, n: win.length, w: win[win.length-1].w, r: win[win.length-1].r};
+}
+/* Actually failing: reps going backwards at the same weight, or form falling apart */
+function failingNow(hist){
+  const n = hist.length;
+  if (!n) return false;
+  const a = hist[n-1];
+  if (a.form && a.form <= 2) return true;
+  if (a.worstSf && a.worstSf <= 2) return true;
+  if ((a.issues || []).includes("Too much weight")) return true;
+  if (n >= 2 && a.w <= hist[n-2].w && a.minR < hist[n-2].minR) return true;
+  return false;
+}
+/* Kept for anything still asking the old question */
+function stalled(name){ return !!stuckState(coachHistory(name), coachLevel()); }
+
+/* The engine. Returns the numbers AND why, every time.
+   shape: flat = prescribe these numbers on every set
+          reps = keep each set's weight, change the rep target
+          replay = repeat exactly what you did last time */
+function coachFor(ex){
+  const L = coachLevel(), lvl = L.id;
+  const hist = coachHistory(ex.n);
+  const range = repRange(ex);
+  const mode = trackMode(ex.n, ex.g);
+  const unit = mode === "min" ? "min" : mode === "sec" ? "sec" : "reps";
+  const mk = (w, r, verdict, reason, speak, shape) =>
+    ({w: (w === "" || w === null || w === undefined) ? "" : w, r: r,
+      verdict: verdict, reason: reason, speak: speak || null, shape: shape || "flat"});
+
+  const last = hist.length ? hist[hist.length - 1] : null;
+
+  /* 1. Never logged this before */
+  if (!last){
+    const s = suggestFor(ex);
+    return mk(s.w === "" ? "" : s.w, s.r, "start",
+      "First time logging this — starting from the book.", null, "flat");
+  }
+  const curW = last.w, curR = last.r;
+  const atW = curW > 0 ? " at " + curW + " lbs" : "";
+
+  /* ---- Safety rules. Identical at every aggressiveness level. ---- */
+
+  /* 2. Joint pain flagged here last time */
+  if ((last.issues || []).includes("Joint pain")){
+    return mk(curW, range.bottom, "pain",
+      "You flagged joint pain here last time. Same weight, fewer reps — if it still bites, swap it.",
+      "coach-pain", "flat");
+  }
+  /* 3. Deload week */
+  if (inDeload()){
+    return mk(easeW(curW), range.top, "deload",
+      "Deload week — lighter on purpose. Fatigue is hiding your fitness.",
+      "coach-deload", "flat");
+  }
+  /* 4. Readiness called low today */
+  if (typeof readinessToday === "function" && readinessToday() === "low"){
+    return mk(curW, curR, "hold-readiness",
+      "You called readiness low. Holding" + atW + " — recovery beats a PR today.",
+      "coach-hold-ready", "replay");
+  }
+  /* 5. Last time here was rough */
+  const roughIssue = last.form && last.form <= 3 &&
+    ((last.issues || []).includes("Too much weight") || (last.issues || []).includes("Too fatigued"));
+  /* A set you rated 2 out of 5 is you telling us it was bad. That is a safety
+     signal in its own right - it does not have to wait for a plateau to count. */
+  const roughSet = last.worstSf && last.worstSf <= COACH.ROUGH_RATING;
+  const roughRate = last.rating && last.rating <= COACH.ROUGH_RATING && !L.pushOnSoSo;
+  if (roughIssue || roughSet || roughRate){
+    const why = roughIssue ? "you flagged the weight"
+      : roughSet ? "you rated a set " + last.worstSf + "★"
+      : "you rated it " + last.rating + "★";
+    const nw = easeW(curW);
+    if (nw < curW)
+      return mk(nw, range.bottom, "back-off",
+        "Last time here was rough — " + why + ". Down to " + nw + " lbs, earn it back.",
+        "coach-backoff", "flat");
+    return mk(curW, Math.max(range.bottom, curR - 2), "back-off",
+      "Last time here was rough — " + why + ". Same weight, easing the reps.",
+      "coach-backoff", "flat");
+  }
+
+  /* ---- Progression. This is what the aggressiveness setting moves. ---- */
+
+  const inc = increment(ex, curW);
+  const run = cleanRun(hist, range.top);
+
+  /* 6. Earned the jump */
+  if (run >= L.bumpAfter){
+    if (inc > 0 && curW > 0){
+      const nw = curW + inc;
+      return mk(nw, range.bottom, "up", coachSay(lvl, {
+        steady:   run + " clean sessions at " + range.top + " " + unit + ". Nice work — up to " + nw + " lbs.",
+        balanced: run + " clean sessions at " + range.top + " " + unit + ". +" + inc + " lbs — you earned it.",
+        push:     "Earned it. " + nw + " lbs — go."
+      }), "coach-earned", "flat");
+    }
+    const addN = (mode === "min" || mode === "sec") ? 5 : 1;
+    return mk(curW, curR + addN, "up",
+      "You cleared " + curR + " " + unit + " cleanly. +" + addN + " " + unit + " — you earned it.",
+      "coach-earned", "flat");
+  }
+
+  const stuck = stuckState(hist, L);
+
+  /* 7. Stuck AND failing — the only plateau answer that takes weight off */
+  if (stuck && failingNow(hist)){
+    const nw = easeW(curW);
+    if (nw < curW)
+      return mk(nw, range.bottom, "stuck-failing",
+        "Stuck at " + curW + " lbs for " + stuck.n + " sessions and the reps are slipping. Down to " + nw + " to rebuild.",
+        "coach-backoff", "flat");
+    return mk(curW, range.bottom, "stuck-failing",
+      "Reps are slipping here. Back to " + range.bottom + " " + unit + " and build again.",
+      "coach-backoff", "flat");
+  }
+  /* 8. Stuck but finishing every set — you were never asked for more */
+  if (stuck && curR < range.top){
+    const goal = L.repGoal === "top" ? range.top : Math.min(range.top, Math.max(range.bottom, curR + 1));
+    return mk(curW, goal, "stuck-reps", coachSay(lvl, {
+      steady:   stuck.n + " sessions" + atW + " × " + curR + ". When you're ready, aim for " + goal + ".",
+      balanced: stuck.n + " sessions" + atW + " × " + curR + " over " + stuck.days + " days. Target is " + goal + " — get there and the weight goes up.",
+      push:     "You've left " + (range.top - curR) + " " + unit + " on the table for " + stuck.n + " sessions. Give me " + goal + "."
+    }), "coach-more-reps", "reps");
+  }
+  /* 9. Stuck at the top of the range — take the jump */
+  if (stuck && inc > 0 && curW > 0){
+    const nw = curW + inc;
+    return mk(nw, range.bottom, "stuck-weight",
+      "Top of the range and holding there. " + nw + " lbs — take it.", "coach-earned", "flat");
+  }
+  /* 10. Best set is there but the last one is not */
+  if (last.minR < range.top && curR >= range.top){
+    return mk(curW, range.top, "finish",
+      "Best set hit " + range.top + ", last one came in at " + last.minR + ". All sets at " + range.top + " and the weight goes up.",
+      null, "reps");
+  }
+  /* 11. Climbing inside the range */
+  if (curR < range.top){
+    const goal = L.repGoal === "top" ? range.top : Math.min(range.top, curR + 1);
+    return mk(curW, goal, "build", coachSay(lvl, {
+      steady:   "Building. " + goal + " " + unit + " when it feels right.",
+      balanced: goal + " " + unit + " this time — " + range.top + " and the weight goes up.",
+      push:     "Give me " + goal + ". " + range.top + " earns the plate."
+    }), null, "reps");
+  }
+  /* 12. Nothing to change */
+  return mk(curW, curR, "steady",
+    "Same as last time" + (curW > 0 ? ": " + curW + " lbs × " + curR : ": " + curR + " " + unit) + ".",
+    null, "replay");
+}
+/* New voice keys wired here: coach-beat, coach-beat-big. Generate the mp3s in
+   voice-pack-maker.html; until they exist the pack stays silent on them. */
+function coachBadgeClass(v){
+  if (v === "pain" || v === "back-off" || v === "stuck-failing") return "stall";
+  if (v === "up" || v === "stuck-weight") return "up";
+  if (v === "deload" || v === "hold-readiness") return "plan";
+  return "";
+}
+
+
+/* Miss thresholds scale with what was asked for: 15% of the target is a slight
+   miss, 30% is a collapse. At 12 reps that is 2 and 4; at 5 reps, 1 and 2;
+   at a 30 second hold, 5 and 9. */
+function setThresholds(target){
+  const t = Number(target) || 0;
+  return {miss: Math.max(1, Math.round(t * 0.15)), collapse: Math.max(2, Math.round(t * 0.30))};
+}
+/* There is no mute. A coach in the room does not stop watching because you
+   did not answer him. Ignoring a prompt costs nothing and changes nothing -
+   it never buys silence. */
+function askAllowed(){ return true; }
+function shouldAskForm(ex, j){
+  const s = ex.sets[j];
+  if (s.sf) return false;                                  /* this set is already answered */
+  const p = j > 0 ? ex.sets[j-1] : null;
+  /* The only thing we do not re-ask: an identical set you already told us was
+     clean. Asking again would just collect the same answer twice. Anything
+     else - including every set you skipped - gets asked. */
+  if (p && p.sf && p.sf >= 4 && String(p.w) === String(s.w) && String(p.r) === String(s.r)) return false;
+  return true;
+}
+const WATCH_CHIPS = ["Feeling weak today", "Joint pain", "Easing back in", "Typo - fix it"];
+/* A coach notices when you quietly put a lighter weight on the bar. This does
+   not wait for a plateau and it is not optional - it speaks the moment it sees it. */
+function coachWatch(ex, j){
+  const s = ex.sets[j];
+  if (s.why || s.watched) return null;                  /* already raised on this set */
+  if (j > 0 && ex.sets.slice(0, j).some(x => x.watched)) return null;  /* once per exercise */
+  const hist = coachHistory(ex.n);
+  if (!hist.length) return null;
+  const last = hist[hist.length - 1];
+  const mode = trackMode(ex.n, ex.g);
+  if (mode === "min") return null;                      /* cardio minutes are not a load */
+  const w = Number(s.w) || 0;
+
+  /* Weighted: the weight is the load, so that is what we watch. */
+  if (mode === "wr" && w > 0 && last.w > 0){
+    const gap = last.w - w;
+    if (gap <= 0) return null;
+    const inc = increment(ex, last.w);
+    if (gap < inc || gap / last.w < 0.10) return null;  /* a small dip is not a story */
+    return {kind: "drop", unit: "lbs", j: j, was: last.w, now: w,
+            pct: Math.round(gap / last.w * 100)};
+  }
+  /* Bodyweight, bands and holds: there is no weight, so the reps ARE the load
+     and a drop there is the same story. This is the case the weight watch misses. */
+  if (mode !== "wr" || w <= 0){
+    const r = Number(s.r) || 0;
+    if (!r || !last.r) return null;
+    const gap = last.r - r;
+    if (gap <= 0) return null;
+    if (gap < Math.max(2, Math.round(last.r * 0.10))) return null;
+    return {kind: "drop", unit: (mode === "sec" ? "sec" : "reps"), j: j, was: last.r, now: r,
+            pct: Math.round(gap / last.r * 100)};
+  }
+  return null;
+}
+function flagDrop(i, j, x){
+  const ex = state.session.list[i]; if (!ex) return;
+  const s = ex.sets[j]; if (!s) return;
+  s.why = x;
+  s.watched = true;
+  if (x === "Typo - fix it"){
+    s.done = false; s.why = undefined;
+    const weighted = trackMode(ex.n, ex.g) === "wr" && Number(s.w) > 0;
+    if (weighted) s.w = ""; else s.r = "";
+    toast(weighted ? "Fixed — put the real weight in" : "Fixed — put the real number in", false);
+  } else if (x === "Joint pain"){
+    s.si = (s.si || []).concat(s.si && s.si.indexOf("Joint pain") !== -1 ? [] : ["Joint pain"]);
+    ex.noPush = true;
+    toast("Noted — nothing goes up on this one today", false);
+  } else if (x === "Easing back in"){
+    ex.soft = true;                                      /* do not read this as a stall */
+    toast("Got it — this one will not count against you", false);
+  } else {
+    toast("Noted", false);
+  }
+  state.session.ask = null;
+  save(); render();
+}
+
+function clearAsk(){
+  if (state.session) state.session.ask = null;
+}
+/* An unrated set counts as clean. Skipping the prompts must never freeze your progress. */
+function rateSet(i, j, v){
+  const ex = state.session.list[i]; if (!ex) return;
+  const s = ex.sets[j]; if (!s) return;
+  s.sf = v;
+  if (v > 3){ s.si = []; state.session.ask = null; }
+  else { state.session.ask = {kind:"rate", i: i, j: j}; }
+  save(); render();
+}
+function flagSet(i, j, x){
+  const ex = state.session.list[i]; if (!ex) return;
+  const s = ex.sets[j]; if (!s) return;
+  s.si = s.si || [];
+  const k = s.si.indexOf(x);
+  if (k === -1) s.si.push(x); else { s.si.splice(k, 1); save(); render(); return; }
+  const rest = ex.sets.filter((y, m) => m > j && !y.done && !y.edit);
+  const range = repRange(ex);
+  const gotW = Number(s.w) || 0;
+  if (x === "Too much weight" && gotW > 0){
+    const nw = easeW(gotW);
+    if (nw < gotW){ rest.forEach(y => { y.w = String(nw); y.r = String(range.bottom); y.tw = String(nw); y.tr = String(range.bottom); });
+      toast("Rest of the sets down to " + nw + " lbs", false); }
+  } else if (x === "Too many reps"){
+    rest.forEach(y => { y.r = String(range.bottom); y.tr = String(range.bottom); });
+    toast("Rep targets trimmed to " + range.bottom, false);
+  } else if (x === "Joint pain"){
+    ex.noPush = true;
+    rest.forEach(y => { y.r = String(range.bottom); y.tr = String(range.bottom); });
+    toast("Noted — nothing goes up on this one today", false);
+  }
+  save(); render();
+}
+function acceptOffer(i, j){
+  const ex = state.session.list[i]; if (!ex) return;
+  const a = state.session.ask;
+  const nw = a && a.nw ? a.nw : easeW(Number(ex.sets[j].w) || 0);
+  const range = repRange(ex);
+  ex.sets.forEach((y, m) => { if (m > j && !y.done && !y.edit){
+    y.w = String(nw); y.tw = String(nw);
+    y.r = String(range.bottom); y.tr = String(range.bottom);
+  }});
+  ex.offerDone = true;
+  state.session.ask = {kind:"rate", i: i, j: j};   /* still worth knowing how it felt */
+  save(); render();
+}
+function declineOffer(i, j){
+  const ex = state.session.list[i]; if (ex) ex.offerDone = true;
+  state.session.ask = null;
+  save(); render();
+}
+/* Build one history entry for an exercise, rolling per-set ratings up:
+   the worst set governs the form score, and every flag is kept. */
+function exRecord(e){
+  const sets = e.sets.filter(x => x.done).map(x => {
+    const o = {w: Number(x.w) || 0, r: x.r};
+    if (x.sf) o.sf = Number(x.sf);
+    if (x.si && x.si.length) o.si = x.si.slice();
+    if (x.why) o.why = x.why;
+    return o;
+  });
+  let worst = 0;
+  const issues = (e.issues || []).slice();
+  for (const s of sets){
+    if (s.sf && (!worst || s.sf < worst)) worst = s.sf;
+    for (const x of (s.si || [])) if (issues.indexOf(x) === -1) issues.push(x);
+  }
+  if (e.soft && issues.indexOf("Easing back in") === -1) issues.push("Easing back in");
+  return {n: e.n, g: e.g, form: e.form || worst || undefined, soft: e.soft || undefined,
+          issues: issues.length ? issues : undefined, sets: sets};
+}
+function askHTML(a, ex){
+  const s = ex.sets[a.j];
+  if (!s) return "";
+  if (a.kind === "drop"){
+    const u = a.unit || "lbs";
+    const head = u === "lbs"
+      ? "You were at " + a.was + " lbs here last time. This is " + a.now + " — " + a.pct + "% lighter."
+      : "You did " + a.was + " " + u + " here last time. This is " + a.now + " — " + a.pct + "% fewer.";
+    return '<div class="ask-card watch"><div class="ask-label">' + head + ' What is going on?</div>' +
+      '<div class="ask-chips">' + WATCH_CHIPS.map(function(x){
+        return '<button class="drop-chip" data-i="' + a.i + '" data-j="' + a.j +
+               '" data-x="' + x + '">' + x + '</button>'; }).join("") + '</div></div>';
+  }
+  if (a.kind === "offer"){
+    return '<div class="ask-card"><div class="ask-label">' + s.r + ' of ' + s.tr +
+      ' — struggled? Drop to ' + a.nw + ' lbs and get the form right.</div>' +
+      '<div class="ask-btns"><button class="ask-yes" data-i="' + a.i + '" data-j="' + a.j + '">Drop it</button>' +
+      '<button class="ask-no" data-i="' + a.i + '" data-j="' + a.j + '">I\'m fine</button></div></div>';
+  }
+  const r = Number(s.sf) || 0;
+  let h = '<div class="ask-card"><div class="ask-label">Set ' + (a.j + 1) + ' — how did that feel?</div>' +
+    '<div class="ask-stars">' + [1,2,3,4,5].map(function(v){
+      return '<button class="ask-star' + (r && v <= r ? " on" : "") + '" data-i="' + a.i +
+             '" data-j="' + a.j + '" data-v="' + v + '">★</button>'; }).join("") + '</div>';
+  if (r && r <= 3){
+    h += '<div class="ask-chips">' + FORM_ISSUES.map(function(x){
+      return '<button class="ask-chip' + ((s.si || []).indexOf(x) !== -1 ? " on" : "") + '" data-i="' + a.i +
+             '" data-j="' + a.j + '" data-x="' + x + '">' + x + '</button>'; }).join("") + '</div>';
+  }
+  return h + '</div>';
+}
+
+/* ---------- Between sets: react now, not next week ----------
+   Reads what you just did against what was asked. Only ever touches sets you
+   have not done and have not typed into yourself. */
+function coachSet(i, j){
+  const ex = state.session.list[i];
+  if (!ex) return null;
+  const set = ex.sets[j];
+  if (!set) return null;
+  const tr = Number(set.tr) || 0;
+  const got = Number(set.r) || 0;
+  const gotW = Number(set.w) || 0;
+  if (!tr || !got) return null;
+  const mode = trackMode(ex.n, ex.g);
+  if (mode === "min") return null;             /* cardio minutes are not a rep target */
+  const rest = ex.sets.filter((x, k) => k > j && !x.done && !x.edit);
+  const range = repRange(ex);
+  const th = setThresholds(tr);
+  const miss = tr - got;
+
+  /* Did the weight quietly go down? Say so before anything else. */
+  const drop = coachWatch(ex, j);
+  if (drop){ ex.sets[j].watched = true; return {ask: Object.assign(drop, {i: i}), speak: null}; }
+
+  /* You beat what was asked. Say so. Measured against the card's own target, so
+     simply taking a prescribed jump never gets a hollow well done. */
+  const tw = Number(set.tw) || 0;
+  const overW = (tw > 0 && gotW > tw) ? gotW - tw : 0;
+  const overR = got > tr ? got - tr : 0;
+  if ((overW || overR) && !set.praised){
+    const incB = increment(ex, tw || gotW);
+    const bigW = overW > 0 && (overW >= incB * 2 || overW / tw >= 0.20);
+    const bigR = overR >= th.collapse;
+    if (bigW || bigR){
+      set.praised = true;
+      /* This half is a safety message: identical wording at every level. */
+      const what = bigW ? (gotW + " lbs when the card said " + tw)
+                        : (got + " when I asked for " + tr);
+      return {msg: what + " — strong. Keep the form honest though; don't chase the number.",
+              speak: "coach-beat-big", ask: {kind:"rate", i: i, j: j}};
+    }
+    if (overW > 0 || overR >= th.miss){
+      set.praised = true;
+      const what = overW > 0 ? (gotW + " lbs when the card said " + tw)
+                             : (got + " when I asked for " + tr);
+      return {msg: what + ". That's the way.", speak: "coach-beat",
+              ask: shouldAskForm(ex, j) ? {kind:"rate", i: i, j: j} : null};
+    }
+  }
+
+  /* Collapse, or under the bottom of the range: the weight is the problem.
+     Offered, never imposed - and only once per exercise per session. */
+  if (rest.length && gotW > 0 && !ex.offerDone &&
+      (miss >= th.collapse || (got < range.bottom && miss >= th.miss))){
+    const nw = easeW(gotW);
+    if (nw < gotW) return {ask: {kind:"offer", i: i, j: j, nw: nw}, speak: "coach-backoff"};
+  }
+  /* Short but still inside the range: the reps are the problem. Ease what is left,
+     and say it against your own history, not just against today's target. */
+  if (rest.length && miss >= th.miss && !(j === 0 && miss < th.collapse)){
+    const goal = Math.max(range.bottom, got);
+    let changed = false;
+    rest.forEach(x => { if (String(x.r) !== String(goal)){ x.r = String(goal); x.tr = String(goal); changed = true; } });
+    if (changed){
+      const h = coachHistory(ex.n);
+      const was = h.length ? h[h.length - 1] : null;
+      const ctx = (was && was.r > got && Number(ex.sets[j].w || 0) >= (was.w || 0))
+        ? " You did " + was.r + " here last time." : "";
+      return {msg: got + " of " + tr + "." + ctx + " Easing the rest to " + goal + ".",
+              ask: shouldAskForm(ex, j) ? {kind:"rate", i: i, j: j} : null};
+    }
+  }
+  /* Cruising: two or more sets clean at the top of the range. Nudge the last one. */
+  if (rest.length && gotW > 0 && got >= range.top && got >= tr && j >= 1 && !ex.noPush){
+    const done = ex.sets.filter(x => x.done);
+    const tail = rest[rest.length - 1];
+    if (done.length >= 2 && done.every(x => (Number(x.r) || 0) >= range.top)
+        && done.every(x => !x.sf || x.sf >= 4) && !tail.nudged){
+      const inc = increment(ex, gotW);
+      if (inc > 0){
+        tail.w = String(gotW + inc); tail.tw = String(gotW + inc);
+        tail.r = String(range.bottom); tail.tr = String(range.bottom);
+        tail.nudged = true;
+        /* No forced prompt here: the nudge is us being generous, and the next
+           set's reps will tell us how it landed without anyone tapping. */
+        return {msg: "That looked easy — " + (gotW + inc) + " lbs on the last set.",
+                ask: shouldAskForm(ex, j) ? {kind:"rate", i: i, j: j} : null};
+      }
+    }
+  }
+  /* Hit the target: nothing to change, but worth knowing how it felt. */
+  if (miss <= 0 && shouldAskForm(ex, j)) return {ask: {kind:"rate", i: i, j: j}};
+  return null;
 }
 
 const demoURL = n => {
@@ -1143,7 +1775,7 @@ const DAYS = [
     {g:"Quads & Glutes", n:"Goblet squat"},{g:"Hamstrings", n:"Romanian deadlift"},
     {g:"Quads & Glutes", n:"Walking lunges"},{g:"Hamstrings", n:"Swings"},
     {g:"Abs & Core", n:"Plank"}]},
-  {id:"cardio", name:"Cardio / Rest", defaults:[{g:"Cardio", n:"Peloton endurance ride"}]},
+  {id:"cardio", name:"Cardio / Rest", defaults:[{g:"Cardio", n:"Bike ride"}]},
 ];
 
 /* ---------- Programs: day types, educational catalog, template generation ---------- */
@@ -1223,25 +1855,48 @@ const PROGRAMS = [
   pattern:["recovery","recovery","recovery","recovery","recovery","recovery","recovery"], flavor:null}
 ];
 
+/* Each slot is [muscle group, direction, minimum movement class].
+   Direction stops a rear-delt fly landing on push day. The class requirement
+   puts the heavy compound first, while you are fresh, instead of a machine. */
 const DAY_RECIPES = {
-  upper: ["Chest","Back","Shoulders","Chest","Biceps","Triceps"],
-  lower: ["Quads & Glutes","Hamstrings","Quads & Glutes","Hamstrings","Calves","Abs & Core"],
-  fullbody: ["Chest","Back","Quads & Glutes","Shoulders","Hamstrings","Abs & Core"],
+  upper: [["Chest","Push","core"],["Back","Pull","core"],["Shoulders","Push","core"],
+          ["Back","Pull","core"],["Biceps","Pull",null],["Triceps","Push",null]],
+  lower: [["Quads & Glutes",null,"structural"],["Hamstrings",null,"structural"],
+          ["Quads & Glutes",null,"core"],["Hamstrings",null,null],
+          ["Calves",null,null],["Abs & Core",null,null]],
+  fullbody: [["Chest","Push","core"],["Back","Pull","core"],["Quads & Glutes",null,"structural"],
+             ["Shoulders","Push","core"],["Hamstrings",null,"structural"],["Abs & Core",null,null]],
   /* rebuild recipes for the template days (regenerate button) */
-  push: ["Chest","Shoulders","Chest","Shoulders","Triceps"],
-  pull: ["Back","Back","Shoulders","Biceps","Biceps"],
-  legs: ["Quads & Glutes","Hamstrings","Quads & Glutes","Calves","Abs & Core"]
+  push: [["Chest","Push","core"],["Shoulders","Push","core"],["Chest","Push",null],
+         ["Shoulders","Push",null],["Triceps","Push",null]],
+  pull: [["Back","Pull","structural"],["Back","Pull","core"],["Back","Pull",null],
+         ["Shoulders","Pull",null],["Biceps","Pull",null]],
+  legs: [["Quads & Glutes",null,"structural"],["Hamstrings",null,"structural"],
+         ["Quads & Glutes",null,"core"],["Calves",null,null],["Abs & Core",null,null]]
 };
+const CLASS_RANK = {structural:3, core:2, assistance:1, light:0, conditioning:0};
 const COND_FLAVORS = {
   hiit: ["Treadmill sprints","Bike sprint intervals","EMOM bodyweight circuit","Kettlebell swing intervals","Burpees"],
-  z2: ["Zone 2 bike ride","12-3-30 treadmill","Incline treadmill hike","Cross trainer steady state","Peloton endurance ride"],
+  z2: ["Zone 2 bike ride","12-3-30 treadmill","Incline treadmill hike","Cross trainer steady state","Bike ride"],
   kb: ["Kettlebell swing intervals","Kettlebell complex"],
   walk: ["12-3-30 treadmill"],
-  mixed: ["Peloton HIIT ride","Treadmill incline intervals","Cross trainer intervals","Zone 2 bike ride"]
+  mixed: ["HIIT bike ride","Treadmill incline intervals","Cross trainer intervals","Zone 2 bike ride"]
 };
-function pickForGroup(g, exclude, rank){
-  const names = (getLib()[g] || []).filter(n => isOn(n) && !exclude.includes(n));
+function pickForGroup(g, exclude, rank, want){
+  let names = (getLib()[g] || []).filter(n => isOn(n) && !exclude.includes(n));
   if (!names.length) return null;
+  want = want || {};
+  /* Direction first: a pull day must not hand you an overhead press. */
+  if (want.force){
+    const dir = names.filter(n => dayTags(n).includes(want.force));
+    if (dir.length) names = dir;
+  }
+  /* Then movement class: lead with the compound while you are fresh. */
+  if (want.klass){
+    const need = CLASS_RANK[want.klass] || 0;
+    const heavy = names.filter(n => (CLASS_RANK[exBand({n: n, g: g})] || 0) >= need);
+    if (heavy.length) names = heavy;
+  }
   const score = n => (lastPerf(n) ? 2 : 0) + (Object.values(state.plan).flat().some(e => e.n === n) ? 1 : 0);
   const ranked = [...names].sort((a, b) => score(b) - score(a));
   return ranked[(rank || 0) % ranked.length];
@@ -1258,8 +1913,9 @@ function genDayList(type, flavor, forceRecipe){
   const nonce = dayNonce(type);
   if (DAY_RECIPES[type] && (forceRecipe || !state.plan[type])){
     const out = [], used = [];
-    DAY_RECIPES[type].forEach((g, i) => {
-      const n = pickForGroup(g, used, nonce ? nonce + i : 0);
+    DAY_RECIPES[type].forEach((slot, i) => {
+      const g = slot[0], want = {force: slot[1], klass: slot[2]};
+      const n = pickForGroup(g, used, nonce ? nonce + i : 0, want);
       if (n){ out.push({g, n}); used.push(n); }
     });
     return out;
@@ -1910,6 +2566,14 @@ function openSettings(){
     <div class="set-main"><div class="set-name">Sound</div>
     <div class="set-sub">${soundOnNow ? "Chimes and voice coach on" : "Silent \u2014 timers flash the screen instead"}</div></div>
     <span class="set-tog ${soundOnNow ? "on" : ""}">${soundOnNow ? "On" : "Off"}</span></div>`);
+  const CL = coachLevel();
+  rows.push(`<div class="set-row coach-row">
+    <span class="set-ic">${ico("medal")}</span>
+    <div class="set-main"><div class="set-name">Coach</div>
+    <div class="set-sub">${CL.sub}</div>
+    <div class="coach-pick">${Object.keys(COACH_LEVELS).map(k =>
+      `<button data-cl="${k}" class="${k === CL.id ? "on" : ""}">${COACH_LEVELS[k].name}</button>`).join("")}</div>
+    </div></div>`);
   rows.push(`<div class="set-row" data-go="voice">
     <span class="set-ic">${ico("mic")}</span>
     <div class="set-main"><div class="set-name">Voice Coach</div>
@@ -1926,7 +2590,15 @@ function openSettings(){
     + `<div class="set-foot">AddPlates \u00b7 ${SYNC_ENABLED ? (sbUser ? "cloud sync on" : "local \u2014 not signed in") : "demo build"} \u00b7 programs-v3</div>`;
   $("setOverlay").classList.add("on");
   $("setSheet").classList.add("on");
-  $("setBody").querySelectorAll(".set-row").forEach(r => r.onclick = () => {
+  $("setBody").querySelectorAll(".coach-pick button").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    state.coachLevel = b.dataset.cl;
+    if (state.session && !state.session.list.some(e => e.sets.some(x => x.done)))
+      state.session = buildSession(state.session.day);
+    save(); render();
+    openSettings();                       /* refresh in place */
+  });
+  $("setBody").querySelectorAll(".set-row[data-go]").forEach(r => r.onclick = () => {
     const go = r.dataset.go;
     if (go === "snd"){
       state.sound = state.sound === false ? true : false;
@@ -2079,7 +2751,7 @@ const TOPICS = {
     {loc:"Exercise Library \u00b7 one row", sel:"#cfgBody .shop-item", alt:"#cfgQ", t:"Anatomy of a row", b:"Name, then its day tags, target muscles, equipment and tracking mode, and the on/off toggle at the end. Tap anywhere on the row to open its editor \u2014 watch."},
     {loc:"Exercise Library \u00b7 editor", open(){ const all = Object.values(getLib()).flat(); cfgEdit = all.find(n => /kettlebell/i.test(n)) || all[0]; renderCfg(); }, sel:"#cfgEditor", alt:"#cfgBody", t:"The editor, open", b:"We tapped that row. Buttons for target muscles, equipment, workout days; the tracking picker (reps, seconds, minutes); rename or remove. Change anything \u2014 suggestions obey instantly."},
     {loc:"Exercise Library \u00b7 top-right", open(){ cfgEdit = null; cfgSearch = ""; renderCfg(); }, sel:"#cfgPlus", alt:"#cfgQ", t:"The + adds your own", b:"This button up top creates a brand-new exercise. Tap and\u2026"},
-    {loc:"Exercise Library \u00b7 editor", open(){ cfgAdding = true; cfgTmp = {name:"", t:[], s:[], st:[], as:[], days:[], equip:["Bodyweight"], track:"wr"}; renderCfg(); }, sel:"#cfgEditor", alt:"#cfgBody", t:"\u2026same editor, blank", b:"Name it, tag muscles and gear, pick tracking, save \u2014 and it joins the suggestion engine like it was always there. (We'll close this one without saving.)"}
+    {loc:"Exercise Library \u00b7 editor", open(){ cfgAdding = true; cfgTmp = {name:"", t:[], s:[], st:[], as:[], days:[], equip:[], track:""}; renderCfg(); }, sel:"#cfgEditor", alt:"#cfgBody", t:"\u2026same editor, blank", b:"Name it, tag muscles and gear, pick tracking, save \u2014 and it joins the suggestion engine like it was always there. (We'll close this one without saving.)"}
   ]},
   program: { name:"Create a program", desc:"Watch one get built \u2014 every control, live",
     enter(){ setTab("plan"); pgCatSel = "Custom"; pgSel = null; pgBuild = null; renderPlan(); },
@@ -2558,44 +3230,31 @@ function bestPerf(name){
 
 function buildSets(ex, noProgress){
   const prev = lastPerf(ex.n);
-  const sug = suggestFor(ex);
-  const fm = lastFormMeta(ex.n);
-  const badForm = fm && fm.form && fm.form <= 3;
-  const tooHeavy = badForm && fm.issues.includes("Too much weight");
-  const tooManyReps = badForm && fm.issues.includes("Too many reps");
-  const awkward = badForm && (fm.issues.includes("Awkward movement") || fm.issues.includes("Joint pain"));
-  const bump = (noProgress || badForm) ? null : earnedBump(ex);
+  const c = coachFor(ex);
+  const hold = !!noProgress && (c.verdict === "up" || c.verdict === "stuck-weight");
+  const shape = hold ? "replay" : c.shape;
   const count = prev ? prev.length : defaultSets(ex);
-  const sets = Array.from({length: count}, (_, j) => {
-    const src = prev && prev[j] ? prev[j] : (prev ? prev[prev.length-1] : sug);
-    let w = src.w === 0 ? "" : (src.w ?? ""), r = src.r ?? "";
-    if (bump){
-      if (bump.type === "weight"){ w = bump.newW; r = bump.newR; }
-      else r = (Number(r)||0) + bump.addR;
-    }
-    if (tooHeavy && Number(w) > 0){
-      w = Math.max(5, Math.floor(Number(w) * 0.9 / 5) * 5);
-    }
-    if (tooManyReps){
-      r = repRange(ex).bottom;
-    }
-    return {w: String(w), r: String(r), done:false};
+  const sets = Array.from({length: count}, (_, k) => {
+    const src = prev && prev[k] ? prev[k] : (prev ? prev[prev.length-1] : null);
+    let w, r;
+    if (shape === "replay" && src){ w = src.w === 0 ? "" : (src.w ?? ""); r = src.r ?? c.r; }
+    else if (shape === "reps" && src){ w = src.w === 0 ? "" : (src.w ?? ""); r = c.r; }
+    else { w = c.w === 0 ? "" : c.w; r = c.r; }
+    return {w: String(w ?? ""), r: String(r ?? ""), done:false,
+            tw: String(w ?? ""), tr: String(r ?? "")};
   });
-  let prog = bump ? bump.note : null;
-  if (tooHeavy) prog = "Eased −10% from your form notes";
-  else if (tooManyReps) prog = " Reps trimmed from your form notes";
-  else if (awkward) prog = " Form flag — watch the demo or swap this one";
-  return {sets, prog};
+  return {sets: sets, prog: hold ? "Holding today — progression paused." : c.reason,
+          verdict: hold ? "hold-readiness" : c.verdict, speak: hold ? null : c.speak};
 }
 function makeList(dayId, noProgress){
   return daySource(dayId).map(e => {
     const b = buildSets(e, noProgress);
     const planned = state.planned && state.planned[dayId] && state.planned[dayId][e.n];
     if (planned){
-      return {g:e.g, n:e.n, prog:"Your planned targets",
+      return {g:e.g, n:e.n, prog:"Your planned targets", verdict:"plan",
         sets: planned.map(p => ({w:String(p.w), r:String(p.r), done:false}))};
     }
-    return {g:e.g, n:e.n, sets: b.sets, prog: b.prog};
+    return {g:e.g, n:e.n, sets: b.sets, prog: b.prog, verdict: b.verdict, speak: b.speak};
   });
 }
 function buildSession(dayId){
@@ -2608,7 +3267,7 @@ function buildSession(dayId){
 function freshState(){
   const plan = {};
   DAYS.forEach(d => plan[d.id] = d.defaults.map(e => ({...e})));
-  const s = { plan, history: [], session: null, planned: {}, body: [], readiness: {}, seenAch: [], coins: 0, ownedThemes: ["volt"], theme: "volt", claimed: [], customRewards: [], lib: JSON.parse(JSON.stringify(LIB)), exOrig: {}, off: [], customEquip: {}, customEquipTypes: [] };
+  const s = { plan, history: [], session: null, planned: {}, body: [], readiness: {}, coachLevel: "balanced", seenAch: [], coins: 0, ownedThemes: ["volt"], theme: "volt", claimed: [], customRewards: [], lib: JSON.parse(JSON.stringify(LIB)), exOrig: {}, off: [], customEquip: {}, customEquipTypes: [] };
   return s;
 }
 
@@ -2661,14 +3320,22 @@ function sampleHistory(){
     hist.push({date: dISO(back), day: dayK, dur: 2400 + (back % 5) * 240, demo:true,
       wu: !rough, cd: back % 4 !== 0,
       rating: rough ? 1 : (back % 9 === 0 ? 2 : 3),
-      flags: rough ? ["tired"] : undefined,
+      flags: rough ? ["Low energy"] : undefined,
+      dl: deload || undefined,
       light: back % 23 === 0 ? true : undefined,
       ex: MOVES[dayK].map(([n, g]) => {
         const stall = n === "Lateral raises";                  /* one mover famously stalls */
         const prog = stall ? Math.min(2, Math.floor(wk / 4)) : Math.floor(wk * 2.5);
         const w = n === "Plank" ? 0 : Math.max(8, BASE[n] + prog - (deload ? 10 : 0) - (rough ? 5 : 0));
-        const reps = n === "Plank" ? (40 + wk * 3) : (deload ? 12 : 10);
-        return { n, g, sets: [0,1,2].map(j => ({ w, r: n === "Plank" ? reps : reps - (j === 2 && rough ? 2 : 0) })) };
+        /* Lateral raises sit below the rep target on purpose - the "you were never
+           asked for more" case. Everything else climbs into the top of the range. */
+        const reps = n === "Plank" ? (40 + wk * 3)
+          : stall ? 10
+          : (deload ? 12 : (wk >= 11 ? 14 : 12));
+        const ent = { n, g, sets: [0,1,2].map(j => ({ w, r: n === "Plank" ? reps : reps - (j === 2 && rough ? 2 : 0) })) };
+        if (rough){ ent.form = 2; ent.issues = ["Too much weight"]; }
+        else if (!deload) ent.form = 4;
+        return ent;
       })});
   }
   return hist;
@@ -3087,9 +3754,44 @@ function fmt(sec){
   return m + ":" + String(s).padStart(2,"0");
 }
 let restSaid = false;
-function startRest(){
+const REST_FLOOR = 120;          /* the safety floor, identical at every level */
+const REST_HARD = ["Joint pain", "Too fatigued", "Too many reps", "Too much weight"];
+/* Rest length follows the Coach setting - a pushy coach gives you less of it.
+   But the flags that mean "that one hurt" extend it at EVERY level, Push included.
+   Same binding rule as the rest of Coach: the setting changes how hard you are
+   pushed when things go well, never how you are looked after when they do not. */
+function restSeconds(ex, st){
+  const L = coachLevel();
+  const mode = trackMode(ex.n, ex.g);
+  const did = Number(st && st.r) || 0;
+  const clamp01 = x => Math.max(0, Math.min(1, x));
+  /* how big was this set next to a normal one? 0 = normal, 1 = a lot bigger */
+  const work = mode === "sec" ? clamp01((did - 30) / 60)
+             : mode === "min" ? clamp01((did - 20) / 40)
+             : clamp01((did - 10) / 20);
+  /* and how deep into the session are you? 0 = just started, 1 = an hour in */
+  const started = state && state.session && state.session.started;
+  const mins = started ? (Date.now() - started) / 60000 : 0;
+  const fatigue = clamp01(mins / 60);
+  /* The band sets the floor and the ceiling; the level picks where you start
+     inside it; a big set or a long session moves you UP toward the ceiling.
+     Nothing can take you below the floor - that is the point of the band. */
+  const B = REST_BANDS[exBand(ex)] || REST_BANDS.core;
+  const point = B[L.id] || B.balanced;
+  let sec = point + (B.hi - point) * (0.6 * work + 0.4 * fatigue);
+  sec = Math.max(B.lo, Math.min(B.hi, sec));
+  let why = null;
+  const flags = ((st && st.si) || []).concat((ex && ex.issues) || []);
+  if (REST_HARD.some(x => flags.indexOf(x) !== -1)){ sec = Math.max(sec, REST_FLOOR); why = "you flagged that one"; }
+  if (ex && ex.noPush){ sec = Math.max(sec, REST_FLOOR); why = why || "you flagged pain here"; }
+  if (st && st.sf && st.sf <= 2){ sec = Math.max(sec, REST_FLOOR); why = why || "you rated that set " + st.sf + "\u2605"; }
+  return {sec: round15(sec), why: why};
+}
+function startRest(ex, st){
   if (!restSaid){ restSaid = true; sayP("rest-start"); }
-  restEnd = Date.now() + 90*1000;
+  const r = restSeconds(ex, st);
+  restEnd = Date.now() + r.sec*1000;
+  if (r.why) toast("Taking " + fmt(r.sec) + " \u2014 " + r.why + ".", false);
   $("rest").classList.add("on");
   tick();
 }
@@ -3222,9 +3924,9 @@ function render(){
     const prev = lastPerf(ex.n);
     const best = bestPerf(ex.n);
     const meta = [muscleMini(ex.g) + " " + ex.g, best ? `<span class="pr">Best: ${best.w}×${best.r}</span>` : null].filter(Boolean).join(" · ");
-    const isStalled = !ex.prog && stalled(ex.n);
+    const isStalled = false;   /* the coach reason now carries this */
     const badges =
-      (ex.prog ? `<span class="badge ${ex.prog.startsWith("")||ex.prog.startsWith("")?"plan":"up"}">${ex.prog}</span>` : "") +
+      (ex.prog ? `<span class="badge ${coachBadgeClass(ex.verdict)}">${ex.prog}</span>` : "") +
       (isStalled ? `<span class="badge stall">Stalled × 3 sessions — drop 10% and build back, or swap it</span>` : "");
     const chart = openChart === i ? chartSVG(ex.n) : null;
     const collapsed = allDone && ex.form >= 4 && !exExpand.has(ex.n);
@@ -3280,6 +3982,7 @@ function render(){
           </div></div>`;
         }).join("")}
       </div>
+      ${(state.session.ask && state.session.ask.i === i) ? askHTML(state.session.ask, ex) : ""}
       <div class="set-btns">
         <button class="mini-btn add-set" data-i="${i}">+ Add set</button>
       </div>
@@ -4550,6 +5253,16 @@ function sndFanfare(){ beep(523, .12); beep(659, .12, .11); beep(784, .12, .22);
 /* ---------- Voice pack: studio clips with TTS fallback ---------- */
 const VOICE_PACK = {
   "coach-hello":     { f: "coach-hello.mp3",     t: "Let's get to work. This is your coach speaking." },
+  /* Coach v1 verdicts. Until the mp3s exist the pack stays silent on these,
+     which is correct - Brian or silence, never a second voice. */
+  "coach-earned":    { f: "coach-earned.mp3",    t: "You earned it. Add the plate." },
+  "coach-more-reps": { f: "coach-more-reps.mp3", t: "Weight stays. Beat the reps and the jump is yours." },
+  "coach-hold-ready":{ f: "coach-hold-ready.mp3",t: "Readiness is low. We hold today. Recovery is training." },
+  "coach-backoff":   { f: "coach-backoff.mp3",   t: "Last one was rough. Going lighter and taking it back." },
+  "coach-deload":    { f: "coach-deload.mp3",    t: "Deload week. Light on purpose. Trust it." },
+  "coach-pain":      { f: "coach-pain.mp3",      t: "You flagged pain here. Same weight, fewer reps. Watch it." },
+  "coach-beat":      { f: "coach-beat.mp3",      t: "More than I asked for. That is the way." },
+  "coach-beat-big":  { f: "coach-beat-big.mp3",  t: "Strong. Keep the form honest. Do not chase the number." },
   "sound-back":      { f: "sound-back.mp3",      t: "Sound is back on. This is your coach speaking." },
   "rest-over":       { f: "rest-over.mp3",       t: "Rest is over. Next set." },
   "timer-done":      { f: "timer-done.mp3",      t: "Time!" },
@@ -5144,10 +5857,7 @@ function cancelPastEdit(skipRender){
 }
 function savePastEdit(){
   const s = state.session;
-  const ex = s.list.map(e => ({n:e.n, g:e.g, form: e.form || undefined,
-      issues: (e.issues && e.issues.length) ? e.issues : undefined,
-      sets: e.sets.filter(x => x.done).map(x => ({w:Number(x.w)||0, r:x.r}))}))
-    .filter(e => e.sets.length);
+  const ex = s.list.map(exRecord).filter(e => e.sets.length);
   if (!ex.length){ toast("Check off at least one set to save"); return; }
   if (pastEdit.histIndex !== null){
     const he = state.history[pastEdit.histIndex];
@@ -5234,16 +5944,17 @@ function libHasName(name){
   return Object.values(lib).some(arr => arr.includes(name));
 }
 function exmNames(){
+  /* Legacy machine-suffixed names, kept only so old saved data can be merged. */
   const out = [];
   for (const arr of Object.values(getLib()))
-    for (const n of arr) if (n.includes("(EXM3000)")) out.push(n);
+    for (const n of arr) if (/\s\(EXM3000\)$/.test(n)) out.push(n);
   return out;
 }
 
 
 
 /* ---------- Exercise Library (full screen, ExRx-style roles) ---------- */
-let cfgEq = [], cfgEqOnly = false, cfgMg = [], cfgDy = [], cfgOpenDD = null, edOpenDD = null, cfgSearch = "", cfgEdit = null, cfgAdding = false, cfgTmp = null;
+let cfgEq = [], cfgEqOnly = false, cfgMg = [], cfgDy = [], cfgOpenDD = null, edOpenDD = null, cfgSearch = "", cfgEdit = null, cfgAdding = false, cfgTmp = null, cfgErr = false;
 const ROLE_LABELS = {t:"Target", s:"Synergists", st:"Stabilizers", as:"Antagonist stabilizers"};
 const WORKOUTS = ["Push","Pull","Legs","Cardio"];
 const GROUP2DAY = {
@@ -5252,8 +5963,48 @@ const GROUP2DAY = {
   "Quads & Glutes":["Legs"], "Hamstrings":["Legs"], "Calves":["Legs"],
   "Abs & Core":["Push","Pull","Legs"], "Plyometrics":["Legs","Cardio"], "Cardio":["Cardio"]
 };
+
+/* ---------- Which day does this movement belong on? ----------
+   Read from the movement itself, not from the folder it is filed under.
+   A muscle group cannot answer this: Shoulders holds both overhead presses
+   (push) and rear-delt work (pull). The name can.
+   The user's own pick in the editor always wins over this. */
+/* roles, rep targets and timed-mode flags for the additions */
+Object.assign(MUSCLES, {"Wrist curl":["Forearms"],"Reverse wrist curl":["Forearms"],"Behind-the-back wrist curl":["Forearms"],"Wrist roller":["Forearms","Shoulders"],"Plate pinch hold":["Forearms"],"Dead hang":["Forearms","Back"],"Farmer hold":["Forearms","Back","Shoulders"],"Towel pull-ups":["Back","Biceps","Forearms"],"Landmine press":["Chest","Shoulders","Triceps"],"Guillotine press":["Chest","Triceps","Shoulders"],"Larsen press":["Chest","Triceps","Shoulders"],"Reverse-grip bench press":["Chest","Triceps","Shoulders"],"T-bar row":["Back","Biceps","Shoulders"],"Meadows row":["Back","Biceps","Shoulders"],"Seal row":["Back","Biceps","Shoulders"],"Chest-supported machine row":["Back","Biceps","Shoulders"],"Single-arm lat pulldown":["Back","Biceps"],"Reverse-grip lat pulldown":["Back","Biceps"],"Back extension":["Back","Hamstrings","Quads & Glutes"],"Reverse hyperextension":["Back","Quads & Glutes","Hamstrings"],"Smith machine row":["Back","Biceps","Shoulders"],"Cable lateral raise":["Shoulders"],"Machine lateral raise":["Shoulders"],"Landmine shoulder press":["Shoulders","Triceps"],"Behind-the-neck press":["Shoulders","Triceps"],"Viking press":["Shoulders","Triceps","Chest"],"Scaption raise":["Shoulders"],"Powell raise":["Shoulders"],"Preacher curl":["Biceps","Forearms"],"EZ bar curl":["Biceps","Forearms"],"Bayesian cable curl":["Biceps","Forearms"],"Incline hammer curl":["Biceps","Forearms"],"Overhead cable extension":["Triceps"],"Reverse-grip pushdown":["Triceps"],"California press":["Triceps","Chest","Shoulders"],"Hack squat":["Quads & Glutes","Hamstrings"],"Belt squat":["Quads & Glutes","Hamstrings"],"Smith machine squat":["Quads & Glutes","Hamstrings"],"Hip abduction":["Quads & Glutes"],"Hip adduction":["Quads & Glutes"],"Cable glute kickback":["Quads & Glutes","Hamstrings"],"Step-downs":["Quads & Glutes","Hamstrings"],"Reverse Nordic curl":["Quads & Glutes"],"Split squat":["Quads & Glutes","Hamstrings"],"Seated leg curl":["Hamstrings","Calves"],"Lying leg curl":["Hamstrings","Calves"],"45-degree back extension":["Hamstrings","Quads & Glutes","Back"],"Glute-ham raise":["Hamstrings","Quads & Glutes","Calves"],"Leg press calf raise":["Calves"],"Smith machine calf raise":["Calves"],"Cable crunch":["Abs & Core"],"Cable woodchopper":["Abs & Core","Shoulders"],"Toes to bar":["Abs & Core","Back","Forearms"],"Hollow rocks":["Abs & Core","Quads & Glutes"],"Side bends":["Abs & Core"],"Landmine rotation":["Abs & Core","Shoulders"],"TRX row":["Back","Biceps","Shoulders"],"TRX push-ups":["Chest","Triceps","Shoulders"],"TRX fallout":["Abs & Core","Shoulders","Back"],"TRX pistol squat":["Quads & Glutes","Hamstrings"],"TRX hamstring curl":["Hamstrings","Quads & Glutes"],"Rowing machine steady state":["Cardio","Back","Quads & Glutes"],"Rowing machine intervals":["Cardio","Back","Quads & Glutes"],"Jump rope":["Cardio","Calves"],"Double unders":["Cardio","Calves"],"Stair climber":["Cardio","Quads & Glutes"],"Sled push":["Cardio","Quads & Glutes","Hamstrings"],"Battle ropes":["Cardio","Shoulders","Back"],"Swimming":["Cardio","Back","Shoulders"],"Medicine ball slams":["Plyometrics","Abs & Core","Back","Shoulders"],"Rotational medicine ball throw":["Plyometrics","Abs & Core","Shoulders"],"Depth jumps":["Plyometrics","Quads & Glutes","Calves"],"Bounding":["Plyometrics","Quads & Glutes","Calves"],"Archer push-ups":["Chest","Triceps","Shoulders"],"Pseudo planche push-ups":["Chest","Shoulders","Triceps"],"One-arm push-ups (assisted)":["Chest","Triceps","Shoulders"],"Ring push-ups":["Chest","Triceps","Shoulders"],"Archer pull-ups":["Back","Biceps","Shoulders"],"Typewriter pull-ups":["Back","Biceps","Shoulders"],"Negative pull-ups":["Back","Biceps","Forearms"],"Muscle-ups":["Back","Chest","Triceps","Biceps"],"Skin the cat":["Back","Shoulders"],"Tuck front lever hold":["Back","Abs & Core","Shoulders"],"Back lever hold (tucked)":["Back","Chest","Shoulders"],"Korean dips":["Triceps","Chest","Shoulders"],"Ring dips":["Triceps","Chest","Shoulders"],"Handstand push-ups (wall)":["Shoulders","Triceps","Chest"],"Tuck planche hold":["Shoulders","Chest"],"Human flag (tucked)":["Abs & Core","Back","Shoulders"],"Shrimp squats":["Quads & Glutes","Hamstrings"],"Archer rows":["Back","Biceps","Shoulders"]});
+Object.assign(SUGGEST, {"Wrist curl":{w:"",r:12},"Reverse wrist curl":{w:"",r:12},"Behind-the-back wrist curl":{w:"",r:12},"Wrist roller":{w:"",r:12},"Plate pinch hold":{w:"",r:30},"Dead hang":{w:"",r:30},"Farmer hold":{w:"",r:30},"Towel pull-ups":{w:"",r:10},"Landmine press":{w:"",r:10},"Guillotine press":{w:"",r:10},"Larsen press":{w:"",r:10},"Reverse-grip bench press":{w:"",r:10},"T-bar row":{w:"",r:8},"Meadows row":{w:"",r:8},"Seal row":{w:"",r:10},"Chest-supported machine row":{w:"",r:10},"Single-arm lat pulldown":{w:"",r:10},"Reverse-grip lat pulldown":{w:"",r:10},"Back extension":{w:"",r:8},"Reverse hyperextension":{w:"",r:8},"Smith machine row":{w:"",r:10},"Cable lateral raise":{w:"",r:12},"Machine lateral raise":{w:"",r:12},"Landmine shoulder press":{w:"",r:10},"Behind-the-neck press":{w:"",r:10},"Viking press":{w:"",r:10},"Scaption raise":{w:"",r:12},"Powell raise":{w:"",r:12},"Preacher curl":{w:"",r:12},"EZ bar curl":{w:"",r:12},"Bayesian cable curl":{w:"",r:12},"Incline hammer curl":{w:"",r:12},"Overhead cable extension":{w:"",r:12},"Reverse-grip pushdown":{w:"",r:12},"California press":{w:"",r:10},"Hack squat":{w:"",r:8},"Belt squat":{w:"",r:8},"Smith machine squat":{w:"",r:8},"Hip abduction":{w:"",r:10},"Hip adduction":{w:"",r:10},"Cable glute kickback":{w:"",r:12},"Step-downs":{w:"",r:8},"Reverse Nordic curl":{w:"",r:12},"Split squat":{w:"",r:8},"Seated leg curl":{w:"",r:12},"Lying leg curl":{w:"",r:12},"45-degree back extension":{w:"",r:8},"Glute-ham raise":{w:"",r:8},"Leg press calf raise":{w:"",r:12},"Smith machine calf raise":{w:"",r:12},"Cable crunch":{w:"",r:12},"Cable woodchopper":{w:"",r:12},"Toes to bar":{w:"",r:12},"Hollow rocks":{w:"",r:12},"Side bends":{w:"",r:12},"Landmine rotation":{w:"",r:12},"TRX row":{w:"",r:10},"TRX push-ups":{w:"",r:10},"TRX fallout":{w:"",r:12},"TRX pistol squat":{w:"",r:8},"TRX hamstring curl":{w:"",r:12},"Rowing machine steady state":{w:"",r:20},"Rowing machine intervals":{w:"",r:20},"Jump rope":{w:"",r:20},"Double unders":{w:"",r:20},"Stair climber":{w:"",r:20},"Sled push":{w:"",r:20},"Battle ropes":{w:"",r:20},"Swimming":{w:"",r:20},"Medicine ball slams":{w:"",r:12},"Rotational medicine ball throw":{w:"",r:10},"Depth jumps":{w:"",r:12},"Bounding":{w:"",r:8},"Archer push-ups":{w:"",r:10},"Pseudo planche push-ups":{w:"",r:10},"One-arm push-ups (assisted)":{w:"",r:10},"Ring push-ups":{w:"",r:10},"Archer pull-ups":{w:"",r:10},"Typewriter pull-ups":{w:"",r:10},"Negative pull-ups":{w:"",r:10},"Muscle-ups":{w:"",r:10},"Skin the cat":{w:"",r:10},"Tuck front lever hold":{w:"",r:20},"Back lever hold (tucked)":{w:"",r:20},"Korean dips":{w:"",r:10},"Ring dips":{w:"",r:10},"Handstand push-ups (wall)":{w:"",r:10},"Tuck planche hold":{w:"",r:20},"Human flag (tucked)":{w:"",r:20},"Shrimp squats":{w:"",r:8},"Archer rows":{w:"",r:10}});
+["Plate pinch hold","Dead hang","Farmer hold","Tuck front lever hold","Back lever hold (tucked)","Tuck planche hold","Human flag (tucked)"].forEach(n => TIMED.add(n));
+GROUP2DAY["Forearms"] = ["Pull"];
+GROUP_SUGGEST["Forearms"] = {w:"", r:12};
+Object.assign(MUSCLES, {"Clean":["Quads & Glutes","Hamstrings","Back","Shoulders"],"Power clean":["Quads & Glutes","Hamstrings","Back","Shoulders"],"Hang clean":["Quads & Glutes","Hamstrings","Back","Shoulders"],"Snatch":["Quads & Glutes","Hamstrings","Back","Shoulders"],"Power snatch":["Quads & Glutes","Hamstrings","Back","Shoulders"],"Thrusters":["Quads & Glutes","Shoulders","Triceps"],"Push press":["Shoulders","Triceps","Quads & Glutes"],"Push jerk":["Shoulders","Triceps","Quads & Glutes"],"Devil press":["Shoulders","Chest","Quads & Glutes","Back"],"Skater squats":["Quads & Glutes","Hamstrings"],"Lateral box jumps":["Plyometrics","Quads & Glutes","Calves"],"Turkish sit-ups":["Abs & Core","Shoulders"],"Side plank reach through":["Abs & Core","Shoulders"],"Bent press":["Shoulders","Abs & Core","Quads & Glutes"],"Arm bar":["Shoulders","Abs & Core"],"Standing shoulder external rotation":["Shoulders"],"Cuban rotation":["Shoulders"],"Shoulder dislocates":["Shoulders"],"Seated wall angels":["Shoulders"],"Goblet carry":["Abs & Core","Forearms","Shoulders"]});
+Object.assign(SUGGEST, {"Clean":{w:"",r:5},"Power clean":{w:"",r:5},"Hang clean":{w:"",r:5},"Snatch":{w:"",r:5},"Power snatch":{w:"",r:5},"Thrusters":{w:"",r:10},"Push press":{w:"",r:6},"Push jerk":{w:"",r:6},"Devil press":{w:"",r:8},"Skater squats":{w:"",r:10},"Lateral box jumps":{w:"",r:6},"Turkish sit-ups":{w:"",r:8},"Side plank reach through":{w:"",r:10},"Bent press":{w:"",r:5},"Arm bar":{w:"",r:30},"Standing shoulder external rotation":{w:"",r:12},"Cuban rotation":{w:"",r:12},"Shoulder dislocates":{w:"",r:12},"Seated wall angels":{w:"",r:12},"Goblet carry":{w:"",r:30}});
+["Arm bar","Goblet carry"].forEach(n => TIMED.add(n));
+/* rotator-cuff and mobility work reads as neither a push nor a pull from its name */
+const LIB_DAY = {"Standing shoulder external rotation":["Pull"],"Cuban rotation":["Pull"],"Shoulder dislocates":["Push","Pull"],"Seated wall angels":["Push","Pull"],"Arm bar":["Push"]};
+const FORCE_LEG_G = ["Quads & Glutes", "Hamstrings", "Calves"];
+const FORCE_HINGE = /deadlift|rdl|romanian|good morning|swing|pull-through|stiff-leg|b-stance|sumo|back extension|hyperextension|glute-ham|hip thrust/i;
+/* rear-delt work reads as "fly" but is a pull - matched before the generic patterns */
+const FORCE_PULL_FIRST = /reverse fly|rear delt|face pull|pull-apart|snow angel|upright row|high pull/i;
+const FORCE_PULL = /row|pull-up|pulldown|chin-up|pullover|curl|shrug|\bpull\b|inverted|renegade|kroc|gorilla|pendlay|yates|rack pull|scapular/i;
+const FORCE_PUSH = /press|push|dip|\bfly|flye|raise|extension|pressdown|pushdown|thruster|jerk|halo/i;
+function exForce(n, g){
+  const nm = origName(n);
+  const grp = g || findGroup(n);
+  const mode = trackMode(n, grp);
+  if (mode === "min" || grp === "Cardio") return ["Cardio"];
+  if (grp === "Plyometrics") return ["Legs", "Cardio"];
+  if (grp === "Abs & Core") return ["Push", "Pull", "Legs"];   /* core work fits any day */
+  if (FORCE_LEG_G.indexOf(grp) !== -1) return FORCE_HINGE.test(nm) ? ["Legs", "Pull"] : ["Legs"];
+  if (FORCE_HINGE.test(nm)) return ["Legs", "Pull"];   /* a hinge is a hinge wherever it is filed */
+  if (FORCE_PULL_FIRST.test(nm)) return ["Pull"];
+  if (FORCE_PULL.test(nm)) return ["Pull"];
+  if (FORCE_PUSH.test(nm)) return ["Push"];
+  return null;                                                 /* let the old derivation answer */
+}
 function dayTags(n){
-  if (state && state.dayTag && state.dayTag[n]) return state.dayTag[n];
+  if (state && state.dayTag && state.dayTag[n]) return state.dayTag[n];   /* your pick wins */
+  if (LIB_DAY[origName(n)]) return LIB_DAY[origName(n)];                 /* named exceptions */
+  const f = exForce(n);
+  if (f) return f;                                                        /* read from the movement */
   const t = rolesFor(n).t;
   const days = [];
   for (const g of t) for (const d of (GROUP2DAY[g] || [])) if (!days.includes(d)) days.push(d);
@@ -5262,7 +6013,7 @@ function dayTags(n){
 }
 function equipTags(n){
   if (state && state.equipOv && state.equipOv[n]) return state.equipOv[n];
-  const strip = x => x.replace(/\s*\(EXM3000\)/, "");
+  const strip = x => x.replace(/\s*\([^)]*\)$/, "");
   const o = origName(n);
   return EQUIP[o] || EQUIP[strip(o)] || EQUIP[n]
     || (state && state.customEquip && state.customEquip[n] ? [state.customEquip[n]] : ["Bodyweight"]);
@@ -5301,7 +6052,7 @@ function roleGen(n, g){
 }
 function rolesFor(n){
   if (state && state.roles && state.roles[n]) return state.roles[n];
-  const o = origName(n).replace(/\s*\(EXM3000\)/, "");
+  const o = origName(n).replace(/\s*\([^)]*\)$/, "");
   const g = findGroup(n);
   const legacy = (state && state.muscles && state.muscles[n]) || MUSCLES[o] || MUSCLES[n];
   const gen = roleGen(o, g);
@@ -5750,7 +6501,7 @@ function trackMode(n, g){
 }
 
 function openCfg(){
-  cfgEdit = null; cfgAdding = false; cfgTmp = null; auxEdit = null;
+  cfgEdit = null; cfgAdding = false; cfgTmp = null; auxEdit = null; cfgErr = false;
   $("cfgOverlay").classList.add("on");
   $("cfgSheet").classList.add("on");
   renderCfg();
@@ -5784,9 +6535,10 @@ $("cfgPlus").onclick = () => {
     return;
   }
   cfgAdding = !cfgAdding;
+  cfgErr = false;
   cfgEdit = null;
   edOpenDD = null; edHelp = null;
-  cfgTmp = cfgAdding ? {name:"", t:[], s:[], st:[], as:[], days:[], equip:["Bodyweight"], track:"wr"} : null;
+  cfgTmp = cfgAdding ? {name:"", t:[], s:[], st:[], as:[], days:[], equip:[], track:""} : null;
   renderCfg();
 };
 const TAG_HELP = {
@@ -5802,27 +6554,59 @@ let edHelp = null;
 function edDD(){
   const groups = Object.keys(getLib());
   return [["t",ROLE_LABELS.t,groups],["s",ROLE_LABELS.s,groups],["st",ROLE_LABELS.st,groups],
-          ["as",ROLE_LABELS.as,groups],["d","Workout",WORKOUTS],["e","Equipment",equipList()],["tr","Tracked as",TRACK_OPTS.map(x => x[1])]];
+          ["as",ROLE_LABELS.as,groups],["d","Workout",WORKOUTS],["e","Equipment",equipList()],["tr","Tracked as",TRACK_OPTS.map(x => x[1])],
+          ["b","Rest class",BAND_OPTS.map(x => x[1])]];
 }
-function edSel(k){ return k === "tr" ? [TRACK_LABEL[cfgTmp.track]] : k === "e" ? cfgTmp.equip : k === "d" ? cfgTmp.days : cfgTmp[k]; }
+function edSel(k){
+  if (k === "tr") return cfgTmp.track ? [TRACK_LABEL[cfgTmp.track]] : [];
+  if (k === "b")  return cfgTmp.band ? [BAND_LABEL[cfgTmp.band]] : [];
+  /* on a new exercise, show what the movement implies until you overrule it */
+  if (k === "d" && !cfgTmp.days.length && cfgTmp.name && cfgTmp.t.length){
+    const f = exForce(cfgTmp.name, cfgTmp.t[0]);
+    if (f) return f;
+  }
+  if (k === "e")  return cfgTmp.equip;
+  if (k === "d")  return cfgTmp.days;
+  return cfgTmp[k];
+}
 function editorCard(isNew){
   const dd = edDD();
+  const REQ = ["t", "e", "tr"];                 /* target muscle, equipment, tracked as */
+  const dNeeded = cfgTmp.name && cfgTmp.t.length && !cfgTmp.days.length &&
+                  !exForce(cfgTmp.name, cfgTmp.t[0]);
   const btns = dd.map(([k,label]) => {
     const sel = edSel(k);
-    return `<button class="ddbtn ${sel.length ? "act" : ""}" data-edd="${k}" style="flex:1 1 31%">${label}${sel.length ? " \u00b7 " + sel.length : ""} ${edOpenDD === k ? "\u25B4" : "\u25BE"}<span class="qm" data-q="${k}">?</span></button>`;
+    const req = REQ.indexOf(k) !== -1 || (k === "d" && dNeeded);
+    const bad = cfgErr && req && !sel.length;
+    return `<button class="ddbtn ${sel.length ? "act" : ""}${bad ? " bad" : ""}" data-edd="${k}" style="flex:1 1 31%">${label}${req ? `<span class="req">*</span>` : ""}${sel.length ? " \u00b7 " + sel.length : ""} ${edOpenDD === k ? "\u25B4" : "\u25BE"}<span class="qm" data-q="${k}">?</span></button>`;
   }).join("");
   let panel = "";
   if (edOpenDD){
     const def = dd.find(x => x[0] === edOpenDD);
     const sel = edSel(edOpenDD);
     panel = `<div class="dd-panel" style="margin-top:8px">
-      ${edOpenDD === "tr" ? "" : `<div class="dd-row dd-clear" data-edclear="1">Clear ${def[1].toLowerCase()}</div>`}
+      ${(edOpenDD === "tr" || edOpenDD === "b") ? "" : `<div class="dd-row dd-clear" data-edclear="1">Clear ${def[1].toLowerCase()}</div>`}
       ${def[2].map(o => `<div class="dd-row ${sel.includes(o) ? "sel" : ""}" data-edv="${o.replace(/"/g,"&quot;")}">${o}<span>${sel.includes(o) ? "\u2713" : ""}</span></div>`).join("")}
     </div>`;
   }
+  const missName = cfgErr && !cfgTmp.name.trim();
+  /* Push or pull is read from the movement. When the name gives nothing to read
+     - Superman, 21s, Clean - we do not quietly guess from the muscle group.
+     We ask, and only then. */
+  const derivedDays = cfgTmp.name && cfgTmp.t.length ? exForce(cfgTmp.name, cfgTmp.t[0]) : null;
+  const daysUnknown = !derivedDays && !cfgTmp.days.length;
+  const gaps = [];
+  if (cfgErr && !cfgTmp.t.length) gaps.push("a target muscle");
+  if (cfgErr && !cfgTmp.equip.length) gaps.push("equipment");
+  if (cfgErr && !cfgTmp.track) gaps.push("how it is tracked");
+  if (cfgErr && daysUnknown) gaps.push("which day it belongs on");
   return `<div class="form-ex" id="cfgEditor">
-    <input class="import-area" id="cfgEN" style="min-height:0;padding:12px;font-family:inherit;font-size:15px;font-weight:600"
-      placeholder="Exercise name" value="${cfgTmp.name.replace(/"/g,"&quot;")}">
+    <div class="lbl-row"><span class="fld-lbl">Exercise name<span class="req">*</span></span></div>
+    <input class="import-area${missName ? " bad" : ""}" id="cfgEN" style="min-height:0;padding:12px;font-family:inherit;font-size:15px;font-weight:600"
+      placeholder="e.g. Incline dumbbell press" value="${cfgTmp.name.replace(/"/g,"&quot;")}">
+    ${missName ? `<div class="req-err">Give it a name.</div>` : ""}
+    ${gaps.length ? `<div class="req-err">Still need ${gaps.join(", ")}.</div>` : ""}
+    ${dNeeded && !cfgErr ? `<div class="req-hint">Can't tell from the name whether this pushes or pulls — pick a workout below.</div>` : ""}
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">${btns}</div>
     ${edHelp ? `<div class="helpbox"><b>${TAG_HELP[edHelp][0]}:</b> ${TAG_HELP[edHelp][1]}</div>` : ""}
     ${panel}
@@ -5923,7 +6707,7 @@ function renderCfg(){
     cfgAdding = false;
     edOpenDD = null; edHelp = null;
     cfgEdit = n;
-    cfgTmp = {name: n, orig: n, t:[...r.t], s:[...r.s], st:[...r.st], as:[...r.as], days:[...dayTags(n)], equip:[...equipTags(n)], track: trackMode(n)};
+    cfgTmp = {name: n, orig: n, t:[...r.t], s:[...r.s], st:[...r.st], as:[...r.as], days:[...dayTags(n)], equip:[...equipTags(n)], track: trackMode(n), band: exBand({n: n, g: findGroup(n)})};
     renderCfg();
   });
   $("cfgBody").querySelectorAll(".qm").forEach(q => q.onclick = ev => {
@@ -5941,8 +6725,9 @@ function renderCfg(){
   $("cfgBody").querySelectorAll(".dd-row[data-edv]").forEach(r => r.onclick = () => {
     if ($("cfgEN")) cfgTmp.name = $("cfgEN").value;
     const v = r.dataset.edv;
-    if (edOpenDD === "tr"){
-      cfgTmp.track = (TRACK_OPTS.find(x => x[1] === v) || ["wr"])[0];
+    if (edOpenDD === "tr" || edOpenDD === "b"){
+      if (edOpenDD === "b") cfgTmp.band = (BAND_OPTS.find(x => x[1] === v) || ["core"])[0];
+      else cfgTmp.track = (TRACK_OPTS.find(x => x[1] === v) || ["wr"])[0];
       edOpenDD = null;
       renderCfg();
       return;
@@ -5961,15 +6746,28 @@ function renderCfg(){
   const sv = document.getElementById("cfgSaveEd");
   if (sv) sv.onclick = () => {
     cfgTmp.name = $("cfgEN").value.trim();
-    if (!cfgTmp.name){ toast("Give it a name"); return; }
-    if (!cfgTmp.t.length){ toast("Pick at least one target muscle"); return; }
-    if (!cfgTmp.equip.length) cfgTmp.equip = ["Bodyweight"];
+    const dOk = cfgTmp.days.length || (cfgTmp.t.length && exForce(cfgTmp.name, cfgTmp.t[0]));
+    if (!cfgTmp.name || !cfgTmp.t.length || !cfgTmp.equip.length || !cfgTmp.track || !dOk){
+      cfgErr = true;                       /* mark the gaps on the form, not just a toast */
+      renderCfg();
+      toast(!cfgTmp.name ? "Give it a name"
+        : !cfgTmp.t.length ? "Pick at least one target muscle"
+        : !cfgTmp.equip.length ? "Pick the equipment it uses"
+        : !cfgTmp.track ? "Pick how it is tracked"
+        : "Pick which day this belongs on");
+      return;
+    }
+    cfgErr = false;
+
     state.roles = state.roles || {};
     state.equipOv = state.equipOv || {};
     state.dayTag = state.dayTag || {};
     state.track = state.track || {};
+    state.band = state.band || {};
+    if (cfgTmp.band) state.band[cfgTmp.name] = cfgTmp.band;
     const roleData = {t:cfgTmp.t, s:cfgTmp.s, st:cfgTmp.st, as:cfgTmp.as};
-    if (!cfgTmp.days.length) cfgTmp.days = ["Push"];
+    /* never silently default to Push - use what the movement says */
+    if (!cfgTmp.days.length) cfgTmp.days = exForce(cfgTmp.name, cfgTmp.t[0]) || ["Push"];
     if (cfgAdding){
       if (libHasName(cfgTmp.name)){ toast("That name already exists"); return; }
       const home = getLib()[cfgTmp.t[0]] ? cfgTmp.t[0] : findGroup(cfgTmp.name);
@@ -6032,9 +6830,9 @@ function renderAlt(mode){
     + previewList.map((ex,i) => {
     const best = bestPerf(ex.n);
     const meta = [muscleMini(ex.g) + " " + ex.g, best ? `<span class="pr">Best: ${best.w}×${best.r}</span>` : null].filter(Boolean).join(" · ");
-    const isStalled = !ex.prog && stalled(ex.n);
+    const isStalled = false;   /* the coach reason now carries this */
     const badges =
-      (ex.prog ? `<span class="badge ${ex.prog.startsWith("")||ex.prog.startsWith("")?"plan":"up"}">${ex.prog}</span>` : "") +
+      (ex.prog ? `<span class="badge ${coachBadgeClass(ex.verdict)}">${ex.prog}</span>` : "") +
       (isStalled ? `<span class="badge stall">Stalled × 3 sessions — drop 10% and build back, or swap it</span>` : "");
     const chart = openChart === i ? chartSVG(ex.n) : null;
     return `<div class="exercise pv">
@@ -6379,6 +7177,7 @@ function wireEvents(){
     inp.onchange = () => {
       const {i, j, f} = inp.dataset;
       state.session.list[i].sets[j][f] = inp.value.trim();
+      state.session.list[i].sets[j].edit = true;   /* your number, not the coach's */
       save();
     };
   });
@@ -6386,6 +7185,7 @@ function wireEvents(){
     const i = +b.dataset.i, j = +b.dataset.j;
     const ex = state.session.list[i];
     const s = ex.sets[j];
+    clearAsk();                   /* one prompt at a time; ignoring one is free */
     if (!s.done){
       /* Fill from placeholder (last time) if left blank — one-tap logging */
       const prev = lastPerf(ex.n);
@@ -6402,18 +7202,36 @@ function wireEvents(){
         confetti(30);
       }
       sndSet();
+      const cs = coachSet(i, j);
+      if (cs){
+        if (cs.msg) toast(cs.msg, false);
+        if (cs.speak) sayP(cs.speak);
+        state.session.ask = cs.ask || null;
+      }
       if (ex.sets.every(x => x.done)){
         if (state.session.list.every(e2 => e2.sets.every(x => x.done)) && !state.session.allSaid){
           state.session.allSaid = true;
           sayP("all-sets");
         } else coachExerciseDone(ex.n);
       }
-      if (trackMode(ex.n, ex.g) !== "min") startRest();
+      /* Cardio defaults to one block of minutes, but nothing stops you adding
+         sets to it - so it gets a rest timer too, once there is a set to rest for. */
+      if (trackMode(ex.n, ex.g) !== "min" || ex.sets.length > 1) startRest(ex, ex.sets[j]);
     } else {
       s.done = false;
     }
     save(); render();
   });
+  document.querySelectorAll(".ask-star").forEach(b => b.onclick = () =>
+    rateSet(+b.dataset.i, +b.dataset.j, +b.dataset.v));
+  document.querySelectorAll(".ask-chip").forEach(b => b.onclick = () =>
+    flagSet(+b.dataset.i, +b.dataset.j, b.dataset.x));
+  document.querySelectorAll(".drop-chip").forEach(b => b.onclick = () =>
+    flagDrop(+b.dataset.i, +b.dataset.j, b.dataset.x));
+  document.querySelectorAll(".ask-yes").forEach(b => b.onclick = () =>
+    acceptOffer(+b.dataset.i, +b.dataset.j));
+  document.querySelectorAll(".ask-no").forEach(b => b.onclick = () =>
+    declineOffer(+b.dataset.i, +b.dataset.j));
   document.querySelectorAll(".form-inline .stars button").forEach(b => b.onclick = () => {
     const ex = state.session.list[+b.dataset.i];
     ex.form = +b.dataset.v;
@@ -6442,7 +7260,9 @@ function wireEvents(){
           sayP("all-sets");
         } else coachExerciseDone(ex.n);
       }
-      if (trackMode(ex.n, ex.g) !== "min") startRest();
+      /* Cardio defaults to one block of minutes, but nothing stops you adding
+         sets to it - so it gets a rest timer too, once there is a set to rest for. */
+      if (trackMode(ex.n, ex.g) !== "min" || ex.sets.length > 1) startRest(ex, ex.sets[j]);
       save(); render();
     });
   });
@@ -6535,18 +7355,13 @@ function isLightEntry(entry){
 }
 async function completeWorkout(overall){
   const s = state.session;
-  const exDetail = s.list
-    .map(e => ({n:e.n, g:e.g,
-      form: e.form || undefined,
-      issues: (e.issues && e.issues.length) ? e.issues : undefined,
-      sets: e.sets.filter(x => x.done).map(x => ({w:Number(x.w)||0, r:x.r}))}))
-    .filter(e => e.sets.length);
+  const exDetail = s.list.map(exRecord).filter(e => e.sets.length);
   const light = sessionScore(s.list) < workFloor(s.day);
   const sweatCleared = !light && !!s.sweatDay && s.list.length > 0 && s.list.every(e => e.sets.every(x => x.done));
   const wuDone = s.wu && s.wu.length >= AUX_MIN.wu && s.wu.every(Boolean);
   const cdDone = s.cd && s.cd.length >= AUX_MIN.cd && s.cd.every(Boolean);
   state.history.unshift({
-    date: todayISO(), day: s.day, light: light || undefined, wu: wuDone || undefined, cd: cdDone || undefined, sweat: sweatCleared || undefined,
+    date: todayISO(), day: s.day, light: light || undefined, dl: (inDeload() || undefined), wu: wuDone || undefined, cd: cdDone || undefined, sweat: sweatCleared || undefined,
     rating: (overall && overall.rating) || undefined,
     flags: (overall && overall.issues && overall.issues.length) ? overall.issues : undefined,
     dur: s.started ? Math.floor((Date.now() - s.started)/1000) : 0,
