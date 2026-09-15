@@ -78,6 +78,19 @@
   .import-area.bad{border-color:var(--danger)}
   .coach-row{cursor:default}
   .coach-row:active{background:transparent}
+  .gear-panel{background:var(--card2);border:1px solid var(--line);border-radius:14px;
+    padding:12px 13px;margin-bottom:10px}
+  .gear-head{display:flex;align-items:flex-start;gap:10px}
+  .gear-head > div:first-child{flex:1;min-width:0}
+  .gear-title{font-size:13px;font-weight:800}
+  .gear-sub{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;line-height:1.45}
+  .gear-sweep{margin-top:10px;width:100%;color:var(--gold,#E8B84B);
+    border-color:color-mix(in srgb, var(--gold,#E8B84B) 35%, transparent)}
+  .sub-link{display:flex;align-items:center;gap:7px;margin-top:9px;width:100%;
+    background:var(--card2);border:1px solid var(--line);border-radius:10px;
+    padding:9px 11px;font:inherit;font-size:11.5px;font-weight:700;color:var(--muted);
+    cursor:pointer;text-align:left}
+  .sub-link svg{width:14px;height:14px;flex:0 0 14px;color:var(--accent)}
   .coach-pick{display:flex;gap:6px;margin-top:8px}
   .coach-pick.wrap{flex-wrap:wrap}
   .coach-pick.wrap button{flex:0 0 auto;padding:6px 9px}
@@ -89,6 +102,9 @@
   .set-ic{flex:0 0 36px;width:36px;height:36px;border-radius:11px;background:var(--card2);border:1px solid var(--line);
     display:flex;align-items:center;justify-content:center}
   .set-ic svg{width:17px;height:17px}
+  /* artwork icons carry their own colour, so they render as images rather than
+     inheriting currentColor like the stroke set does */
+  .set-ic img{width:23px;height:23px;display:block}
   .set-main{flex:1;min-width:0}
   .set-name{font-size:13.5px;font-weight:800}
   .set-sub{font-size:11.5px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -257,7 +273,7 @@
   .log-ex b{font-weight:700}
   .log-ex span{display:block;color:var(--muted);font-size:12px;margin-top:1px;font-variant-numeric:tabular-nums}
   .empty{color:var(--muted);font-size:14px;padding:6px 2px}
-  .rest{position:fixed;left:12px;right:12px;bottom:76px;background:var(--accent);color:var(--accent-ink);
+  .rest{position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom, 0px));background:var(--accent);color:var(--accent-ink);
     border-radius:16px;padding:14px 16px;display:none;align-items:center;gap:12px;z-index:50;
     box-shadow:0 8px 30px color-mix(in srgb, var(--accent) 25%, transparent)}
   .rest.on{display:flex}
@@ -282,10 +298,21 @@
   .toast.gold{background:var(--gold);color:#3A2C05}
   .cal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none}
   .cal-overlay.on{display:block}
+  /* A bottom sheet with no ceiling grows UPWARD as its content grows. Settings
+     eventually ran off the top of the screen and took its own close button with
+     it - no way out but force-quitting the app - and because the sheet itself
+     never scrolled, the swipe fell through to the page behind. Every sheet now
+     has a ceiling and scrolls inside it; overscroll-behavior stops the scroll
+     chaining to the page underneath when you hit either end. */
   .cal-sheet{position:fixed;left:0;right:0;bottom:0;background:var(--card);z-index:101;
     border-radius:22px 22px 0 0;padding:14px 16px calc(18px + env(safe-area-inset-bottom));
-    box-shadow:0 -8px 40px rgba(0,0,0,.5);display:none;border-top:1px solid var(--line)}
+    box-shadow:0 -8px 40px rgba(0,0,0,.5);display:none;border-top:1px solid var(--line);
+    max-height:88vh;max-height:88dvh;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch}
   .cal-sheet.on{display:block}
+  /* the close button rides along, so there is always a way out */
+  .cal-sheet > .cal-head{position:sticky;top:-14px;z-index:3;background:var(--card);
+    padding-top:14px;margin-top:-14px}
   .cal-grab{width:38px;height:4px;border-radius:99px;background:var(--line);margin:0 auto 12px}
   .cal-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
   .cal-head .arrow{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);
@@ -436,6 +463,8 @@
   .aux{border-color:var(--line)}
   .aux-head{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer;user-select:none}
   .aux-head .a-title{flex:1;font-size:14px;font-weight:800}
+  .aux-head .aux-ic{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:34px}
+  .aux-head .aux-ic img{height:32px;width:auto;display:block}
   .aux-head .a-sub{font-size:11px;color:var(--muted);font-weight:600;margin-top:1px}
   .aux-head .a-count{font-size:11px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
   .aux-head .chev{font-size:12px;color:var(--muted);width:14px;text-align:center}
@@ -491,7 +520,7 @@
   .a-timer{border:1px solid var(--line);background:var(--card2);color:var(--accent);
     border-radius:9px;padding:6px 9px;font-size:11px;font-weight:800;cursor:pointer;
     font-family:inherit;white-space:nowrap;margin-right:6px}
-  .wtimer{position:fixed;left:12px;right:12px;bottom:76px;background:var(--card);
+  .wtimer{position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom, 0px));background:var(--card);
     border:1px solid var(--accent);color:var(--ink);border-radius:16px;padding:13px 15px;
     display:none;align-items:center;gap:12px;z-index:55;box-shadow:0 8px 30px rgba(0,0,0,.4)}
   .wtimer.on{display:flex}
@@ -801,7 +830,7 @@
 
 <div class="rest" id="rest">
   <b id="restTime">1:30</b>
-  <span>Rest, then hit the next set</span>
+  <span>Then next set</span>
   <button class="plus" id="restPlus">+30s</button>
   <button class="skip" id="restSkip">Skip</button>
 </div>
@@ -1065,6 +1094,15 @@ function origName(n){ return (state && state.exOrig && state.exOrig[n]) || n; }
 
 /* ---------- SVG icon set (currentColor, inline) ---------- */
 const ICO = {
+  warmart:'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAABACAMAAADcQ/xTAAAAYFBMVEUAAABbY3NhaXtWXHLY9kLk/kXe/T54hWdrdW5lbYCfs1imu1XJ5Ebk/z1qcoWTpF280lCBjmSNnl+Fk2PF30kAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAh05jDAAAAIHRSTlMA//////////////////////////8AAAAAAAAAAAAAAGTP5fYAAAFESURBVHjanZWLksIgDEUhCVj7sLq7//+t2xJegVBHO6POcJrrTSDBGOWx/KjrEL6gIwD8aeM4AlS5SDQHp5oGYtQ1YieShf/C+MpdQIyu2b2tc/t73vA0golhRuS2RbIi6sj/BmY7TSI/4/kyplpiUfRP9sLFrHMgognLvtTZHWFzQm1diNYc1tbT+SWH1YkFSboVJlXJrRWRquSWOkwE0raPmX8Vlyj3jrKVWGuVHasjBgrzP5j3pTmCtM01E/mtbq81BZumKjPJrM2ZQ2B9r0VRWc6mzCNm37D7iIGRnZAaEpjJAwN5c47D0rDoUGfclKyJD61hY2Hk+UTBjNLNZjBWrhgEFxfsizj2CdrAyjl8xvDLuMRUL+wTdcarqiZeMJMZatdIYOqEj4N6yGxooQ7z8QObrqK+aDw7j9+HdqV1Nv8Ba2UGKCBBC5IAAAAASUVORK5CYII=" alt="">',
+  coolart:'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAABACAMAAABSmbUvAAAAYFBMVEUAAABhaHpdZHbW9EFmbYFVXHHj/kVpcYXd/T5veXDK5Ufg/z16hmyIlmaZrF6TpGG50U6BjmuesVyovVewxlPF2lBfZoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABsdUKNAAAAIHRSTlMA/////////////////////////////wAAAAAAAAAAAJ+zoUgAAAIPSURBVHjalZaJloMgDEXhCaK202Xazv9/6hAQJWHR5pye2noNj2yiVDR40/RRJ0xro6P5bxzSBK08tDHdJ2zyvJv/p6MEuvJAYwWUzoMmpxvOG2ZqvBWa2c8aviuH1Ue8zUIIBbntYqcZ4JTicmDQEVNx72xnq1pZh76c/K6jNIDLke6NZUvztKHI7vNpk8Ows5U32364TeN704tUFgZrDIoOGIbLyzJXXoFJMYVM1TAO09WylUOM4p6NQ4k/wHAfzpQBULgEPgwzWJSBtQ1Al/E57PjlZmVSYmRDqNx+7c3jSQ2ydNA/lCS4deWV91qGJaqBbLLN9742qZl+bA0HK5JYn0H8r8TTfVYSSc30Rg330nmBJ/fLvlqGqxYeIp81A9LesoZJxUyxuXJ882ZdUctUBxQax7MUtYW4I58LHr/cLRsUWaPCGDGlfGhuJb41Hk1/sJqfQuB5C5vWFB5jkUHMnwadtJ/FY9G4kzjV2BNMK2oTMuunK/cWxkEHn4X3Pr5ojlM3dXH9Df6BWDzP6rGYb3F0cR8ZPj3buKrEnSLZwtciYMPTd1ETjxXJZ63p4dNL4m3t1B4PiaODj8Mi37lAF5/P4xSbWdxlQ62Gn9ZOakq8fYQjXLxC/TTqepdbQ/t8GEvy+MiZXvRhztSPa6U9Pnek8+OJJ+zfdko5ONPGXe1vQz9r3TGvsVtbzj+/3g0hbm0P0QAAAABJRU5ErkJggg==" alt="">',
+  tourart:'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAAYFBMVEVRWmYjKCaXpzRQWSM7Qh280UDL4j8AAAAOEhfc9Ubo/UoEBg/Q5kNia3rE2UFcZnS0yDtpc4K90j1NVSKIlzExNxvD2D4lKjJRWWYkKRdrdyl6iC01O0QaHiQ7QkyWpzRynr6CAAAAIHRSTlP/////////AP///////////////////////////////207WIcAAAT1SURBVHja7Vppk6sqEEWTeRdpwCVGs5r//y9fs6ioKOTGfJiq21VTM7HMOdBNrwz582Uh/wh+GUHVSCmrrxHIjBnh3yHgLLPCmPwCAWOZ3YGiqHYnyBQ+l0UquaYqdiaQCtQqpkAylu1MwCZqwT3EbiGSoEBEPv0odyWQsyWjiviuBOqIzgl/F8EccE74McHPzAZTm+9zTOcExe6OhooxkmkV7R0qGFM/Roo/+4eK3p11MC3e+M47BEVPUO1PUDQ8Y04+YLxp9iMoeGbTwCg6sTW7EDR8hu2S8I8JpIPOBnEe8Y8Iqoy5KvlJXyipUVkkBYlK85jlX4czBSv0fKqrgWObgYS1g2t8nQw4perH/H2s+fCC/BsCPizwftXYSuB8pPYvfHQb1sDfJ+D96uqkR0fUI2O38RNS8BADCeAXxxEeIU9I6H6GaxpgINv4tQtvCO7TJ3AzalpjIBv4jB2m+JognT6icLBvy3iCxnwjO8ywvARoeMtQxBIUFv84h/ITULhqBsZiCaxSF+tfGnm6B68ZyKoBPPio77mRtdMp4jUlkTUFeRaq5HRIZqcoocrB73oLWQyB2W1D/QQwOVcAz8tDP4DCfC1MUKwraMlGu/JiGOFsPCdMYDbwisAHaHMhnn2Uqv1bIP7K4Qph+Ccphej6FyExhyNEYDZQR+A/BMlFPprK2rkKEJgQdIagdi64fCFacNzNG5LIoshVxzmET4lCFyWZHKnUpyOy7PUyJ+T7l5/kevmugowXenREfF68pSF19A28KB9Tn9NmnuuILE2wqSGAThj9CHGZB+40TBA4Q+rolyK3BMmc4O4xwpSg2jaBMm6PLsrOky3U17cIjBeshQmMDC0Gho54LDyGi1lIJSs27kusCT5+Th5oTAU/usDwqrVyEyLgGCdG/3T1A09RlmUCqCgyuIBbxeiJxn9BAiyEatuOOUEPSAfqgJaCto6C4G5fLaglCO2AcXyT97OtYYHQli1F3RCBv/PRBTARWLlagipmB6mslMh6VMQFQbUHl/RZji4AN/Nqk9IIAh0pVKwGsGXugNMpx3qgCTAAPconTJKyMhrojS88zecHnkiB5tWxM7lgioS88x5kU75s2sAQnJaVD1y0h7VmtU9/wrZ+UAVDxdKTISmNB1+67pJTWCkITmGCzJuQgQ4BgpR5C2uefg+GCnNO5VwDQIhhwBz5gPVQGBFNTcKZFaXQmhCXC0KeG/gx+cAQzFsAbeFcbGjHyWjbBMbK1bR8eyjV5EQ86HYqTT0mWClb3IOKGRgFzfuEbfxzTFVheo9JD6BiZy4uLYRKDX9p56/sHDNj9Fdnh4ZKMVvZscjaNAXXBULacTbAw+W72UJvBSBlWDtjdc2i+wObCNAFuml15ScD2x/wmBaKjfEC02QyRTzcvIW3rVhYVI9mkoIOeUBDjbgb5rytMllvw0/9cCXUxg5dZvZWn5wt+/CVHdg+2d+Jk5VJ9Tud/lVuzBLI5izkrVkF32naku4xbXHmRefvzIvciRf9ysTLndndEmdmd3bgD00/s5MfTh3rI7W19jh1PN/lZ1NHffs6TGWb+uTMTa+nezHOTbO/n/xyZ8DLMlmkr7quX4Xca/Krb+QCs+vQVUt4+s7Z+vQ94q4r5v6A88X1gRmWx9x0Rd6ANJwzVzLO970s1UH2R0qJwCi/998e/hF8Q/4Hjwkq7asGU0YAAAAASUVORK5CYII=" alt="">',
+  varietyart:'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAAYFBMVEUAAADc9EPo/UfS50HF2T22yDnI20DO4z6ouDa+0TucqTO7zkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOKOh8AAAAIHRSTlMA//////////////8AAAAAAAAAAAAAAAAAAAAAAAAAALG4REsAAALGSURBVHja7VnZkuMgDDSNuLL//79rO3bWgIyRsGeqtqKXqZok3egC1EzT1772c+YokF1s+UvuXvAZFqXNTPeAezIznKnsTXLD2jnwfyRmjCKgBb9xBDU8XaJvFDov5tCbTlMx2G741Qlp2TpI8BcKEkbf8HW5G/NpGArPgmmJKHrvXKK17/Q+lPhLR/mYf+flqOToTnWBP6Onk0QVTdiZ6RLfNn7mrJwhz28Tvi43xAN3F76XeQyz/TPO0fP8go7wpiuoHlWxLpsM2MxBUxXHPWsp1ndm2IQEqDaYo9/YE4+rL0p6PyE7I04JoN4gPXp22EMFiTfganfh9ibU5dZv5enBhPiwCMTh84OpUmg39xW+ClE6z4A4AYk5Xes2MOoABfYAOi80YYDOTtcGgciBPzx+HWZ1C/BXvxoFwnPpgqIm+NQxbrkDsn0GXQ+sd4CSgouD88tlRHtbfvn88OQDHf3A5JJ5gekRO3jx1CS3ZzJM06MUTxKsFKDpUfNu+i/thqH3d1PTdZkeMYzMvIL75WNOBAyN1VkXxDaBGUv2qm8wYbD5aBC1+LTlMp1fi4aceOFs+qoOVV2yPyNGuUKHmzWUkoBY0Yx03cQR8OqNmCGdXq8sr68krQPVqc/Ce3WKa99xixKHU42AMBr9coq8kLgQR3qAWV9FoOkyNOabWuQa0ilbA5q6jW1rjI/IZAZNljMdxbHpWYTu9iTdKZQxa5vpsT4HJOgSna0fXIFZzwhkSRH/qxJ3Cs2rEAZJoDp2MRTSJsncvUyEM5CWdyHnhlZIk1XIy7GSll0nfG/SYrVvWIqXyrWk/WP9UxhKbvMkOkeMvm8EB1Tk1IfcRp9ZrPCJRX4ZlDFoXtNI8E6kvAba3oc6o76Nd1AAQ6+ybDkWz0fD0yf/2vt++RpG3yfo+r3a2LvQ92BtD+6zhUAPax1f+1pmfwF9KhCJsciUfAAAAABJRU5ErkJggg==" alt="">',
+  exportart:'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAAYFBMVEUAAABbYnXb80xUW207QlNgaH3n/U/S6Ek2PUzF2UW3ykFkbIKyxT2nuTtAR1m90UJHTmBMUV5ocIabrTatv0EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANIyzPAAAAIHRSTlMA//////////////////////////8AAAAAAAAAAAAAAGTP5fYAAANuSURBVHja7VjZctswDBQFQRRlJ3Ha/v+3ViTB+1bkh06FmUyc2N7lAiC41DTdcccdd/x7wd6LztiDvRMd5Q+8BR00ugy8HhwsuI73oocMwOBydL8M6m2Ak+B5dE8D0Ps4LqMKzlBJ8D+CIzKggc7MeiH6P/QuHStLD1c6SsEaibHoy3KAEwVGH6mt/tGHvi2KAHIUdRmApbTbxCwUiqBEUeaAalEtuiJ4QZGiIuJVLqrF1hmaSANLKJC1ZmYNnbCDttOfshTQnsoanaXgBv5r5zMXws0jS4Edk1BvhBy6gud8Xk1wzgMK1rfZCugKX6LPLo4/uC3H4DhaMvAT99ENh6EYOtWX12eKvx8LtunxKYQreftopOouS8DwuUj8eZ11aYXgAQWVAvABbXjTaYmA1QDpEB7FOn/QqKl6AjsqMKFQ+VepOHbatul29SuyftAgwL45YSg+LcFTN8wmCSTHRkXxGWqeACCdcB6FatBd4ktspSISsc42Bf1jzuZpmj6UAInv0CMGbhigXN04jAiVDWEEuDUdv2bHIGihv2DqpaA8bapnnseLLXAFsqB/vDI8VRlKmwFKhw2lQlbRLgadQ/ryekm+VzegRRO0i98xumEIy9DYyJVSBIdFwD4HSWoO61I7fWPW0YCaId0SstUmAXl1jzBJX13nASbLL+WPnNCQhLjaNIUhZXDnqlj7q6C/QyL08kFezORKfWkOnY1JONCsd1b4oKsA+PIY7LF97DhZBU/CbkTtlbsevbCZB8VjGtUtHqxDCCXI82itG6OwpzSBVIYJut5tngQhlDPgDecFfuMA3TPdKAgvEb4E8h3FhvUdr20bTWBPK4hdeyDBHUBt78hCAmbuTplu2mOCtjkN9zLtjfQGRE3DI7/ETxJkr5t7YGIaM2OIANUgn9eM4XteRpCxk7USZAmwmCLQCUoJ+HRRDVhs8ppje5RAU8QiKkN1mEDvAxFRTBcqoOHot2ptaJ8gSPNUGtXnCbQIYWxecRCdV/Cw/qzepKcJ7LVA5sndqXp9dpvAWWp5mj1HvVd3iug4HjJGPQQ4+qxzSAGyE882IwNZIcCzT06ha1yffWgae9Eswc/QQxEpweEkrngMH/qiCxJfEhEQ/Dw1qQhHcDH65Lnra1MTOXrwHvS8hQG6n8fdcccdd/yf8RcQZR3yoRR4lQAAAABJRU5ErkJggg==" alt="">',
+  libart:'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAAYFBMVEUpLSlUXSSNnDN5hy690D48Qx5JUF9ncIbB1T8AAABbY3bc9Enm/UxTW20DBQtgaX3R50bG2kIQExa0xj1ES1olKTKnuDo0OUUYHCI8Q1BjbIG3yUCYpza90UEkKRhqdSqWfFO0AAAAIHRSTlP///////////8A/////////////////////////////wqXjmwAAAT4SURBVHja7Zlrk5pKEIZBTU4Ypp0ZQXRV9P//y8Pcmp4Lg27cqnyQSrIbC/rp+4tQNT98VB/AB/ABfADvBHRStlKOPwRQsuWcm79SvRuwU1IbbltLmA4p/7wL0Hnj2vpQV/VNcQdRu78GjNJal9b6fa+PQ/UYpEuXVN23Aeg6sX7Qh4MoG9V6Saq8661LjLH+ML472/rfQ70xAAeRanwBMMzGtf+bR4XG7Y+pDpKcgZDu2Qg6nXl/ZVd7wzY793oTW0dGHkIBgz/BFMBdJ291tbfHvR7y1mdIWhICGI0XY8TghnF31tu1wwRyzQI6a0/iB1cax/UZ6znIDHC29OhiHMM8Z+3zh8lUAlBzAG5S41l+2nuZTZG0AIW50me+xgiLrCJAixmSnHqD63SFYU721uXU6jIC2KslohJGIY7QdbfZVQ6gsQPPuBbXfMl1Jf0i5LslwJXn+y6XK+O6pG1tt+zwuPEuV2QN6Phib4cMWiIreeYztamnpfLgcReNZUDCaGfXu9n1blvZbSsTQKNnaSFFpbVJXL8Z1bCC1KaARrtRiiBldJis9rqtreud0+0MQFepxYYtQwa91r3r0gre3Qt2e93UN57Xg8FsilWAdKdN1kZT0/2vbSftihmMRG2TLmoa5gNZXQx8NE3hjc33GsqKx1SGNplkEIIxwL4oMrid19sBa+oSY8swmjK0mwDAJvOMiQvMytkuMkyGWr7d15tdSxNzt3pNe63y/jN76N99ILPipCUwvSYxMSYWLIMaknXtzOsA4DJFA4xsnxxAcbcpuu0vfyPDqeZGABKA+akL4hm75C7FAbA/sQxyt3BXQTPkf2WXmRFuUZciftvb/nSuB0KG1wYAwQjLfuDPo1vULRS+PWB/BgsErHs5AESABQZ38+4To0LXhbeVAjx+haE3heJODv6ExoW7QGSLnAe468j6VFr4It/RdQZfx/3XJdumi4CYoQUkZ3yyfjKK0LNo0C5Bl64zwpK6BEB/1BN3rnpgEWAiiHVAOCDmMmAXb/101G1bnQCzEW5T3VqlFFEGWOPgEwP96awTc/wCV4YMwC2huE2zCDMvYq6pScypd87pIvdi6QsI/PcEATeKr6lzXZfBxtKHc2D9x1yJMsPPI/SV+cZWoes9jSUCMCo4UGQYwHTygdbUZ+p4MpWZ/vSh4DCcZew+UciQBpwxMVOmSJF1F0C0roFeC2uMsJtp9xvfZ+vJJIvGC87c56IA0EU+RpmCNT2AaL9l4vCAsPvZXMNFAJDgCwx31tl1jGuIwDr+tyg4ZPcEubIAOLiOYSKyDk7eCYAtCY4g9fBxuDb1iz+0jme9JjjR1f6KeL2S7LLmeQCjQwhObuO92rDZ92nC+28IDmEAuT0LFAcHellwoLhFM4KDShyuPoi2qbkLYut6IJJ29JX3U+FXX7yuizXIM4C43keakBUcxuAZgK8yixTneMKtXZ2BLQsOe05wRHAXMSuOpcFl8ZHaqt7gwAvtKt5FzNYPNpbCU8cVhhecYI9mYik9Ny3Jjd9FPb2LiGLBEhSe/OalgC67RIp/Zxq5+Ox6iUFXYtJC7LWn71lG0/Ru68Rph+883k/r0TS/BQr93ELw/RcUURwmRaLXaV+S4tdfsdA4XJG/Vq2/+JIIxyO8bXnrW6hEWd//mkt/I/A3Hz/1Hg3YCyd/XjV+AB/AB/AvAP4HRIl4DX6qpjMAAAAASUVORK5CYII=" alt="">',
+  a2hsart:'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAAYFBMVEUjJxhJT1+2yjyfsDUAAAAOEhhbYXQFBwxXXXDa8kRgZ3vp/kg3O0gvMz5FS1qKmjF2gyprdihYYSNkbiYdICglKTLV7UNVXSIZHCJDSh8+Q1EwNhpESyBkbICAjy6TozWRG1i0AAAAIHRSTlP/////AP///////////////////////////////////+KZVGsAAAJtSURBVHja7ZqLdqowEEVtbzMzhodKDWi17f//5c3wqBJSFwmJ0pbjc0XNZoZkAhxXL5G1WgCzBlBfAPSd/AAgYaQkeABIAt3qlHrvJTkDzC5IHfYXKTJprgCSvS5IpthTZn5OrgAzJbnoAXIzgV6AZvAQNC9Eef7ET1oExvj6NkejI9BjRdaP5tnYfB+A/s1TPk7kFwEdcKQE7xH3CASOlvCJ4E3/bqQQU49hmo7uXxMyLwC6AJxTJB0j8AHgrAC0AGIAxJIiV8B1dYsBQHE8H4/H8/koMEqpwCJptcMoMxl3SbnWKpNtJMBrsq5lBQSYBw8GwPQV7Y6AXSAA3juCXVBAu5Ovj36KS4r6VQOnAERVVFXBqj47wD/dVrcU1QqnRvCaXLRuddW0xYkzuasPdpVBAOsbuhsg/fERzHsnRx6mp82XnruJ9vzV9HlqAeANGJaKclAqGEDhlswHrcmzXA8w9or2uCXzZ6zJ1lGkq0ZZlhGPTXv1Ifzh+2rz8aHLw3ZzGgKCzOSbJyDzOxGHBfD7z5Phr10vgtgpmiHALUWpRwTUAq442Hu5NLKd4DyK6mvLY5V6XRwHSkeq/rI7gFoLq72z3rn1XTZ2RW1TyNqy4K96OCCmHQeU8aqTdZ5LfQNqt2SyxULsWAilBLsFFgcmAEDxxgNkuLc5d1MBBDl3rPMhFb7FAMisMc+YpCRFAChsGwnVwKbzmgeGjZZ2EVgAPk7gAMCZ4UFZ74MIAIC9Lgl6VqV4sIxSV4Bh9zZ96CmQZQf7PAhgWLOnzJVN9ZxSb8NaJ2louUvu0tIMFOJPA90GW9qWP278bcB/6nrFSESgMDsAAAAASUVORK5CYII=" alt="">',
+  whistle:'<img src="data:image/png;base64,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" alt="" width="96" height="96">',
+  check:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>',
   share:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>',
   kebab:'<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg>',
   train:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3 9v6M21 9v6M6.5 12h11"/></svg>',
@@ -1355,32 +1393,44 @@ function rotForce(dayK, n){
    on purpose: the prompt-budget bug got through because the rule was only ever
    tested one set at a time, and a counter that fires every Nth session can only
    be checked by walking a sequence. Returns a message, or null. */
-function rotTick(day, light){
+function rotTick(day, light, done){
   if (state.rotLast && state.rotLast.day === day) delete state.rotLast;
   const every = rotateEvery();
   if (light || !every) return null;                 /* a light session is not a session */
-  state.rotN = state.rotN || {};
-  state.rotN[day] = (state.rotN[day] || 0) + 1;
-  if (state.rotN[day] < every) return null;
-  state.rotN[day] = 0;
-  const ch = rotateDay(day);
+  /* Only what reached the log counts. An accessory you skipped has not been
+     done, so its clock does not move -- which is the whole point of counting
+     the movement rather than the day. */
+  state.exN = state.exN || {};
+  for (const n of (done || [])){
+    const k = day + "|" + n;
+    state.exN[k] = (state.exN[k] || 0) + 1;
+  }
+  const ch = rotateDay(day, every);
   if (!ch) return null;
   state.rotLast = {day: day, changes: ch};
   return ch.map(c => c[0] + " \u2192 " + c[1]).join(" \u00b7 ");
 }
-function rotateDay(dayK){
+/* How many times has this movement been done in this day's slot? */
+function exReps(dayK, n){ return ((state.exN || {})[dayK + "|" + n]) || 0; }
+function rotateDay(dayK, every){
   const plan = (state.plan || {})[dayK];
   if (!plan || !plan.length) return null;
+  /* No threshold means rotate now: a manual re-roll, and the direct-call tests. */
+  const due = every ? (n => exReps(dayK, n) >= every) : (() => true);
   /* Walk further down the ranked list each time. Without this the day
      ping-pongs between the same two movements forever: the ranking barely
      shifts between rotations, so the top of it is always the same name. */
   state.rotSeq = state.rotSeq || {};
-  const seq = state.rotSeq[dayK] = (state.rotSeq[dayK] || 0) + 1;
+  /* Banked only if something actually moves. rotateDay now runs after every
+     completed session, and burning an offset on a session that rotated nothing
+     would walk the ranking for no reason. */
+  const seq = (state.rotSeq[dayK] || 0) + 1;
   const anchors = rotAnchors(plan);
   const taken = plan.map(e => e.n);
   const changes = [];
   plan.forEach((e, i) => {
     if (e.pin || anchors.indexOf(i) !== -1) return;
+    if (!due(e.n)) return;
     /* Constraints come from the movement standing in the slot, not from the
        recipe. A hand-built day has no recipe to read and its shape is still
        the user's: same muscle, same direction, same class of movement.
@@ -1390,8 +1440,15 @@ function rotateDay(dayK){
       force: rotForce(dayK, e.n), klass: exBand({n: e.n, g: e.g}),
       exact: true, fresh: true, strict: true
     });
-    if (n && n !== e.n){ changes.push([e.n, n]); taken.push(n); e.n = n; }
+    if (n && n !== e.n){
+      changes.push([e.n, n]); taken.push(n);
+      /* The outgoing movement's count leaves with it, so if it ever comes back
+         it comes back on a fresh clock rather than instantly due again. */
+      if (state.exN) delete state.exN[dayK + "|" + e.n];
+      e.n = n;
+    }
   });
+  if (changes.length) state.rotSeq[dayK] = seq;
   return changes.length ? changes : null;
 }
 
@@ -1725,6 +1782,11 @@ function shouldAskForm(ex, j){
 const WATCH_CHIPS = ["Feeling weak today", "Joint pain", "Easing back in", "Typo - fix it"];
 /* A coach notices when you quietly put a lighter weight on the bar. This does
    not wait for a plateau and it is not optional - it speaks the moment it sees it. */
+/* How big does a drop have to be before Coach asks about it?
+   WATCH_ABS  - pounds, so one plate change on a light lift stays quiet
+   WATCH_PCT  - share of last time's load, so a small step on a heavy lift does too
+   WATCH_BIG  - a collapse this large always gets asked about, both gates bypassed */
+const WATCH_ABS = 10, WATCH_PCT = 0.20, WATCH_BIG = 0.50;
 function coachWatch(ex, j){
   const s = ex.sets[j];
   if (s.why || s.watched) return null;                  /* already raised on this set */
@@ -1740,8 +1802,28 @@ function coachWatch(ex, j){
   if (mode === "wr" && w > 0 && last.w > 0){
     const gap = last.w - w;
     if (gap <= 0) return null;
-    const inc = increment(ex, last.w);
-    if (gap < inc || gap / last.w < 0.10) return null;  /* a small dip is not a story */
+    /* Never question a drop the coach itself asked for. The comparison above is
+       against LAST session; the coach may have prescribed a back-off, deload or
+       pain hold for THIS one, and following that instruction is not a mystery
+       to be investigated. Its number is the baseline whenever it is lower. */
+    const rx = (typeof coachFor === "function") ? coachFor({n: ex.n, g: ex.g}) : null;
+    if (rx && Number(rx.w) > 0 && w >= Number(rx.w)) return null;
+    /* Two gates, not one. A percentage on its own fires constantly on light
+       lifts, because at 20 lbs a single dumbbell step IS 25% - which is exactly
+       what happened in training: 20 to 15 got the full "what is going on?"
+       treatment for moving one plate. So the drop has to be large in absolute
+       terms AND as a share, with a hard override so a genuine collapse always
+       gets asked about however light the lift.
+         20 -> 15   5 lbs, 25%   quiet   (one step down)
+        100 -> 90  10 lbs, 10%   quiet   (one step down)
+         50 -> 40  10 lbs, 20%   asks    (two steps down)
+        100 -> 80  20 lbs, 20%   asks
+         40 -> 20  20 lbs, 50%   asks    (halved - always asks)
+       The floor never sits below one increment, so a bigger custom step size
+       cannot start tripping it. */
+    const floor = Math.max(WATCH_ABS, increment(ex, last.w));
+    const share = gap / last.w;
+    if (share < WATCH_BIG && (gap < floor || share < WATCH_PCT)) return null;
     return {kind: "drop", unit: "lbs", j: j, was: last.w, now: w,
             pct: Math.round(gap / last.w * 100)};
   }
@@ -1752,7 +1834,11 @@ function coachWatch(ex, j){
     if (!r || !last.r) return null;
     const gap = last.r - r;
     if (gap <= 0) return null;
-    if (gap < Math.max(2, Math.round(last.r * 0.10))) return null;
+    /* Same shape for reps, where an absolute pound floor is meaningless: the
+       floor is 2 reps and the share has to clear the same bar. 12 -> 10 is
+       noise; 12 -> 9 is worth a question; anything halved always is. */
+    const rshare = gap / last.r;
+    if (rshare < WATCH_BIG && (gap < Math.max(2, Math.ceil(last.r * WATCH_PCT)))) return null;
     return {kind: "drop", unit: (mode === "sec" ? "sec" : "reps"), j: j, was: last.r, now: r,
             pct: Math.round(gap / last.r * 100)};
   }
@@ -2805,7 +2891,7 @@ function openSettings(){
     <div class="set-sub">${sbUser ? sbUser.email + " \u00b7 synced" : "Sign in to sync across devices"}</div></div>
     ${sbUser ? '<span class="acct-dot"></span>' : ""}<span class="set-chev">\u25B8</span></div>`);
   rows.push(`<div class="set-row" data-go="lib">
-    <span class="set-ic">${ico("cog")}</span>
+    <span class="set-ic">${ico("libart")}</span>
     <div class="set-main"><div class="set-name">Exercise Library</div>
     <div class="set-sub">Muscles, equipment, tracking modes</div></div><span class="set-chev">\u25B8</span></div>`);
   rows.push(`<div class="set-row" data-go="shop">
@@ -2817,51 +2903,43 @@ function openSettings(){
     <div class="set-main"><div class="set-name">Sound</div>
     <div class="set-sub">${soundOnNow ? "Chimes and voice coach on" : "Silent \u2014 timers flash the screen instead"}</div></div>
     <span class="set-tog ${soundOnNow ? "on" : ""}">${soundOnNow ? "On" : "Off"}</span></div>`);
+  /* One coach, one card. How hard he pushes and what he sounds like were two
+     separate rows saying "Coach" and "Voice Coach", which read as two features. */
   const CL = coachLevel();
   rows.push(`<div class="set-row coach-row">
-    <span class="set-ic">${ico("medal")}</span>
+    <span class="set-ic">${ico("whistle")}</span>
     <div class="set-main"><div class="set-name">Coach</div>
     <div class="set-sub">${CL.sub}</div>
     <div class="coach-pick">${Object.keys(COACH_LEVELS).map(k =>
       `<button data-cl="${k}" class="${k === CL.id ? "on" : ""}">${COACH_LEVELS[k].name}</button>`).join("")}</div>
+    <button class="sub-link" id="voiceLink">${ico("mic")} ${state.voiceName ? "Custom voice picked" : "His voice \u2014 preview, change, check clips"} \u25B8</button>
     </div></div>`);
   const rotN = rotateEvery();
   rows.push(`<div class="set-row coach-row">
-    <span class="set-ic">${ico("chart")}</span>
+    <span class="set-ic">${ico("varietyart")}</span>
     <div class="set-main"><div class="set-name">Variety</div>
     <div class="set-sub">${rotN
-      ? "Accessories swap every " + rotN + " sessions of a day \u2014 about " + rotWeeks(rotN) + " weeks. Your two steadiest lifts stay put, so you can keep adding weight to them."
+      ? "Each accessory changes after you have done it " + rotN + " times \u2014 about " + rotWeeks(rotN) + " weeks. Skip one and its clock waits. Your two steadiest lifts never change, so you can keep adding weight to them."
       : "Your days never change on their own"}</div>
-    <div class="coach-pick">${[["0","Off"],["8","~6 weeks"],["4","~3 weeks"]].map(([v,lab]) =>
+    <div class="coach-pick">${[["0","Off"],["8","Every 8"],["4","Every 4"]].map(([v,lab]) =>
       `<button data-rot="${v}" class="${String(rotN) === v ? "on" : ""}">${lab}</button>`).join("")}</div>
-    </div></div>`);
-  const mine = myEquip();
-  rows.push(`<div class="set-row coach-row">
-    <span class="set-ic">${ico("medal")}</span>
-    <div class="set-main"><div class="set-name">My equipment</div>
-    <div class="set-sub">${mine.length} of ${equipList().length} \u2014 nothing outside this gets suggested</div>
-    <div class="coach-pick wrap">${equipList().map(e =>
-      `<button data-eq="${e}" class="${mine.indexOf(e) !== -1 ? "on" : ""}">${e}</button>`).join("")}</div>
     </div></div>`);
   if (!a2hsInstalled()){
     rows.push(`<div class="set-row coach-row" id="a2hsRow">
-      <span class="set-ic">${ico("bolt")}</span>
+      <span class="set-ic">${ico("a2hsart")}</span>
       <div class="set-main"><div class="set-name">Add to Home Screen</div>
       <div class="set-sub">${a2hsWhy()}</div>
       <ol class="a2hs-steps">${a2hsSteps().map(x => `<li>${x}</li>`).join("")}</ol>
       ${a2hsPrompt ? `<div class="coach-pick"><button id="a2hsInstall2">Install now</button></div>` : ""}
       </div></div>`);
   }
-  rows.push(`<div class="set-row" data-go="voice">
-    <span class="set-ic">${ico("mic")}</span>
-    <div class="set-main"><div class="set-name">Voice Coach</div>
-    <div class="set-sub">${state.voiceName ? "Custom voice picked" : "Using your system voice"}</div></div><span class="set-chev">▸</span></div>`);
+
   rows.push(`<div class="set-row" data-go="tour">
-    <span class="set-ic">${ico("medal")}</span>
+    <span class="set-ic">${ico("tourart")}</span>
     <div class="set-main"><div class="set-name">App Tour</div>
     <div class="set-sub">Replay the intro — great for showing a friend</div></div><span class="set-chev">▸</span></div>`);
   rows.push(`<div class="set-row" data-go="data">
-    <span class="set-ic">${ico("chart")}</span>
+    <span class="set-ic">${ico("exportart")}</span>
     <div class="set-main"><div class="set-name">Data & Export</div>
     <div class="set-sub">JSON backups and CSV \u00b7 lives on the Body tab</div></div><span class="set-chev">\u25B8</span></div>`);
   $("setBody").innerHTML = rows.join("")
@@ -2875,19 +2953,11 @@ function openSettings(){
     try{ a2hsPrompt.prompt(); await a2hsPrompt.userChoice; }catch(e){}
     a2hsPrompt = null; openSettings();
   };
+  const vl = document.getElementById("voiceLink");
+  if (vl) vl.onclick = ev => { ev.stopPropagation(); if (soundOn()) ac(); openVoiceSheet(); };
   $("setBody").querySelectorAll(".coach-pick button[data-rot]").forEach(b => b.onclick = ev => {
     ev.stopPropagation();
     state.rotate = Number(b.dataset.rot) || false;
-    save(); render(); openSettings();
-  });
-  $("setBody").querySelectorAll(".coach-pick button[data-eq]").forEach(b => b.onclick = ev => {
-    ev.stopPropagation();
-    const e = b.dataset.eq;
-    let cur = (state.myEquip && state.myEquip.length) ? state.myEquip.slice() : equipList().slice();
-    const i = cur.indexOf(e);
-    if (i === -1) cur.push(e); else cur.splice(i, 1);
-    if (!cur.length){ toast("Keep at least one \u2014 otherwise there is nothing to suggest"); return; }
-    state.myEquip = equipList().filter(x => cur.indexOf(x) !== -1);
     save(); render(); openSettings();
   });
   $("setBody").querySelectorAll(".coach-pick button[data-cl]").forEach(b => b.onclick = ev => {
@@ -2989,6 +3059,31 @@ function tourSampleOff(){
   if (document.body.dataset.tab === "progress" && typeof renderProg === "function") renderProg();
 }
 let obStep = 0;
+/* The card-anatomy run needs an exercise card on screen. On a rest day -- or any
+   day whose list came back empty -- there is none, and eight steps in a row rang
+   nothing. Borrow a training day for the duration, the way tourSampleOn borrows
+   a history, and hand the real session straight back. */
+let tourRealSession = null;
+function tourDayOn(){
+  if (tourRealSession) return;
+  const ss = state.session;
+  const usable = ss && ss.list && ss.list.length && !ss.pastDate
+                 && ss.day !== "rest" && !ss.list.some(e => e.sets.some(x => x.done));
+  if (usable) return;
+  try {
+    const demo = buildSession("push");
+    if (!demo || !demo.list || !demo.list.length) return;
+    tourRealSession = state.session;
+    state.session = demo;
+    render();
+  } catch(e){ tourRealSession = null; }
+}
+function tourDayOff(){
+  if (!tourRealSession) return;
+  state.session = tourRealSession;
+  tourRealSession = null;
+  render();
+}
 function tourReset(){
   { const nv = document.querySelector(".bottomnav"); if (nv && nv.style.transform) nv.style.transform = ""; }
   /* undo any demonstration state between steps */
@@ -3010,25 +3105,28 @@ const TOUR = [
   {tab:"train", loc:"Train \u00b7 date bar", open(){ tourReset(); render(); }, sel:"#datenav", t:"Time travel bar", b:"\u2039 and \u203a step between days; the label opens a full calendar. Past days can be opened and logged after the fact \u2014 miss a Tuesday, backfill it Wednesday."},
   {tab:"train", loc:"Train \u00b7 day picker", open(){ dayDDOpen = true; render(); }, sel:[".dayDD",".dd-panel"], t:"Your day", b:"The \u201cTraining\u201d bar and its open menu are one control \u2014 the bar shows today's pick, tapping it drops this list. Every day type has its own plan, and a dot marks days you've already logged."},
   {tab:"train", loc:"Train \u00b7 notices", open(){ tourReset(); render(); }, sel:"#programCard", alt:"#dayTitle", t:"Where the app talks to you", b:"This strip is for notices: program suggestions, measurement reminders, recovery check-ins after a session you rated rough, backup nudges. Empty means nothing needs you."},
-  {tab:"train", loc:"Train \u00b7 above your list", sel:"#shuffleDay", alt:".prov-line", t:"The re-roll button", b:"This \u21bb button rebuilds a whole day's suggestions \u2014 same muscles, different movements. It's careful about it, though. Watch what one tap does\u2026"},
-  {tab:"train", loc:"Train \u00b7 above your list", open(){ if (state.plan[state.session.day]) regenArm = true; render(); }, sel:"#shuffleDay", alt:".prov-line", t:"\u2026it asks first", b:"We just tapped it: it turned red and wants a second tap before rebuilding, so a stray thumb can't torch your day. (We'll leave it.) The grey line beside it says where today's plan came from."},
-  {tab:"train", loc:"Train \u00b7 first card", open(){ tourReset(); wuOpen = true; render(); }, sel:".aux-wu", alt:"#exerciseList", t:"Warm-up first", b:"Every training day opens with this warm-up card, matched to the muscles on the menu. Check them off like anything else \u2014 they pay bonus XP."},
-  {tab:"train", loc:"Train \u00b7 exercise card", open(){ tourReset(); render(); }, sel:".exercise:not(.aux)", t:"Anatomy of an exercise card", b:"This whole block is one exercise: its name and muscles up top, three icon buttons in the corner, and a row per set below. Let's take it piece by piece."},
-  {tab:"train", loc:"Train \u00b7 inside the card", sel:".exercise:not(.aux) .set-row", t:"One row = one set", b:"Type your weight and reps \u2014 \u201cPrevious\u201d shows last time, your number to beat \u2014 and timed moves get a built-in countdown right in the row."},
-  {tab:"train", loc:"Train \u00b7 end of each row", sel:".exercise:not(.aux) .set-check", alt:".exercise:not(.aux) .set-row", t:"This box is the whole game", b:"See the faint check? That's the done button \u2014 tap it when you finish a set and it fills bright. That single tap is how everything gets counted: XP, streaks, charts, your next weight suggestion."},
-  {tab:"train", loc:"Train \u00b7 card corner, 1st icon", sel:".exercise:not(.aux) .icon-btn.chart-btn", t:"Icon one: progress chart", b:"Top-right of the card, three icons. The first \u2014 the little graph \u2014 is this exercise's own history. Let's open it with sample data so you can see a real trend."},
-  {tab:"train", loc:"Train \u00b7 exercise chart", sample:true, open(){ openChart = 0; render(); }, sel:".chart-panel", alt:".exercise:not(.aux) .ex-actions", t:"Best set over time", b:"Sample data on: each dot a workout, the line your strength climbing, left to right. Tap any dot for details. Your real line starts after two logged sessions."},
-  {tab:"train", loc:"Train \u00b7 card corner, 2nd icon", open(){ tourReset(); render(); }, sel:".exercise:not(.aux) .ex-actions a", alt:".exercise:not(.aux) .ex-actions", t:"Icon two: \u25B6 plays a demo", b:"The middle icon. Unsure about form? It opens a short video for exactly this movement \u2014 like this:", media:"video"},
-  {tab:"train", loc:"Train \u00b7 card corner, 3rd icon", sel:".exercise:not(.aux) .icon-btn.swap", t:"Icon three: the swap button", b:"\u21c4. Don't like a movement \u2014 no bench, cranky shoulder, just bored? This button trades it for another that hits the same muscles. Watch what it opens\u2026"},
-  {tab:"train", loc:"Train \u00b7 swap panel", open(){ openPanel = 0; render(); }, sel:".swap-panel", alt:".exercise:not(.aux) .icon-btn.swap", t:"\u2026the swap panel", b:"Open for real: same-muscle alternatives ready to sub in. Your pick becomes the new default for this day."},
-  {tab:"train", loc:"Train \u00b7 last card", open(){ tourReset(); cdOpen = true; render(); }, sel:".aux-cd", alt:"#exerciseList", t:"Cool-down closes it out", b:"Stretches matched to what you just trained sit at the bottom of every day \u2014 also worth bonus XP. Skipping them is legal; your hamstrings will file a complaint."},
-  {tab:"train", loc:"Train \u00b7 below the list", open(){ tourReset(); render(); }, sel:"#addBtn", t:"Bolt on extras", b:"Feeling spicy? Add any exercise from the library to today's session \u2014 just for today, without touching your saved template."},
-  {tab:"train", loc:"Train \u00b7 the big one", sel:"#finishBtn", t:"Finish workout", b:"The victory lap. Tap it when you're done and the session is sealed: XP and coins land, your streak counts, charts update, and tomorrow's weights learn from today."},
+  /* Only runs when the button is actually on screen \u2014 same condition render()
+     uses for canRegen. No alt: a fallback here would ring the grey provenance
+     sentence while the card says "this button". */
+  {tab:"train", day:true, loc:"Train \u00b7 above your list", sel:"#shuffleDay",
+   t:"The re-roll button", b:"This \u21bb button rebuilds a whole day's suggestions \u2014 same muscles, different movements. It asks first: one tap turns it red, and only a second tap rebuilds, so a stray thumb can't torch your day. The grey line beside it says where today's plan came from."},
+  {tab:"train", day:true, loc:"Train \u00b7 first card", open(){ tourReset(); wuOpen = true; render(); }, sel:".aux-wu", alt:"#exerciseList", t:"Warm-up first", b:"Every training day opens with this warm-up card, matched to the muscles on the menu. Check them off like anything else \u2014 they pay bonus XP."},
+  {tab:"train", day:true, loc:"Train \u00b7 exercise card", open(){ tourReset(); render(); }, sel:".exercise:not(.aux)", t:"Anatomy of an exercise card", b:"This whole block is one exercise: its name and muscles up top, three icon buttons in the corner, and a row per set below. Let's take it piece by piece."},
+  {tab:"train", day:true, loc:"Train \u00b7 inside the card", sel:".exercise:not(.aux) .set-row", t:"One row = one set", b:"Type your weight and reps \u2014 \u201cPrevious\u201d shows last time, your number to beat \u2014 and timed moves get a built-in countdown right in the row."},
+  {tab:"train", day:true, loc:"Train \u00b7 end of each row", sel:".exercise:not(.aux) .set-check", alt:".exercise:not(.aux) .set-row", t:"This box is the whole game", b:"See the faint check? That's the done button \u2014 tap it when you finish a set and it fills bright. That single tap is how everything gets counted: XP, streaks, charts, your next weight suggestion."},
+  {tab:"train", day:true, loc:"Train \u00b7 card corner, 1st icon", sel:".exercise:not(.aux) .icon-btn.chart-btn", t:"Icon one: progress chart", b:"Top-right of the card, three icons. The first \u2014 the little graph \u2014 is this exercise's own history. Let's open it with sample data so you can see a real trend."},
+  {tab:"train", day:true, loc:"Train \u00b7 exercise chart", sample:true, open(){ openChart = 0; render(); }, sel:".chart-panel", alt:".exercise:not(.aux) .ex-actions", t:"Best set over time", b:"Sample data on: each dot a workout, the line your strength climbing, left to right. Tap any dot for details. Your real line starts after two logged sessions."},
+  {tab:"train", day:true, loc:"Train \u00b7 card corner, 2nd icon", open(){ tourReset(); render(); }, sel:".exercise:not(.aux) .ex-actions a", alt:".exercise:not(.aux) .ex-actions", t:"Icon two: \u25B6 plays a demo", b:"The middle icon. Unsure about form? It opens a short video for exactly this movement \u2014 like this:", media:"video"},
+  {tab:"train", day:true, loc:"Train \u00b7 card corner, 3rd icon", sel:".exercise:not(.aux) .icon-btn.swap", t:"Icon three: the swap button", b:"\u21c4. Don't like a movement \u2014 no bench, cranky shoulder, just bored? This button trades it for another that hits the same muscles. Watch what it opens\u2026"},
+  {tab:"train", day:true, loc:"Train \u00b7 swap panel", open(){ openPanel = 0; render(); }, sel:".swap-panel", alt:".exercise:not(.aux) .icon-btn.swap", t:"\u2026the swap panel", b:"Open for real: same-muscle alternatives ready to sub in. Your pick becomes the new default for this day."},
+  {tab:"train", day:true, loc:"Train \u00b7 last card", open(){ tourReset(); cdOpen = true; render(); }, sel:".aux-cd", alt:"#exerciseList", t:"Cool-down closes it out", b:"Stretches matched to what you just trained sit at the bottom of every day \u2014 also worth bonus XP. Skipping them is legal; your hamstrings will file a complaint."},
+  {tab:"train", day:true, loc:"Train \u00b7 below the list", open(){ tourReset(); render(); }, sel:"#addBtn", t:"Bolt on extras", b:"Feeling spicy? Add any exercise from the library to today's session \u2014 just for today, without touching your saved template."},
+  {tab:"train", day:true, loc:"Train \u00b7 the big one", sel:"#finishBtn", t:"Finish workout", b:"The victory lap. Tap it when you're done and the session is sealed: XP and coins land, your streak counts, charts update, and tomorrow's weights learn from today."},
   {tab:"train", loc:"Bottom navigation", sel:'.bottomnav button[data-tab="body"]', alt:".bottomnav", t:"Four tabs run the app", b:"This bar is home base: Train, Body, Plan, Progress \u2014 and we'll visit them in order. Next up: Body, the highlighted button. Watch the screen change."},
   {tab:"body", loc:"Body tab", sample:true, open(){ render(); }, sel:["#weightHero","#measBtn"], alt:"#measBtn", t:"Body \u2014 your measurements", b:"And here we are. Weight and tape measurements log here in ten seconds, and every entry becomes a chart \u2014 shown alive with sample data. Weight also powers your \u201ctotal lifted\u201d stats."},
   {tab:"body", loc:"Body tab \u00b7 trend tiles", sample:true, sel:".tab-body .meas-tile", alt:"#measBtn", t:"Every measurement, tiled", b:"Each tape measurement you log grows its own tappable trend tile down here \u2014 waist, arms, whatever you track. The sample lifter's are live."},
   {tab:"body", loc:"Bottom navigation", open(){ tourSampleOff(); }, sel:'.bottomnav button[data-tab="plan"]', alt:".bottomnav", t:"Third stop: Plan", b:"Next button over \u2014 where your week and your programs live. Jumping now."},
-  {tab:"plan", loc:"Plan tab \u00b7 This week", open(){ tourReset(); render(); }, sel:"#planWeek", t:"Your week, for real", b:"Landed on Plan. Solid fills are days you actually logged; outlines are the plan ahead. The chips underneath check every muscle group gets work this week."},
+  {tab:"plan", loc:"Plan tab \u00b7 This week", open(){ tourReset(); render(); }, sel:["#planStatus","#planWeek"], t:"Your week, for real", b:"Landed on Plan. Solid fills are days you actually logged; outlines are the plan ahead. The chips underneath check every muscle group gets work this week."},
   {tab:"plan", loc:"Plan tab \u00b7 Program catalog", sel:"#planCatalog", t:"Programs", b:"Below your week sits the catalog: multi-week programs with a rhythm and a finish line \u2014 muscle-building splits, upper/lower, conditioning blocks. Start one and Train follows it automatically, day by day."},
   {tab:"plan", loc:"Plan tab \u00b7 Custom shelf", open(){ pgCatSel = "Custom"; renderPlan(); }, sel:"#pgBuildNew", alt:"#planCatalog", t:"Or build your own", b:"We've flipped to the Custom shelf \u2014 your programs live here. Any cycle from 2 to 14 days, any length, your own notes. The \u201cCreate a program\u201d tour at the end builds one with you."},
   {tab:"plan", loc:"Bottom navigation", open(){ pgCatSel = "Muscle"; renderPlan(); }, sel:'.bottomnav button[data-tab="progress"]', alt:".bottomnav", t:"Last stop: Progress", b:"Fourth button. Everything you log lands there \u2014 jumping now."},
@@ -3052,12 +3150,14 @@ let tourGeom = { has: false };
 const TOPICS = {
   lib: { name:"Exercise Library", desc:"Make the app match your gym",
     enter(){ openCfg(); },
-    exit(){ cfgSearch = ""; cfgEq = []; cfgEqOnly = false; cfgOpenDD = null; cfgEdit = null; cfgAdding = false; cfgTmp = null; if (typeof closeCfg === "function") closeCfg(); }, steps: [
+    exit(){ cfgSearch = ""; cfgEq = []; cfgEqOnly = false; cfgOpenDD = null; cfgEdit = null; cfgAdding = false; cfgTmp = null; cfgGearOpen = false; if (typeof closeCfg === "function") closeCfg(); }, steps: [
+    {loc:"Exercise Library \u00b7 top of the list", open(){ cfgGearOpen = false; renderCfg(); }, sel:".gear-panel", t:"What you own comes first", b:"Above the whole catalogue: the gear you actually have. Rotation only ever suggests movements you can do with it, which is why this sits here rather than buried in Settings."},
+    {loc:"Exercise Library \u00b7 my equipment", open(){ cfgGearOpen = true; renderCfg(); }, sel:".gear-panel .coach-pick", alt:".gear-panel", t:"\u2026tap Edit and it opens", b:"Every piece of kit, on or off. Turning one off stops the app suggesting movements that need it \u2014 it does not switch those movements off, because owning nothing and refusing something are different answers. The button underneath does that second thing, visibly and reversibly."},
     {loc:"Exercise Library \u00b7 search box", sel:"#cfgQ", t:"Search anything", b:"Type here and the list below narrows live \u2014 every movement the app can suggest is in this catalog."},
     {loc:"Exercise Library \u00b7 filter row", sel:['[data-dd="m"]','[data-dd="e"]'], alt:"#cfgQ", t:"Three filter menus", b:"Muscles, Workout, Equipment \u2014 each drops a checklist. Equipment hides a power move: \u201cOnly this gear \u2014 no alternatives.\u201d You'll see why in a second."},
     {loc:"Exercise Library \u00b7 bulk bar", open(){ cfgSearch = "kettlebell"; cfgOpenDD = null; renderCfg(); }, sel:["#cfgAllOn","#cfgAllOff"], alt:"#cfgQ", t:"We searched \u201ckettlebell\u201d \u2014 now bulk-edit", b:"The count on the left says what's shown; these two buttons switch everything shown on or off at once. Filter to gear you don't own (that's the \u201conly\u201d trick), hit All off \u2014 done in three taps."},
     {loc:"Exercise Library \u00b7 one row", sel:"#cfgBody .shop-item", alt:"#cfgQ", t:"Anatomy of a row", b:"Name, then its day tags, target muscles, equipment and tracking mode, and the on/off toggle at the end. Tap anywhere on the row to open its editor \u2014 watch."},
-    {loc:"Exercise Library \u00b7 editor", open(){ const all = Object.values(getLib()).flat(); cfgEdit = all.find(n => /kettlebell/i.test(n)) || all[0]; renderCfg(); }, sel:"#cfgEditor", alt:"#cfgBody", t:"The editor, open", b:"We tapped that row. Buttons for target muscles, equipment, workout days; the tracking picker (reps, seconds, minutes); rename or remove. Change anything \u2014 suggestions obey instantly."},
+    {loc:"Exercise Library \u00b7 editor", open(){ const all = Object.values(getLib()).flat(); const n0 = all.find(n => /kettlebell/i.test(n)) || all[0]; const r0 = rolesFor(n0); cfgAdding = false; cfgEdit = n0; cfgTmp = {name:n0, orig:n0, t:[...r0.t], s:[...r0.s], st:[...r0.st], as:[...r0.as], days:[...dayTags(n0)], equip:[...equipTags(n0)], track: trackMode(n0), band: exBand({n:n0, g: findGroup(n0)})}; renderCfg(); }, sel:"#cfgEditor", alt:"#cfgBody", t:"The editor, open", b:"We tapped that row. Buttons for target muscles, equipment, workout days; the tracking picker (reps, seconds, minutes); rename or remove. Change anything \u2014 suggestions obey instantly."},
     {loc:"Exercise Library \u00b7 top-right", open(){ cfgEdit = null; cfgSearch = ""; renderCfg(); }, sel:"#cfgPlus", alt:"#cfgQ", t:"The + adds your own", b:"This button up top creates a brand-new exercise. Tap and\u2026"},
     {loc:"Exercise Library \u00b7 editor", open(){ cfgAdding = true; cfgTmp = {name:"", t:[], s:[], st:[], as:[], days:[], equip:[], track:""}; renderCfg(); }, sel:"#cfgEditor", alt:"#cfgBody", t:"\u2026same editor, blank", b:"Name it, tag muscles and gear, pick tracking, save \u2014 and it joins the suggestion engine like it was always there. (We'll close this one without saving.)"}
   ]},
@@ -3086,8 +3186,8 @@ const TOPICS = {
     {loc:"Body tab \u00b7 trend tiles", sample:true, sel:".tab-body .meas-tile", alt:"#measBtn", t:"Tiles per measurement", b:"Every tape measurement grows its own tappable trend tile \u2014 the sample lifter's waist line is right there. All sample numbers vanish when the tour ends; yours start with your first save."}
   ]},
   prog: { name:"Review progress", desc:"Charts, records, and your full history",
-    enter(){ setTab("progress"); }, exit(){ tourSampleOff(); }, steps: [
-    {loc:"Progress tab · trend chart", sample:true, sel:"#progChart", alt:".prog-sec", t:"Your climb, charted", b:"We've loaded three weeks of sample training so you can see it alive: volume climbing, records landing, week-by-week trends. Your real charts start with your first workout."},
+    enter(){ setTab("progress"); }, exit(){ if (typeof progSel !== "undefined") progSel = null; if (typeof renderProg === "function") renderProg(); tourSampleOff(); }, steps: [
+    {loc:"Progress tab · trend chart", sample:true, open(){ const t0 = document.querySelector("#progTiles .meas-tile"); if (t0 && !document.querySelector("#progTiles .meas-tile.open")) t0.click(); }, sel:"#progChart", alt:"#progTiles", t:"Your climb, charted", b:"We've loaded three weeks of sample training so you can see it alive: volume climbing, records landing, week-by-week trends. Your real charts start with your first workout."},
     {loc:"Progress tab · stat tiles", sample:true, sel:"#progTiles", alt:".prog-sec", t:"Tap a tile, get a chart", b:"Each stat is a tappable tile that expands into its own trend \u2014 these numbers are the sample lifter's, and they vanish when the tour ends."},
     {loc:"Progress tab \u00b7 achievements", sample:true, sel:"#achGrid", alt:".prog-sec", t:"Achievements, unlocked", b:"Earned badges lit against locked ones \u2014 first workout, streaks, volume landmarks. This board lives here on Progress; the sample lifter's disappears when the tour ends."},
     {sample:true, open(){ const l = document.querySelector(".log"); if (l) l.classList.add("open"); },
@@ -3125,6 +3225,7 @@ function exitTopic(){
 }
 function closeOb(markDone){
   if (tourMode !== "main") exitTopic();
+  tourDayOff();
   if (typeof tourReset === "function"){ tourReset(); render(); }
   if (markDone){ state.onboarded = true; save(); }
   document.getElementById("tourRoot").classList.remove("on");
@@ -3133,6 +3234,7 @@ function renderTour(){
   const seq = tourSeq();
   const s = seq[Math.min(obStep, seq.length - 1)];
   if (s.sample) tourSampleOn(); else tourSampleOff();
+  if (s.day) tourDayOn(); else tourDayOff();
   if (s.tab && document.body.dataset.tab !== s.tab) setTab(s.tab);
   if (s.open){ try { s.open(); } catch(e){} }
   setTimeout(() => positionTour(s), 80);
@@ -3145,11 +3247,21 @@ function positionTour(s){
   const bar = document.getElementById("tourBar");
   let target = null, extraRects = [];
   const sels = Array.isArray(s.sel) ? s.sel : (s.sel ? [s.sel] : []);
+  /* Match on SIZE, not existence. An element that is present but has no box is
+     worse than no match at all: the ring collapses to a hairline while the card
+     describes it in detail. #planWeek is emptied whenever a program owns the
+     calendar, #progChart is display:none until a series is picked. */
+  const tourLive = el => {
+    if (!el) return false;
+    const q = el.getBoundingClientRect();
+    return q.width > 1 || q.height > 1;
+  };
   for (const one of sels){
     const el2 = document.querySelector(one);
-    if (el2){ if (!target) target = el2; else extraRects.push(el2); }
+    if (!tourLive(el2)) continue;
+    if (!target) target = el2; else extraRects.push(el2);
   }
-  if (!target && s.alt) target = document.querySelector(s.alt);
+  if (!target && s.alt){ const a2 = document.querySelector(s.alt); if (tourLive(a2)) target = a2; }
   const vh = window.innerHeight || 700;
   if (target && target.scrollIntoView){
     try { target.scrollIntoView({block:"center"}); } catch(e){ target.scrollIntoView(); }
@@ -3179,6 +3291,18 @@ function positionTour(s){
         } else if (navEl.style.transform){
           navEl.style.transform = "";
         }
+      }
+    }
+    /* A ring taller than the screen has neither edge in view, which reads as no
+       highlight at all. Clamp to what is visible and keep a band free for the
+       card, so a long list still gets a framed top rather than nothing. */
+    {
+      const barH1 = Math.max(56, (document.getElementById("tourBar") || {}).offsetHeight || 64);
+      const lo = 10, hi = vh - barH1 - 10, maxH = (hi - lo) - 152;
+      if (maxH > 80 && r.height > maxH){
+        const t2 = Math.max(lo, Math.min(r.top, hi - maxH));
+        r = { top: t2, left: r.left, right: r.right, width: r.width,
+              bottom: t2 + maxH, height: maxH };
       }
     }
     const pad = 7;
@@ -3829,6 +3953,14 @@ async function load(){
   if (!state.planned) state.planned = {};
   if (!state.myEquip) state.myEquip = inferEquip();
   if (!state.rotN) state.rotN = {};
+  /* Carry a part-finished block over from the old per-day counter, so nobody's
+     accessories reset to zero on the update. */
+  if (!state.exN){
+    state.exN = {};
+    for (const d of Object.keys(state.plan || {}))
+      for (const e of (state.plan[d] || []))
+        if (state.rotN[d]) state.exN[d + "|" + e.n] = state.rotN[d];
+  }
   if (!state.profile || typeof state.profile !== "object") state.profile = {};
   if (!state.body) state.body = [];
   if (!state.readiness) state.readiness = {};
@@ -3973,6 +4105,7 @@ async function probeStorage(){
 }
 function save(){
   if (typeof tourRealState !== "undefined" && tourRealState){ console.log("[tour] save blocked during sample"); return; }
+  if (typeof tourRealSession !== "undefined" && tourRealSession){ console.log("[tour] save blocked while a day is borrowed"); return; }
   clearTimeout(saveTimer);
   if (storageOK) setSaveStatus("Saving…");
   saveTimer = setTimeout(() => doSave(0), 350);
@@ -3985,7 +4118,17 @@ function saveLocal(json){
   }catch(e){ return false; }
 }
 async function doSave(attempt){
-  const json = JSON.stringify(state);
+  /* Guarding save() is not enough: a timer armed before the tour opened still
+     fires mid-tour, and visibilitychange flushes one directly. Serialise what
+     the user actually has, never the tour's stand-in. */
+  const realState = (typeof tourRealState !== "undefined" && tourRealState) ? tourRealState : null;
+  let heldSession = null;
+  if (!realState && typeof tourRealSession !== "undefined" && tourRealSession){
+    heldSession = state.session;
+    state.session = tourRealSession;
+  }
+  const json = JSON.stringify(realState || state);
+  if (heldSession) state.session = heldSession;
   const localSaved = saveLocal(json);          /* device layer: always attempted */
   if (typeof scheduleCloudPush === "function") scheduleCloudPush();
   if (!storageOK){
@@ -4095,8 +4238,15 @@ function a2hsPlatform(){
   const ua = (navigator.userAgent || "").toLowerCase();
   if (/iphone|ipad|ipod/.test(ua) || (/macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return "ios";
   if (/android/.test(ua)) return "android";
+  /* Desktop is four different answers, not one. Order matters: Edge and every
+     Chromium browser also carry "safari" in their UA string. */
+  if (/firefox|fxios/.test(ua)) return "firefox";
+  if (/edg\//.test(ua)) return "edge";
+  if (/safari/.test(ua) && !/chrome|chromium|crios|edg\//.test(ua)) return "safari";
   return "desktop";
 }
+/* Firefox on the desktop has no install at all, so there is nothing to nudge. */
+function a2hsCapable(){ return a2hsPlatform() !== "firefox"; }
 /* Steps, in the words the person will see on their own screen. */
 function a2hsSteps(){
   const p = a2hsPlatform();
@@ -4110,9 +4260,30 @@ function a2hsSteps(){
     "Tap Add to Home screen (or Install app).",
     "Confirm, and it lands on your home screen."
   ];
+  /* The browser has offered us the real thing \u2014 point at the button, not a menu. */
+  if (a2hsPrompt) return [
+    "Tap <b>Install now</b> just below \u2014 that is the whole thing.",
+    "Confirm when your browser asks.",
+    "It opens in its own window from then on."
+  ];
+  if (p === "firefox") return [
+    "Firefox on the desktop cannot install web apps.",
+    "Open AddPlates in Chrome, Edge or Safari and it will offer to install.",
+    "Or just bookmark it here \u2014 everything works the same in a tab."
+  ];
+  if (p === "safari") return [
+    "In the menu bar choose <b>File</b>, then <b>Add to Dock</b>.",
+    "Give it a name and click Add.",
+    "It opens as its own app from the Dock. (Needs macOS Sonoma or later.)"
+  ];
+  if (p === "edge") return [
+    "Open the <b>\u22ef</b> menu at the top right.",
+    "Choose <b>Apps</b>, then <b>Install this site as an app</b>.",
+    "It opens in its own window from then on."
+  ];
   return [
-    "Look for the install icon in the address bar, or open the browser menu.",
-    "Choose Install AddPlates.",
+    "Click the install icon at the right of the address bar \u2014 or open the <b>\u22ee</b> menu.",
+    "In the menu it is under <b>Cast, save, and share</b>, then <b>Install page as app</b>.",
     "It opens in its own window from then on."
   ];
 }
@@ -4123,7 +4294,7 @@ function a2hsDismissed(){ return state && state.a2hs === "off"; }
 /* Offer it once there is something worth keeping - a stranger who has logged
    nothing does not need a banner. Dismissing it is permanent. */
 function a2hsShow(){
-  return !a2hsInstalled() && !a2hsDismissed() && realWorkouts() >= 1;
+  return !a2hsInstalled() && !a2hsDismissed() && a2hsCapable() && realWorkouts() >= 1;
 }
 function a2hsCardHTML(){
   if (!a2hsShow()) return "";
@@ -4400,7 +4571,7 @@ function render(){
     const best = bestPerf(ex.n);
     const lastF = lastFormMeta(ex.n);
     const meta = [muscleMini(ex.g) + " " + ex.g,
-      best ? `<span class="pr">Best: ${best.w}×${best.r}</span>` : null,
+      bestLabel(ex.n, best),
       (lastF && lastF.form) ? `<span class="prev-rate${lastF.form <= 2 ? " low" : ""}">Last: ${lastF.form}★</span>` : null
     ].filter(Boolean).join(" · ");
     const isStalled = false;   /* the coach reason now carries this */
@@ -4515,11 +4686,20 @@ function render(){
   const scoreNow = sessionScore(state.session.list);
   const floorNow = workFloor(state.session.day);
   const willBeLight = done > 0 && scoreNow < floorNow;
+  /* Can the sets still in front of you get there? If so this is progress, not a problem. */
+  const reachable = sessionPotential(state.session.list) >= floorNow;
   btn.textContent = state.session.pastDate ? "Save changes" : (willBeLight ? "Finish (light session)" : "Finish workout");
   const lw = document.getElementById("lightWarn");
   if (lw){
     lw.style.display = willBeLight && !state.session.pastDate ? "block" : "none";
-    if (willBeLight) lw.innerHTML = `<b>Below the workout floor.</b> This will log as a <b>light session</b> \u2014 no XP, coins, streak, or program credit. Add working sets${floorNow === 4 ? " or minutes" : ""} to make it count (${Math.ceil(floorNow - scoreNow)} more needed).`;
+    if (willBeLight){
+      lw.style.background  = reachable ? "transparent" : "var(--gold-soft)";
+      lw.style.borderColor = reachable ? "var(--line)" : "rgba(245,197,66,.3)";
+      lw.style.color       = reachable ? "var(--muted)" : "var(--gold)";
+      lw.innerHTML = reachable
+        ? `<b>${+scoreNow.toFixed(1)} of ${floorNow} working sets.</b> Finishing now would log a <b>light session</b>. Keep going and it counts.`
+        : `<b>Below the workout floor.</b> This will log as a <b>light session</b> \u2014 no XP, coins, streak, or program credit. Add working sets${floorNow === 4 ? " or minutes" : ""} to make it count (${Math.ceil(floorNow - scoreNow)} more needed).`;
+    }
   }
 
   renderHistory();
@@ -4908,6 +5088,14 @@ $("importBtn").onclick = async () => {
   if (!state.planned) state.planned = {};
   if (!state.myEquip) state.myEquip = inferEquip();
   if (!state.rotN) state.rotN = {};
+  /* Carry a part-finished block over from the old per-day counter, so nobody's
+     accessories reset to zero on the update. */
+  if (!state.exN){
+    state.exN = {};
+    for (const d of Object.keys(state.plan || {}))
+      for (const e of (state.plan[d] || []))
+        if (state.rotN[d]) state.exN[d + "|" + e.n] = state.rotN[d];
+  }
   if (!state.profile || typeof state.profile !== "object") state.profile = {};
   if (!state.body) state.body = [];
   if (!state.readiness) state.readiness = {};
@@ -5473,6 +5661,33 @@ let auxRmWarn = null;
    "each direction" all mean the timer has to run twice before it is finished. */
 const AUX_TWO_SIDED = /\beach (side|arm|leg|direction)\b|\bper (side|arm|leg)\b|\beach way\b/i;
 function auxSides(s){ return AUX_TWO_SIDED.test(String(s || "")) ? 2 : 1; }
+/* Logging the last working set does not end the session: the cool-down is where
+   the stretches live and it carries its own XP. Ask for that first, and save
+   "that's every set" for when there is genuinely nothing left to do. */
+function allSetsDone(){
+  const s = state.session;
+  return !!s && s.list.length > 0 && s.list.every(e => e.sets.every(x => x.done));
+}
+function cdComplete(){
+  const s = state.session;
+  if (!s || !s.cdList || !s.cdList.length) return true;   /* nothing to ask for */
+  const c = s.cd || [];
+  return c.length >= s.cdList.length && c.every(Boolean);
+}
+function sessionGate(){
+  const s = state.session;
+  if (!s || !allSetsDone()) return;
+  if (!cdComplete()){
+    if (!s.cdSaid){
+      s.cdSaid = true;
+      cdOpen = true;                       /* put the stretches in front of him */
+      sayP("cooldown-next");
+      toast("Lifting done \u2014 stretches next.");
+    }
+    return;
+  }
+  if (!s.allSaid){ s.allSaid = true; sayP("all-sets"); }
+}
 const AUX_MIN = {wu: 5, cd: 4};
 function auxAddPanel(kind){
   const ws = DAYWS(state.session.day);
@@ -5539,13 +5754,14 @@ function auxCard(kind){
   const open = isWU ? wuOpen : cdOpen;
   const done = checks.filter(Boolean).length;
   const complete = done === items.length;
-  const title = isWU ? "Warm-up" : " Cool-down stretches";
+  const title = isWU ? "Warm-up" : "Cool-down stretches";
   const min = AUX_MIN[kind];
   const sub = items.length >= min
     ? (isWU ? "Dynamic moves first — earns +10 XP" : "Static holds after lifting — earns +5 XP")
     : (isWU ? "Needs " + min + "+ moves for the +10 XP bonus" : "Needs " + min + "+ holds for the +5 XP bonus");
   return `<div class="exercise aux aux-${kind} ${complete ? "complete" : ""}">
     <div class="aux-head" data-aux="${kind}">
+      <span class="aux-ic">${ico(isWU ? "warmart" : "coolart")}</span>
       <div style="flex:1"><div class="a-title">${title}</div><div class="a-sub">${sub}</div></div>
       <span class="a-count">${done}/${items.length}</span>
       <span class="chev">${open ? "▾" : "▸"}</span>
@@ -5716,6 +5932,7 @@ function wireAux(){
       }
       state.session[kind][j] = true;
       sndSet();
+      sessionGate();
       save(); render();
     });
     runRound(1);
@@ -5730,6 +5947,7 @@ function wireAux(){
       if (k === "wu") wuOpen = false; else cdOpen = false;
     }
     auxRmWarn = null;
+    sessionGate();
     save(); render();
   });
 }
@@ -5800,6 +6018,7 @@ const VOICE_PACK = {
   "rest-start":      { f: "rest-start.mp3",      t: "Rest... breathe. I'll call you when it's time." },
   "three-two-one":   { f: "three-two-one.mp3",   t: "Three... two... one." },
   "all-sets":        { f: "all-sets.mp3",        t: "That's every set... tap finish and make it official." },
+  "cooldown-next":   { f: "cooldown-next.mp3",   t: "That's the lifting done. Stretch it out \u2014 the cool-down is waiting." },
   "streak-7":        { f: "streak-7.mp3",        t: "Seven days straight... that's a habit forming." },
   "streak-30":       { f: "streak-30.mp3",       t: "Thirty days... a full month of showing up. Respect." },
   "streak-100":      { f: "streak-100.mp3",      t: "One hundred days... you're not the same person who started this." },
@@ -5847,7 +6066,7 @@ function packOn(){ return packState === "yes" && state && state.voicePackOff !==
 const CLIP_PRIO = {
   "coach-earned":9, "coach-more-reps":9, "coach-hold-ready":9, "coach-backoff":9,
   "coach-deload":9, "coach-pain":9, "coach-beat":9, "coach-beat-big":9,
-  "personal-best":8, "all-sets":8, "level-up":8, "program-done":8, "program-start":7,
+  "personal-best":8, "all-sets":8, "cooldown-next":8, "level-up":8, "program-done":8, "program-start":7,
   "shield-used":7, "sweat-accepted":6, "sweat-cleared":6, "light-logged":5,
   "coach-hello":5, "sound-back":5,
   "rest-start":2, "rest-over":2, "halfway":2, "quarter-left":2, "three-two-one":2,
@@ -6302,6 +6521,7 @@ const gi = g => "";
 
 /* ---------- Anatomical muscle icons: body outline + highlighted region ---------- */
 const MUSCLE_IMG = {
+  "Forearms": "data:image/png;base64,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",
   "Back": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJEAAACECAMAAACnHTk5AAAAkFBMVEXn/kjc90TZ9UPX9UPX9ETX9EHY80TY80DV8kHP6EF4hlFZYnJYYHJXX3FXX25WXnBWXXBVXW9UXGxRWWtKUlg3P0IlKzEYHiMSGB4RFhwQFhsRFRwQFRwQFRsRFRgQFRoQFRkPFRsPFRoNFRwPFRkQFBsRFBoQFBoPFBsPFBoOFBoPFBkOExkMEhcLDxUEBxTeVaOfAAAnoUlEQVR42m18iWKjyBIkknVY1s0NUhlBiweYQ///dxsRidw9u8v02NYFQZ6RWVnyus5VTVtVVeFc11VF1zVdWTz7ou36ruuGvinKik93RdG1rnBF0bZlhQelc+52uxVV3zT8VOe6oRn6qsLnK5xs6Iah6366ZuhcjXOXXd/3Q4/neOKuatuq6+q21msOCJyryqL0msLVuF7t2hYYcDqcGD+Grnk8uh+cswGQtsZzDbAUHf6ry6Z/VLVzmbu7W9MRnl1lGPCmuu3qig8b3A+eL2vcETBWdSckdqeASRG0rsa5646I2jLPnRC5hojKCjfxJKL+2eMDDyAacIuu6PAKTorT4q7wBsjp+XQtEOVZdnNFht8uz7Om6AnbubIFZCEi0hInbB6Vw1UNUaffXdG4vmvLuq1KiAOyqAsgcl5n0GvcSFkLvtNHcPaWusLDHjLAB4ioaCqcqayaomrrygFRmhbDOL2PAdhcVrclTgA0g6RR8LQ884+QtGUpZHxX/wO9UTpQNYTiys55hrcGop5SnD/FWxhwbRpXDzFVfd0XJSRcQkI8cEEDlI9ZksTzkaTjmGXZ3TWQrHQOnfQFb1FWxZvFT9qcq0vcXkVzgt3Alhp7/ubhTRBS0+DKeNM/iDp+tIIhA5ErHu4B4eJ+DFHbQV5ENKZR6B8O+z3+7Q/HIIrbPL3fO/fohYh3BGX/9DKdGhY2mB1Awi0sBZopq7bBlYEIp3UZtPbEFaoCWoPNtABnsqLUeekWt9t0bVc28DG4QwmMdDj8eXfZFAdEcvb9wPevV8IKkyHjLQIBzBE3U1Dxvd2lRA6faAsYS1vp7uoGv5uS7gbR5x5MooS/483lTwURNLgnaaqCy+JuiqaGYls6PyyncBQ0LCwvHNQzxcfD+Xg4nq9X4Lmej3uIK0hGOFlPRBRv1zbFLxzYUw8TLmHuDSSDU+PMVQUNAVFHkLlHhdE/ahhXAwFY7OHHSxpaC4kUeA8cgm7E25DdwSnu2RgDyfl4PJ8vwnM+4Ljuw2GEDT7sNAU9vCM+Ko0WXQKEa2qcF3rB1eGCDX7J4SAXD5aPA/psIJKu+b0mnR3nosfWDSy8gekUBdxEhl3eb1n2TMNLACQ68Pt0PB4O53NwjCaFsa5/uFaOUcgsq6qm99G8KQ1X0wignYYIOgYOeA4QIVDKwnj5gqGXhg7ZVHAF+AAD1P8P0T1Lx+gQSFkG6Xw6UVzXIAjSyRAVBEJEhSGqaE9wKWgIiCB1Qen+IgI4j78aaLSmfBkG6wJBFD6Ge4Ett3KsJ8I2Akdb1W9EMKIsDQ8Q0QzpdDpBbdSfH5zjqZCoBYF2PZsQT1zTkeBiUNV8shrh1cnpoDUHRC3yQFm2FBAjYMmw3hmijoIBooqIkEraomxxf7BDhOkhOR/9X0RHSOhEERFRNMGB4aI/8POaGQ5nKRUlCzoWvAbWBJeHTOAgDP53ZBDYu7y/K6teIaJgTIaMGt1cBXtkfCycsqyjG8PbIECA48N0jPeCc71IX8fTbOK+fw6zgVJhpu3m365mAAAUkx29BNbQudzZwQTiKDNPwaWgdrqsYDKBqGqKqXXSGPLm41lRscAMUcIDiagq0inaX86ziITmfLracQySgQaoRN/9MBYzfzPsKARAODJUXCHPoQE85RjnczwsESFbQ4TQA/8DIqbjmrnGEDESwQYbmDstsWZ8eiM6/heRHl0vl4MPRJ1ZjklJ/oKkBHepKSncO+6S8QU2XUk4jAP4B8uG12dOemmVBGG9DBXkQZapW2VmQCQpoUgrRntHRHT28wUR6SgvM3jH495P2owwnjCIQlkMxKrW7dRt0zQWOKGyvKGuYEodc2ZJouTBeosZUU220hRMgbBxR87WEwfiJPlUrZSOV2hLdyCKgYimc0EcOh4hHAoIIXy/D9J7VkBAlJESo07JK5Ch8U9ElrZrcoT+PK8oEjowk4cQldRaRw9QgMUfT6qSH4FkyZ8aiIcyrhHSGVsL3AQiNtLrQfLhTyKizzG3Bam7F0+lEYvcLU2B4ZYM06IPgxKdCxe9ZTkjAvHBsvlWckM3h3wEIeVSZvoSrgXhdopKiPPI0qXybgEaBO8/HfaGBgdi5YX6OxBSSLN5DgiRwIQrkEcaN4LG6FUwIBgyOCzSREXt5UyyubtlzoP5UGdEJFLTlS1TjlMGaUlAaAYFIlpBW8KNNhQgYkiVIO+Hwf4sI4oCRG1kET6zDyewNDiaciTsED5aNcpeMEFSV8ibiGaHv90pLyrHEFFVyjyw7I7pDZ+HVJQ+EDoLpkPyEAQ4MWpHxt6BG2Xhfh/5e4VqPw6OFwACIj47MXuQoQFE3dG/SmdJrBOjIZSyVAwCy8oJ7HYD20YA+BcRjKZRwoVgWsZYRyNDRMcLFD2LDCJSkAOgPtyHjACIAecgCQ9EdORT+3iq/kVkNIOigdLkImK2hijn4UhuKDYgUoB0SoeM00y5dM9GdgXXQ5xH4C+sWsAVelJgKo2Zdh9H+yuVdgjqcC+fA2Pz9wllBB8jt4EfiFYwAAiBK0zUrjFJiao5mhD1mHskhYyjBaNnDbNFjKTOyQccfzQtTQgabRiSwLjBTvASEE1RkIZ7utd5H74iIjoB2xD56fADq+ZpYNLEf7t1KsHAqiQQXFCqcpb4S2YxoqrB2HAtPkY8ylrVL8z8DTA0xvAbqrXvTKuNoibjhBCB69PZyNKiV7y/MCD51ySLWjoKRI9yQQm+yASCYskz3ikNUUYkD6QKZWYwUea1RokCmYV1JikHmREYEYNtV9AYezEdlqRi30gybQfKdk/vEJHxxvgVn44+juAavRJUcMzICI4V7QiIcneH8zKmObu2K1lIiY7AMEyDBYJlB0S8ChE5MQ4gali1gD78ItLrLL96IoPuEfDvtxvUdrzS4ff7YzKm4dEPdMRTmt2F6NFD2qCKhbmTOZnT71t5z+ZHRKRwR8MGIjmz5FfUAvpAansWFDwzdzM0VkE34oMIV0jBzLpNNiUIi0QEl/8DeAcDFITpkPJqrEOL5sl0ACXzZ276KSifRtacG6wMNib7YqZ1Zhri+ETU9yWZQy1vY29BaHpBUlSHrQLn4KYkDILrWYjiMR2SGVBwQoGUQihPKPmB09GiaNpzRAJUlOSKUEQkR8sUtysxf5JFCag1UsaAgbBTNVazsQPQ9QTQCJGMvQAHG18EBHaGTLIPx2Esh+goQL6/D2KUtq5ned7J98l2WEgQRid6VppNkc7iQU4pUqjItPQm5n4wno6Ww8SFUgp3hDvsH2CmP31PQZGjIFPehbufUDvq8leEoCCZ0igeMpQmfApl2ynKBtgEJCTRIhnAcIwr1ubDDNAoJ+7IkZRdfstmQwci40cOQZDx2aonMhi2D3r1N2aBgXCxMIekR2jsNAvkuj/EE5zOj/tEkK7KtmE8DgV8wRDxc+0cT34R5axKjNcS7X1GhDSl4kXUEU5fN8iQjDwNc2XfQDwqMUUgoYBbllZTEvnHt9VcYERjdA2OlBQg+RewgfMVyS2ZRtSNgzwJpmeIFAk75aJMxq++mDBDShkRlXVh+ZOICnyuGhDXYDZsHrBDxi4V8Dlq1d3SakyiYH8Nrgw+ENIlHicACnzkj+knOkCPhyMTyt6P0tcIunYzRCCQpcVJkLbOKdFZmZi5v4hunlxNTsYUDdbR9BZ+YNJWvKs2aUn96ybrpywKDler0xgPEX3GWMpCKkmnMToiaB7JlGDzQTRMI1nCzSKPlX8sSBT3pUNCsVczmhLyGokwvBNBwqqf4snugNqFbHD0j8K8Hmn41k99HB4oGvH9q+QyxVfZ8/l6JKQ42B9Zo7C6RZ0Ul1OWIjzdsrpWK4FlfcUcjrvHv1xQ+MOJbpPVOgtESBuOoU/hmRJiE7GnBoWIHjkCz/FqFk3CD1vJAUitGp+low+AZRLuD/NjQg/jrAIiNk8bEUm2WlnIFmx8IOHCNm9CNSOiHlVhM2Zaa2t2DultsD4JJdp0kM95tmf/zFZRnP1MkaxJKlQKGbI0Dg5+8Gv5hzBOUQdYLuotUcN8cuavWvRH1nV7V5B8hwib432QBxtbV4ulZ5OsH9lnHAYYtOQjiVxOQRQnaXKPTooBFIpePEZJ2qdROD8ZCFqUWptybLMMilMzmULClcuZE0hzxOZBUewEqgNbsCrv5oChDvWtA5b03WdM/nYc2XPEw1Rx2r/+iiggZbt9TxneGUXzp9L5g0kKQy9y1TiqWhmPRMPE14gDMmpa9s1bMluXo3RAyGH7Uyk/76dbjNtlqkDJE0L8uNHXy36MgJrEoU83O51nRMcAMhpeOCa1cBGREp6CGRkmGEbJOP0AUsWSAtGANBPBnQEA8mKSQaadLVu8kw0btQo6EiTkBrYZj6wMiQmoou/p+/v1+o6jr68onl6DYxHCkGgiipJmeKUQD+LjhMyQxTrFQdFCvAXBfOL1oA4wlmYOC+S3ZrIeqzb1S2TR4EeNiH9dZz0dmaU9lHI5CtABVQbEE3/tNh6O3Vf0kruf34jiqZ746sJb4MXxlbJeQZmpdsBZtQodYuozFnCwazE1ZP3unV6qX0QzwWzZ+QL2OgMF2+95ErUbpLf9JX5Nr+Rr5XmLDQ5c9yt53VG3oTwiMUpgdF87b7H9/BSo6HVLY1+ILmcBOghUlI139dpFZrs5kosKlF7mZlOeD1TmbMxkI64jPnZQ50xaQ+aaXrji8nPFY/P5+YmrTgkuOgOaEr76ud2uP/CGxefXd5siPlFExzcgpD1Y/3hjIEYYqBmPqi57M0pP5QDdEblXyQT0sO1mQKpSWf0oT4VJNn1/edvP7ZJ4NhuIYrfYRG0S08lnQMSzXW8I+XPt7UBxByY7nehgqI5XtpjLH9b9VV3fsxtb67lapqogxbOLGaIkiZoegC5SPRsggIRyI0X1gSvigsvlG9H2E5DuaSwbGr/1MkW0Xn18rNfbTw+a+54iSJn2NPcIjoAE6lv+/EBItbi0cUGGAo+NB0fPr5Q/aq0uNGXIyhDq0gIDio3jPronY/S5kARWGyJab9fb7Wrj7ZI0jfxoyKYv73MFGAD0sVoDEGS18L4QLeLzvEzBChj3d0FGHDsiqrmA1rXWqCjF/JXPxNPZw2rp9dkUzf0Fa77gbH58T/58LRaQCoRDAf0eK1wzTRCGXl8egK4/P9erFcxouZQwl94XolJ8EiSeE3kYkCDz6d6+ERXG6xwRqSjiol4hlXFtKBtjtl1kQMc5DsV/kvHLA6DPtWCs/wJaLWksbZomuwXta73eLD9k+ZDREiJbfI3tjS4HRBceQgSGN+agp6h6Gy44VlY9EVFNRAzcDZeXGtRRA3RmTjEjCpMfSEiADAZU8ldInxBSliUTRSRtQjJUG176gGI/d9IrXG5/gT1erkJ0ppDgb1yzg+kWagqx3eC1II1WjFBQ7ItCRMeroMzuASsExbl9we+9jels/Y+QNqvFDgUkRAREsGeAAiT+gd/QnLfdfcUDUluEIOFfLTRBe4dzMuXqd8vfuzkseeqEI3PUbDKhJEZtMIaMRMfZplFXDEhUY/K/lNF482FGBLMVNnn5ApX1K/I2sJ01j9UHnBEmtPxYLjcI3kiy3+MdxnbyA2UAGQWEBIoDstx2ZSVGVFvPv1BnmSbEReIqRyjiIofpi8FseqXR144Hfi5MM0A0CwiYqDbaNRF9GKIV9UZRLXbz8RW1ryEOQbCu1vqCuyQD3LwR8aiNbhRcpy3bJ8shrl3RwLMp3quRb5Ci/PUMdwvkjQV+IHvMgNaMgiYiIfomos2Sz0OlsCLgoact7aP4uUQWfN0ikCZLknt2vnKi0Ao/TFglCFktymGtzRmNouur7cr21AGJGlGRJq1DXiRDIiIgIKAPGNI30ov3+bFktForHC2FiGpb2bHwkFSQpkFE34igtkGrnXX3AOtoWMJ6JcvCSl0vmHvJVfyAMmJ2pdOP0cZ74/lkJP6QYW9NaYzdq4/PNyIYl+I1gGw2SzugPv6kKLeLXQwxhW9A+7AbSKMLB3upuIjvytrjqnpVlFrhZb8RCcQ/aAnoeojSPwkutFsRDbLDp5nIRhdG9NvwP1jMLyITEHBu+JIdFg0AHKFzR/VOQzhTGxjSeEf503DRAyIpAaDiWrZTP55wUSwgxx6MFPkxSaJciPlrvvt/EdFOoMdZRrs3orWep/EslvL/7fI3LwMRytxIbnzYn5OR66PMbLBw0G7878HDOO/gVLagZkM0YhhCSAWgLE3+xJvlpykDpqPssKW4Fktd74M3vyWiiYgAZv0hJ4OPEdEHk9uWMYHphWEClgM2sL8w5B2TMRNBYsRuOZ9SlUTEuRSnFjL7i0CE+AW6MNQ3cPU03S0MEcQvC12uPxHzNoAkRMoTu3QUouWaiD4+lh8L8ijJaLOVA+IuPpef8Qt3OQxsf13BUGIigphqOFjNqZSKMxFNOa8Vs7K/K2Iz6Ux1HCJBp5PsY2OMhxkddw13R8oQIj4momHcebQYwUE82H15ZkekCismnTXtLfkDngtam7B6OuzjPkUVAkAMiRRM23iopVsVi8WzUedmTBBUT/ErEUNOvs1iP5TMFf62Rns8MxNRElxpGJREDNFy5UX42IxIlg47WuNGUDbxtFGLwhNcMhlQHHDps+Kqy5ML7l7xVBHHIZGqJiKQNbVe/T1DJMqNaEH7+FDOMhEBxCaCSN6IeO8tEQkODiAmmzREtC1GDHO1HETnCsIWhyGiTPKTqRZCPuXSQl+51hMVUUOH60KodSuINeJqnkJrCLa1W24tACO0rC0A4m4pJPMkIfrzh1qDIIlo7UWxR4smoI0+ulEEiV49WbcfnP0wiPxrSq7fPLiyNZB0IyR5rM24mg3LmttyQxCiDPFJjUGMsmmEac+x7n18rLwdGOxmuf0Pok9Fhw++Cl1Tncv3sVIIgUsm/vF6QSY5nyGnIIMvtY8ngHDqhRGy8PpGTT0uktZqXqZlGDH5XzXhcIgZ+hBcPmYj2lpmBwbYtvDIrJI/I0m/EK1WXojopJhlyYRBYqNohKRpK/LICPs4Tn/Uc6htaIt/Nl4zNFypRrTk+iy8Py1REqoKOWp5YWKMNEQr3vVahQ9M93u32NrxFxExKc3Fi4WC6CwlZmdEIyCS218YjY77IGUKgRhqTSdpggaI4P0wpcHWB0uXpjmXFubqCqL9nuLPxWrxIft4B+4FyfWXxIAnhGgyRJ9GBey1N6IPIdpu49d36AfibCe25qOxMYLdvNe9gQhMspT7q09T5Vyj2luQF9NG6mGkAaLlfH0FZZpKvHo/I0RIgJaPkU8Jb2nhien/Y8OKYLEbX4pD4LQnMXlowNmYgmt62nbZlpJRyzVMpN+mYhLZ/0XEWi8W81mYgGZEH9RMYpEKagS8ZHgjYvh8xfiA6YtpDh5I72edFJ+5oKuxDtU68dTYlOIMjN0aZZFHUTw5xpL1ib//hXQkoujxJ9osVst/ETEII0VFC/OmDyAaX28ZbfHKl/fxMetLbEDVG55HVPEvXEbVwMLZP4e30Rp5P6RJ5IyeZh3I3pB7O9G1o4jCQYvUh8s+zJI/DH7r9T+A7I6/57hARNMvosWuV+W2mi3IAgbN/zkxGp0N0YmUJzhAb1rpaNV5BDSuQYJOdjX7lQ9wbN8mreaK+MD5huQVeqsZjimNnAiIqDZSAEO0mxGRdCt+CxH9QcRKt5DaQvNlnuhgAxHp34YmbGyqY5XdcoJDg5vZGB18rZFr3IGAEDVQGr25D8k1EZEt7r6htsWM6PsX0RYGFm8UKZeK4ABDuoc6888jofDneQ6DBOPOuSaIoOg4M9t7quBIkpq6I3/UYJogSUZE9EMhbdcmo5k0m52Oltz+QSS7/lYDAA65mkWExMicltBtDvPY27tFf4WQiprte/LYhsy/ZVvwyQk/WpHN7B3mTgZrmGhIU3MrxSIVI4o5k7wQ3r2eEUE7ImXf6tqslm/wn6pr0z9kaoop1/8KKXO0Gc6mwblYi7D1XajTnoX/DyLUeWOaTbxrMv+51F94X+MwvcaYXgi/M0TW4hrxfJ2wgFEhtVqZcSV/0lR0livefxH5hyDlqAMbEpw+BqKKVAlFSFdnA+jj1X+PWlpMOuEe0uFbvbWFtdYW7EAO/3vF0Z8RQlqu3zwbcVAGH8Wv4Zs1uVV3W9ZFEwARkYWhGQ//uIDxZJ3WG5AznkTUOCW0rma4vpy5eAAY4QzprKJqxI3HvAaPxe4rgQ1Fu12KnLcQPxoNEaQXwdM24fR6JXP/lO+PXyOHgmFHmqCgbN6IdAH1/zTejFqkZeedU+IuRcHPKZngGMY/M6Ijb8EN4yRM0RePKH0h+H7hWij36YX/IIK5wA2gVBRmUGqo9yd4f99xigKIgOLyqzRGS/ZIHposK5q6AaKa0zTw//yWtSGnrg5+lP5wuYVh6Xi6JtMPZDTG32wc2wE8G2/zDkkw+b+Ivl4kSlvoKf59Oz4A1lvUnHq9zpNT17lJwmT+w7SvFbyiLoFIrXYURrcmDVRoQsRJSkRqioGzocLKYEdfEdchkiSiOmDRK5aokRLw29dWG+aWBXuR3ufvB+Jw9/VCKq1B+K9Gjy7zABzLnjDTvCTnVdkbqRAINE7YuR6IDlygisMgnhGBEWttE4EBBrFSl2OLv1AILRcbyyTb7buCRKYgB/hUSYe3La0tsqJ+vyHnadTc61tlJ44sAlE+aD0JQemBePTEH2VriJIALw9pdEaBHYr471kEENFPSh5thjpXtAuQpN0gJvSuIKlHhSIjcp9sjPAT3m6aCAjsz8ZM1dhiK/h0vML9h8yp9u+ePRGh+jdEqEIOoRrigR9G1ns+nrT++/Oj/tBGvOtvjb3YoGj5JKKUdHy3pRqB8JdKicHJugAZInrFB3mZL5Vp7RS1YTrkncaKmkffeBUnV9viBkQjtBwPYJCXKxDZUBpqSCDq6luaxqT6y38AmdooG/KjH4RlyOLNLFmEKBEijzAR9yMPMyTfZt40jnsRImQ2TqZzns4ruZDLTiTIWnIOWRbtD9czEJEKn6g0IAL9Tiwa/kX0sQTZ3SnB4JKuJCIq7c2+1yJFc9bPRjsmVjm+1m1OJxvqPIaZEDVc6GeV3doUrsuB6BRPAftY4GnR0adzBik87ae7I7z9QcpYr//RGTIaWRhoOBDdaGdQWuj9YiY14l/UbTYwgiDzxEfN35uITuy1H8Oy5+ofEcHhPI4Va74kA6ENX2zTMlDHoCXW4eXwORBBSJN6VtYTsibVx6epje1hILL49FeKq7kkh4g4aSJMY3iUbV+ONjx98Q9hO7Aty0l5WJNH57dlWkRU3CLYCLNZEh54J0Ey2e4XAE7EYs2C1Ihlk4S2/CVEGRDhjn6VZpRWXQEkFk7VU0w9mDaJ9txBZj5BhLxz5AKVBxIs8hp3gbTuBim0CSikOqn7QIjEOTtNR5V5lt4nsFjreBLQaqVSjSiQO9KWjfS/IlqrcbJS6TTdi0dviIZ+ErE9CRE77lwh4eoe50GKJ2TE6QwnRGnWc9yCbZ19iECAKiZIRwT0QiPC9zpV6Ty3AFReqG8zwOR3z9vwNTve2/MpI5RFW0THdHgUgx03EmcGIi3YnGkZ4aSxmjci7lPiFABKx3RMtDB9ZhP7CkTHeCp/OLncqtvcT9+/LQB42npuizAE7SbyxohK22zVM3rzTRL+e/7DagyWNPSaWfYvNqxMRKI7Nw5Z9hzDqrzadc8cNT8RTRGrKch0H4EQk90NXHBquQWqQrpVL8mKHhTyRnKptmSjfraURqNfv3vI+LfF6+nQ6T8cjctudy6VSWlctKH3pDlbRdx808KOCo6JccAxRaadR1T2cYJKG8GxZ9MExI4D6SRJiDbqGs1XJUf0vm6vnRCpBtms/rZRPtjW2X0PhW1oGYYnRyIRZXyu2ZwvJ9Uk5EdZ3tm4YtF5tryFGil1SWRJ2T/5acyR5ref5ZxuAyIj1nP7cTP3Jam2UIjCF0rNxWxnqojm6DhwuMokpHE6zlHDXCkjWnacxEP289MwDsHXqqrpew5yZHXoi02B+oZsqsjxKw0GzojG70nE2kLSxgxlQ7WR7ceJ9XWWZtKk5dYzLX407kVcnOt2uZibf/hFFIdjCtvoQNWACO96cJQHbOpwttl4OP0rYtHC4erWIROzkpLzsk8qIUEt7+UFFAEpgjEkOLBY2tjqA8verUVHrnGorp/HDRT6Tlr9pUYOcbSPh/SumSRwyK5/9BxqfbbkH8zFyDvI6PGYlrB+zZmBJ/Q/lHoP47dm35INaltq1Hre90ABfr47WCjUNnM5OeWc9te+IzBD7qG6id9ySECM+wxEYaaNgmC1T08LJV3voCdb3MdbwmHMhjTLuqoqGw7dF7LLvi9ylrcrs2xCMiFFY5I1g3V113PKY+dx+2tF80YNbetyvHg6L99ffCDiRPeACKARYK/SVF/VlxARqfUZqS8CAUnumgkoS23JZO8CbDjPkjH0Vh9zn5rOb+wHSaSey0xo0xBxURtWnw9aJO97jqdxix7V1qRJE/sibr5mzP0ku2mzDvhRD/LYaVHNKBrek0xThCBhIyZVVdvYVleTAXDxcz03htZzdRhNXBtI1Wfeco3N6jo5WsvJ0YrjXhqT6QxRX4PNzxupjlfOAqBOReZHmPHY8GO0CQ82tnAEXxkQVlHW1e6mLpeNuVqTMqVDmbGIkamKTe9croi5mK35BDbWLF4jgcAWwcVoRVXLnRRcw3c3FGLxSPbGmQKtluc/0MgD9ZoGuSAi60CwhwVPi49HIgKt61nJsU9Yczg2T29JHL9j5IyILbUwTV0Uz1lt8yGTZ63ynSRDXnI5H4geDWejOeBY5mRuSbQPmHQP83okrORRcO2oUyPr4GtIRCXjI7ge8IZSs7RW8UJ9Wc5ptjSa5lTCJgPpPeJRFCRZGobvfoUaOmZg0e3HdvtwepShn8QHqQQXRJ3KkUH1YNnLmwoO4oOxcQAaddGVy9fU2+WQQMFAdONMi9FLzizfMx1TmETeChFA69Wy3uQV+kmXBP6fyHv34fjqxouSaHQseRjOWiEqHVdgiQjlhXZ0aIuQfwbPqOse8YjjuxyC8IWIoPw4wBsQINnkto0t7wHK7AZEERf2uRpj/kRPC/yE3hyTGyiYazUXKS2MxsxczVIEoyQR3udp7uvJLsqYA62w8chVCHD+6Pje0HjZB+ERfpmMed9pXt+GA6SyjDd3/cMSgPmfoVtmdALXBCJ2+vHK5nP1sVaL6c8JcQbG2M/D772mY4HIkW9zpxuzxOk0dyQz7pkj88+zXPsHz1ZCgd1dydVy28Oo/Vmc534j2sfMJCtmWy73sWfrBwkEtT/NNd1qpVafF8b7X0SP3jYSkZUhKk3xBYZ7Ob93mfm4nzGH2UNGjRawLvP+ShthuR7Cju147YN3jYZMOEFtiKLQs3QLLkS2kUL8RAQSEy8WtvYOH/zYRaFk5ExttTWsOZ7SuImXPBq11b48drZcRp5dNTXNiLI5sqV7nBcfpn6Qp6EuqEtuEeFmHCE6hCE4x9xAZw0ZnQJkQvBPfIrLflwCYX92F4a+ELW19g33Q8lJGofKtRgRAGnUp7OGWzhMyE1vRVtLRiAHti3uPHdDuTzQ9LyZQmMU3NprWkvH6BKEq4WWJDeGKERYESL/bI3szed6RhQgYTNycJchB1m1QN09IbGJif3w7reBuiEidZlrW06ysLf2HueyWTzGKwdPLNnBLTVSPm9aSjnNH6omUZMUfC3ZH8AoXhwcQ5mnRpu1SIVo4vyu9mg1dHtup35UXZ+reN4fTyAkIrdHXBM1SVtxsk6NfvWvfxGF9yduiVvEaleqnstxpw0QlXCCgIt7a4Vl7wsf3p+5p8an2jTyMyP6+kWkESzNMGt/FfKEG7VeK0RmvUSUFuDZYKx3K/a15/swD3QgjFTcblMiGbXOpqVdB0RpeLgELG5JkOThgbT84pT2+Zp+GSJNGwhRPk8XzXszuQ+EgrppMuJgpaQJAoigXI/floC0NyMyle1PSZdpoJU6Ix3JwP4zbeli8w2IaLwIj8tNnNgEyEurQowMK4NkiFCCNk4VPcqL7r0911WNLVIZIk0Unpn+uxZZpETIDo2tzU1+icjV3KDjtFvD2VZf5rYmCY6n4GsByvHJnLbT0s7hEKYqPvdhhNC4shWbrzAAot5xP56NnTNBFNq92t8dO3p0ttl8L6xJCqeVYzeEtsdy1ud+z5m3gguWSP95wf11+MFttzeuvZ8ue0RIDTnA0xAYYQ4BJ7LBK66oIedBnMUX50jbgTMhdP+W/yPEcfYCnEL+NG/sFAsiImDl6rrriEixytYdwrHkFKKKJqdNo7afrGgha7Z/zl+LlRycSkMuuPiBdvzQSWljBomIgmTUYAiibdvM32DBoAIDKNX2nIc2z2efazaoijztU+JL7/3DR5pYTpU3YLSc+qW0uY+eo6bc9+D7QWSSWOxwo4G2aXBoXasokS3X7ta7E8fdwSHoaihZ3xuHuD2KW1AyCUldJOuRRJzYMkR5sJ9HjFXQhj8VCyKhKOpK7spiSoiAgBOrMOAPLR8HJ668aqD+JC5I1ksqBzNCtjpFYDU35KFaWwi006PmzkjYJHvDnI/1rzOikVu0kGk1laV1kJO+xYDRsdNXIRRqUdo+iUZ/uCzUlHEccRh6AQK0P/m2lSWYuWDy5e2QRzY7WlZwCm//K276ShZkEPumCn4ZBj2GcRB+fdLOd3aRQYBa9iFrV8T/Oe4Dd1QzxMIEFR/h+TwdmTY75mD5d47xR1GSWA89+bsFQLsCOG9405OsMcSLSf4qGlSljWnctftM/3PdhCP9rVdSK6N1m+eDe9VUfGvYrdKudtc6G08e9Eb9+PPnT5qN8+C/zfSj7m2HccArbBbzfYM+2veNdqHrSyLKys7XF/37suoHDvBATrIU+lIT7vdzt+wGQtX/8NsmGvtODu6gaDW2nRfcjQ0NqgMwfn+zUkrTbJi7sGzocjtPl6c6chWdOVOVtq9AxjWXqSvbkul4vkZbV8B2RQczXq3zWnXa++eDuxwfbDhwaZkbJzgEwC+DMUTcx82wnaOcEoCGxVua3X8RDfzqHKJAGc19PXzfQP0orTX6Ygou5ef2JR1FbmVgoV5Ooennkoi4KPKgQPpOXy0y9PPAlnhWq01/fNhoy4RG39V4GdS/ze6u74f/Hn3PkgVsSv2Zht+Z0Wj/M4A8+9IqNo0XagpbM73cNtZqf2HhcWtirzVJxkSWMdpUA99iz6vl9x9w86qzfacAyFPoyqgGb8pSw/99tHfubXcDN+Sxcgb5c5JG9XjWtdUSJadBLc1pn+yDweEH0DzUmdyg1JuI9OUOlZXEz8csKMXr1nYraLVy3ipVcc9L8V9AtO5eOx2zvKH4OOAwzIgafZWPpg1Krg7BJPJ57oAb/3EqvOJpM6sQcRsE64UH64VC33rE4q/l1xW0ne0pLVAm3LULmdrRrnKamzpE3Vt/sEiUm/ntZrSIXRH7Kpq2aEvOXhd5rjZQURcl4iXkzi/6KKwx8H8AkAJNH6zj9zsAAAAASUVORK5CYII=",
   "Chest": "data:image/png;base64,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",
   "Biceps": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHsAAACECAMAAACH3aSBAAAAkFBMVEXb9kTW80GKmltbY3RZYXNYYHJYX3FXYHFXX3FWX3BXXnBWXnBWXm9VXW9VXW5UXG5TW2xRWWpIT1syOEIaHyYSFx0RFhsQFhsRFRsQFRwQFRsRFRkQFRoQFRkPFRwPFRsOFRwPFRoOFRoPFRkRFBwQFB0QFBsQFBoPFBwPFBsPFBoPFBkOFBkPExkNEhgKDhVdxU+SAAAiDUlEQVR42n1bDYOixrJlF1EUROXbtl3CMwuhEfj//+6dc9rZJDc3l2RmZxyluqqrTp2qLoJ+MJ1xfe+M6Z0bXD+M1g7G2sV1nTFuMm6e7PycnbX2Ob/fzjlTG2Nq50ZceCc/iwt/GG1nxmkyFvezo5vcOJnGOtzYuQ5Cpq63nZtG10/O9kE34KZ4y2BN101j/7a9dWZybna422Dd0FsDAW5+4iZj3xszmdY4vvYwfW9bvNnUdWsGM/Ru7CDA9WYce8t14QP9yLUN+I53DF1H+d3QGRt0znRQgCv4rbPT+z1RATe/uNi+50dMh1VCKfwOhSDljq92bI01unFr+6au723b4W1TD6Xwvm4aXId7dI0d8VbeFAuAKZw1tuN9bcBX8SIUsK4bsHIH25th5jZA7wl3H6ZpwLvwMdzQQK7xsqv+1VewQGv6Bi+1UH2EVv3YDdiLCbaHnlB5hFm+ZHODest9HqaA24wv7PnQDRM1tNx4/IPNMdy/EWY22qUJ4mHxSfvd9Nta/d+KHykEL8HS+MIHcAcI7DsYvJOwpqmloV8KDD71DcwR4B6UjbVMPf7HB2Fa15ln76Zhwg9wMTgJP4sfsAbYFTeYmnUt8lterFXn16K74680XTdP3WA77pLUwKpoV34Ur9LXsOkuaJqGK4W32YnG9dsNj517esYIO46vV8+7Pt2Iu1vqcLdble9CXBDem7aGH2FdBq45DcMwziO0himhzYQlYNsM7w+HNtxvB6N2YwA/hG8glBAVtInigW6GaIP9pK9jZCxwwLnGRmG/q3Urbvvr+XiMwmKroHCDeOSN8R02hc4DfH3qHzQF1vaw2gi5zYCdgONOQ+A32yiS+Xc6m7HzjLhHPFn+OnDPx2Vx82J597paqyK93s6n4zENr+XWwCBNJ5tjm+DgiNgBKNF5J0MUtJb+yg1TKMId8O7AwebcQIQaFMQFX5rca+bK7cjQwn4iBu28zPwNSj/X4hZdr5f0mMa3PLyVa/MWONCR3YyFElhg71GmYJzBBk4hJ78YfcgFtjEf2YhN/Ndzr2lz7MI8urewZZHBIXuxdb1WeRhdL5csTS/na1lIuPsJH3J0i4VGoqGnyeuCHcAtrKwuSb1fQBfUUL+Xo2PT5amvEZ44YR+meRxeb2LLuGi7326p6q28hfs4Ts+4sushr7zmHf27947aTwxk+NdIqKFvW4CPhZearzhkQAR0AWy+kMsC4MyL4GU9AuMOUBmwDOG4lqVe38UuTKNoD/FJlt1uYYG13MrNvgf3wQoA2Th0PaIMLsTot9Skod7AMG94o/2e4A54F3aIWzsRzIaOJlbYGyrsqPa8AG63Mg+PWRRReHTMLjf8XpQhhWOtcmr4uZuBTNhxx4DETvC2xiMW/dkJiVwXEBK9a/u0g4iznzAz/v0w4ThTtntvxTWEi+0p/LCP011YVNcQWx7eqk0pA5sMV8dHJuKh4HEiWgOuvjT2uz5Stn3AND19HCgyIS4oeyBOOkb3pGxGD6+BZOH+kp7TOI4pPUqL21G+lodhPm00OFB8YnghkuG5yh6Q3SORwuknKsz/YeRxpN5MkZ0QzxD8DIBoFPLy79jxcdQO1LT3Gc6dpafTMY52u11Ylsccr+JrF+b3t8B6NB2gE4pLtiEL8A5khPqTNKd6Lpim2pq696l6GIg4yAHe6KAPhnKBK/a1ldfwnEA0xKfJIdqFkLcU2O6I/nYmwNHdOobxREcGdBKypqk3H9nMgR78mOUC17fcfmbqwY4Dgpj27T+yzdiNCOzFLFuxi87wbQg/p1kCvYXmFIztLopLlLcDGYiHkLGfX1624z4qqsV3iHQwMJDHBDQ57D+NQDvkGsuPMfmbxQkA7Ph8zu0KBS/Zab9PzikjO033Owr30e2/8q41Y/tATEP65FWgwa2A1krz/sOuevKFYKjJowAf0Jv5hvYae1kfzji6JwzRIGmFVwg8Qu9TQlBJP4qXJZWPw7zIirW24+8PQimsKJ/vSPkMEwX2oEP6tER9RLoWFYAHvnrmSjgW8VTIojU6ciVg7NQCyva3C7Q9nmBzKp6dk6Nk59UtJK5iAXf4Ml0GlqSxJVRpStwC+w7P7SW7l0+DM0EzujX2G4Snsy+ArwAZKIctYtxsRUT8hvAkTRBfCQx/ue5uV5idMQY/v4XlWkE2gVlC6ViW8rDdSNyWGEJKhBcgW6aHn/cMvYF7zbiy4Ii4AWjpDIPA9x7zVoTROTkjeZzTE2L7BNnndMctZvqG4oeyyH9UZobVSHkYphRP2Y6UGc4EmBgnupP7ku1cgIWZjoyJdHRkTsfbkGqZMUH6mvGdh7soOlI4fSwmmsaHW1HCHOcjAK2IdnlVVYTJQeaC20BVyhYxGeTYk/xNuZN0Wnj+BE2XbJJz93phxR04Vw9M5h2aFQkToRwn5+zCvAnZ0e6AYN62Rx6fY3jbjcQJssm0Tf8CDo0z+YYFD8AGM53X3PShV5Y29R2+hGwTzFzZQEIFogrS2xmlIhI+YLyFwelUURwfaeozAlsOXm5lURa7JKbR88pUiNsBqGzEDkemrIFk3TL9T7YhrLPiYBavP3k8sKyBCPRcmIocWIgvEV/sWt0iwidzBxwNTpZEEd0brr+75VgIPL2owJRBgzsyfOwueL8SB7waINkpi/NmkkgOIaIA2dgbsLpBETfQveWORlhqa6h9ieOP7ITRlVDtHTY7vF2iE34ul2U1roHwBz4Kf4VXO6XpUTundEL+6G8s2Z1SXgC/stB5UPKAX8DNRitCNS+4a77LKBtXFMvf0gP0Lu5teT5fUybuP6q6dR+NhGgDcxktKK6PwCUdI15M1tcnMIz8PRBf6rSuTnpbZSIA0bL0W4nEEe+5xVCdwXU5Z/uw+K2q1vJ2Q2lQ3asKNRHAsB+Q+XuEJSg5GIQdO7JPgFkvufSz0TyYWju6BXwiML7i7JkquT4gP7K4Usnc0OTp6eDhcwfR2fV6CosfCCmzTSVKIvzUGNVc2Gokoyc9hXURqyiYceK/xldzKm2Q1cgvuCOB7RZUCUgYLH2tuMKHMnlPy5ITPSoscorf7U55SYHVZNdt7SsWv2BmcmEuV/DBrAm4UH6YiJMfvsIAgsGNcoUZKRs1o3s+BZ/j6BlLz2UCTHeX0ymR4sUd5dctz4tpG6cWG2fBYukgqIARmD58Pt983pJsxBfCfPiS/fjIVoka2JEaQk9mFqQ/kttOJSX8MgdyIa6BJ2HRV/8HdaHssi7kBfRFFsrIWVzoTPwfmDiw4SDM8Leuf3Zetmm8aOVzq4SKOAgGwDDgc/ZE0nC3R25IB5IEtS8JvDuJ97vyVemqF17gBcvyBu72/dzrhvAl5HowpJ4JcdIi3Kg+AEwOd0KGmoSlgxWvQx6jyzEssRAmV6UvAh3WuuS76wVaJ0m2u1VLWd65zzDRssAdVKuwUwDZy4I9A6Cg+mPBbuU69FggNbkaOwIfZu5U91nJ1mI6xoQVxAHOsOcIyvta7slQElwX4Hd5o5M1HjSdaPvMb9BtoOXw0wtuigXMgnIQBDtwWykA+Nb4MtSyGiSuWUPZ+DN9ZNAHWBvA6370ZsvDC+zN65yVW55vTBiT+yqSjRYAG/QsAGmxGcW26elAeOkJKsAeA2FsmskmSBFIiz0Dh97O2wi+RoLOngjgwDQN1D7H4Ch0tXQH/CYPJdYuzlNAIR+/OxEdgiSBjbjCNgVNaElTOsJYL24KDJuE170iPZitZC8L1mbonqy629oQyrNTCm4U71PIzcFM6h7Uivv86UU9Z+dbHfQdX0mCdlpDugfrD0pMKqHleuye0OlZJhGIIPtFVruw5OpYkrBAqOv7gkTFrAnZgBZQwnyb2TIT7nqfFJpQNssZRkfDdDHapiNXZR8NRS1N4ubO95lIWie2Nwbx854GGVBuTrS50jZ9kGqn8HCi2l4UuNimt5wL27Uwz8KCjE1RX2jVAdBR0WgHiBBYBcK1Rzb8yGX5B7MqvzIcpqDnzhh199ijZKSSt8+gYfEB5Azlz5H0/1BuuA+s85aTs62H3MF+gA8crIS8o//IfnnZA9BPVd3km56IO0AO+0wwOvI3SxjctkekPUmQsRZbUe0IbIXUMErJ/qt1IpwsXnfnfUwxwx6Gr7HgMSTneBVqzD6kSX+RUHzqZkORvQTa3TKHDsR4bAzboWqQ9bWrsNuUjRo/AfFH6bUCn2b3RiRhA99MNigTmYCZGWoV1paEnvlbYPV64t4qh4Dno+pRljkEAro/eAs5lVF8I8C/ZFNtcAbJ3ifKYcV2xx9f3sHe3ttIiEd5W9NMDW/B3M0KlKnSN82AU2ILKpMge2LIaTm9+Dl+Q2B2zCTsdmLT7nl0SU57yd5l+QHUaG18nehbQepQTqzVYeSBvtOhysStFLm08DBpRxBivqEMX5rZe2Jd5Hu4Ad43Th4YBLuMTjh5dM1Q+iG2wYgvtzC8VIuvUZeZSkn2BIcZCYNWpBv8k7KtWrbcSXoiZE/qijIJjMwvDBHv8oFggVCkzvtEYGrsj3x/BRc/pSmJA4yPSpuNrqf1sPbpC1nRInUFzVeB2amT4DuE8kQyCzWlR7X/1a8VYwRvadW1HLnCfmIisvWK5Mn+AioBCCeqYrtrejg7QB3bn6BnTqVVp65KozYl98GKbzInk31OooGO20N46ayH45GtL3AHNTvA4+CBcDMsE5uP5EnZ6WmfgrcAX1B51HLuWcGFgESaZmeIYUMXb7wPWL8C/aIyC25EkxLkrNyzM5/gBE9V4qdsmIrk2kygoDtUfaixj5CNyhNOlyJ/OpQ7bPAxeeNmCIdRpZ4zXhudoxDVWQO3TGGGBMgqhgHbvU5F2Pm0H46sXeG5i/Wh1pkW1d8lzdRXAayegKxAljfWpkpLmiNEJhZTI7kZUvPwkV2LjEq2U5tqtr+343Cn53fMa74BZNVPCWytzOIjHJYxUvuMKoClH3QHtKVAFhY02MXe+sboIPi0opUkJV9MlP1JX2jgXdiWp/3dmLYlc2Tw8Zvy0ELZptZ7e0UmCHZbkSplqPWvV3xj0RupSY5UZV9MmkigVsgFB6Hmhn1/czfmzg7lQL9p78Y+WmYJIFZT8zI0tpFRFk85UBtYtVhUg3F17VrGV8ilaEoHsu52atD3niT5xiW/yELEgZDDoILqS2VYHTu1I/Sta9Q3Ky6kAkPCxc3wuza7AMlWVRqXhvdP9ZpHNy/5xutT8sLNX28leZp+trPnY741NX2yiTxcia5jh9+8wagfVcmrqpZtG6sO9qHPEZnnwJJUO54jsffloPaXypSdX6X2rlwa92LHVSd2lP0W2xbTG1l349PNJ7qQFLsasuayLPL8dt1Hx6vKitJVPNBiN43ZOvCr9b6CTwtXLhev9zUvzpKdlQu1Ha1cZWZ8fuJVhy9iByBa9wbIyl6g6dcFcq+R6rgoRsjGOzalTCMvMIKioG51pGF9161+l9fjOZWXX2+XokAmhexbNdVMmpbtZvdkW6Z3PqXcvWz67b3RQdrymLe2yM8oHi+Xc+qbYmwVJeyNUNGRFG70eqtbLdnViuRJTpxlUD2v8l2CyhuyHSP3+VI5oC649f19bXTrZXPTatRn24tJ9wzLZedjfAJUqCuHrES/od6ul2wVpzzlAbu41w4Mkf0sdtKuh6KMEjIIQQvC6dnr6AI/8VAXfIRtmjtL0ZEx4wyLpn4Fy9lBTx6pnJMTwTk5ndj2jsPctR1bhjPpVPBp/Rgd91Ht81FtwySN2CXGfu8TVETAFsva2jNyLnjQCcNg7rjk+9jGmj0B6JyeP7KVC4mQki2yXVuSFyIU6lAUA8SjqRtrW0ltyIbi7CBFIk7RtVzNC1vNYst5/GRFqECdUKXBSbkyANNaXMJoHyUfXAQ0HbEQiN6DCpwu+3xqG56DMxOJp9ZM9/ifVOmSeM84A0eL7MAuUxxfeBCEgpUnPzyO5UkpRVP+i9pWdc0m/wy7hajWYy+asJgqIe7JA/bJ5bqju5Gwcb97dq9ZwrBwrfPdJfFgft6V/wfZB8TY4RiVWyN1++7DUYdJRygArHn8FMfzc2U3LlJQnemu2eXsDxriE8nXKb3c9vm9bgBK8jXIZMZmBwRqR5ezF32D2mUeHXk4sSd1aKAXQUUl2ZsJGb+t6/x4VB/Z4yqzqSWVqv+aUe8zE1JK2Slhg4rDSS3qqWAYGh6qgXDVNbMIG3jZ+Zpii8t8lzGNxXSRyrMdsmui+v3Hj6Z+zOuGa/3jJ4CzYg/ydk3YAI29z+ArUy4+JeD5MddzDfNBhTRuEtDj2G7kCWuZqvZDfLHgrssbzMBmZkbZTUMWRFrKVAEH+0mxZcGrLNftZ/UoCxQz8Y7N1/Ml83tNh1Pr+3jkgmAXIqsSGc+J2CUgmq/kDIk0jbKSJ4DXi+rvjIDkz1nI7FBpVNW2VcX379++fQtwffv2PS9pgrLYh9GB2w1EE6J4vcUCEuLcmfcaiEVzoCNT9lcbZJGERwOfhN1UeUTZhBpsPuKoQU4k/o01JBffP1K/fcn/Xmxry4Os3UX97vMpTT9+zp9OhFasCEDVOOXwgAdYbOM69U6hJEEgjMplpdoZWx7pZZevddPCQ5vm3rWS/Kfgb7/kfy/W8ucfxW13k8HI9s5Z+uuC2yunsMxgu4KyWcSOjxkBRi0lO39XgBnIPsvvIRsODviqqgbmLr97wX8X/o26Vz/L7WcBBgDZ8V6gJnBjqPkjHtmUJn8FpC3MTrjjjp2VJD7ska/vb1gBrnFWuEf5ylxRE0V+bvl/Cv2STenlRrOA8GCPAaSQSON5f9exAxRbZ6Fi0Gmi4YWCALiiXhoLz9/u5X5HNJSvQfa2or6B6PJn9T3476Jlh+BbsT2WrbwlyAQxApsneagySHx1kgqsupTbR/YdyAqWvOLtF8k6RGE5/ZaHyQFvTng042W7ub1Xf5Tf/k3yl+r5tjzY2o93MY2dZR+UocUPETBGLQx4W2B+oFJxaiJe5Z1pBn6xlghUbnVyOADOd5C9LOuC171l/9cVfN/4RoQ6BKWZjlm4AiaWwz6KiFSjA/kLeHbF9Lnkh+snASACqfYpgXfoqBt5hW3U9bk9JDr4i3f9d+Ft+aO8AttPXraEw8n3PGRKd/QeZOMAnH00ZMY3IjA0v56u5cZTmDj+kn2CbKaNdfse/E3gv1gg+L5WZUXhR8rOvOxPRtmfY/ZPiKngqaPv22Y+i1xh4BbhdjqeGCfkigyLdlkfEv1Xif8I8j+Fl+XP8hLhjqQQFxVYyGTMZueEdGBZRvBzgnQLPOXhNtE+KriQJMGi4XgHHbIDB91jK/4h6N+Fb2U5lUmi+oIphbLB3ZBRssuh3O7IvZBtxle7AElOPOHFMm/llscA9hgBioXqTKpYCCnexYO/u/W/mX0DfyrOtxtlpxcV88xLp/SMPLrdWRtoqAZYDhn7IzjLdZ9vJVZAGIjZ0Iz3EF4Szv7T4h/F//uuB2z9bkV8o+LnD2XTKVfGJFmhDA4GjlkQy+PdAbGsReXHG/I4QoR593g6hTd4zn+x+D9h9a9/oQAvXLJhQ8rmtsLRKxQ4wcR2+R2yE86sAICPZYUKBpHOvMeuA5J53n2p/b9D+y/uH3wvAXDrlic3uTn1PhHloHiYLygtR9icrXqU+xxhABZENyQwrRVEJ+EunK+0EdT215f44C+aB/+AVuw3w3Ldljy+nr2fpz6fZJDtGtOjFmR3kIdRKaNpt8ea8gtzICcM4G7I3hkCvqbawV/dOvifehfb8FDtuwmrPVtVeYQv8H1QxTGwTdObtbzEJ53wcl4Euy2iww4TLH495NtMJ/9S/Ns/vP0fiRzZrF7eQOEVnwTzgiNlpEQkEfGRpy8tan8Uw7bZyhhly2GnUKbJUbid8D5NF9yO2LktD779h97Bv6UTUAjAWt0iU67rm358hacxtmMYE9sI2XMLnjqhsuLZI1LWfsc6v4B3eMICPCTWJDnY6OMfUBL8HVd+mQM6/8Fav6rti/TEPYlbBLT4dIQ6ks2aegnIj+nmZ1V9UZgWgiJl03OGRTDosHav51/k/R1XguCX5O1D2MGxrPI0vCmMQNpPkk2wvJWrneegN2N319nIiSEV3pjPzh/ZLBLiHHYbqr9xw4/Wwd+ANfCSH4++9sUCqjSeHc7sXIWI4BOZK8/bYsp+Q28zGNo8g1FwRbf8SJ6kqkzVZAa/WbdVnPhP8cHfTe6JqiSjSmrbtoL8um1Mu+A1lrfYUMQMvTfOIiQy9nos+1NbHqJqUZmOQv1EcirJSDk7xXZRMVwk/j/Ffjb+e1Ftv4FKWiRHya7F7lZQ9mqpwAdOSOZe9jm63ddZvvY0NWUjT8caF8KfdcJPaANr+M1tnI3Ly2qtfmclkn//tYDPKr5/L6Dyz1Km5pHqOLataStV40DFsgfrDaGLRnPiZJe/IXsOpmUx95XLYqWNDblQtK+fz+fdsWSFF7LPdStKt+liJYQV6MphE75UfV3t79hFdpMgeymi8HgKj+X7RxmlIu2xuOj6pmw3j5KNzL4HjhF6OC/FcZbrlYXYT4reoSLFP3lRPiDn8fvPdfvzWp+P53vtvoQPKnDBCSqHjyYHDnwV1EAHu0AwyN4YAQFMDtKYh9jm/YmHUjyGZAphm4tHsBrrwSdQZR1R5t0gv6yejwf+/5S/Dy5kNb9q4RG8YJyX5wt8cbf7DLptGzg48jHgiyW1Wd7vgAMoYA4HAhk13zPW9oDTy/WWFV7pXbQHw4SxkNf3uFGWs/SEHOtlI12BS356AFXTzavimpvFT4ecDIIW10gkSLLbZYHsbqrn6na8JEjUoAvgknEMYkw5BWpabDXefkBeSTgCAEdIqEeY3eB+0BVrWL5sD7Pff/iSnLR25YhEKMKXJJBXhOpRiv4ZyWZ3qbweOQB5onZfsrHfN66RjUHoHX8Oy06aWwOngustFfukEzumrMJzXSzHN6awrbqGGoxRALGxl8tnOWO5dZRtJTsCnJ+O9ARUDgeI3mtu63qJ/Iejz1QoOZwalRHq7bXq50otUxKja+an6XbpvvCpu4x+iQZUJRps5AsMHsmu74NvL519/SsKTeBPfYR/TTP5f1mwcZAoLwh1iLX8gHL79rnYSETak+jlieJyz94LbMiojeMwz0NUB2D7FbwBmKpGZq7KO2GWO0QS72kdj2lUHUTiylQgu+wQ6RVNWuQwQZRdb79ke3qPPIF7P7S/kSbAqNchOiCdkQMivN0yM8bs/e5QCjDmv2TDzw+sSI/wrsOBcUEPxX+gkpcwA5ggQdMPI/rf5fpLOn6IisXWdmgtM8gOtzocNHuG2xyhPoMXMK3iPxhtMxrBGhipP+6GfHaKmHD0WQjVt+h0SSW5kq0P2JDDIc18p/3TcE+LZakBa62pGhRFouSp+BcFJKoA4hKyAWyB/b0bYfM9NxWW9tsN0TCvOFMsYx/kNEl0LUpuMnb8CN/CGhkOvy7ojcjVsy93ojlUUliqgQSXSZQYz2QOMzG1G8XOI8adomuv2XLYADyDiT6WWMrfX4FpxY3zayffFTgesz9lQ2k4/++tbY1pKNuxS+lTIoQfYnFzqJ2vk5tBaILOcZIlDj9xvGfPlUK598prks2vA/CUJ8KKmpTFPGyZfY50sux6TrEdOgi3fL6IJVF0PVPrhOWQZkvZWUQI3t/yNeOHpnzUwwtP4hAQyqCKAW6Jj1r4wfkSHy/ZnrNsGmRjK8E7GkTH8P51aTkZOEPz+tHWC+tqGUgTllRFBJBV6Pv9kT0vHv7CnbjLyfc1UQYCY/gq9L0dI8FsIrw46AzinH1E365ReNXUIo8Xe2fbBqo3jzWH4pyv/Fzc/GyfDxrRgM1NP9jZvZZC6sWp2gQQLvQKI6UtbDJPwmG+8zGSyX2bAIaW6HgHgF1/VjyH4WjQyAnUumm34qBpXsELvQMux7TMsxfHsznHNrg1dN80/HXtrjcmK9CCmq/vFHJ0e8V57A8NL7L3CWmtXKeqRd7u5x731ZGVtTUIanJVx06sJGb8HDNxVPbhA+NPAGzzFmAoIzBDlt2mF/JziEjWIDQknzRvH3s8uaK43F8g+MfaVHyeipM+HC7oXFe3HBdhA0kjrcwmrA+iI4c2Zj+JhRqY/o4PdXW9/MlGkA9LpVAlnpiNH9VU1FtOwy7dhTvyY1trJu2Oh6QzBbt+srUZIQLFmKZKGRjYMNCTaFduPI7jEEHQmfmth2ZApF3X1LBV6/nHUPvkmDNRfZKUv/aZjvmwJcgn76b2o4gcLJ0Xnd9pkgbajZtOe8jNlR/2KDV/8JzNx/fQP2enITz1dvV4gWnrO0nusMgSy11nmsWvq/wiDAsHvfXs1MABag55cZTOTjr7duOIHL4TbJxY0SY6gajd+OToxRJMfKbR+cdm3vzsTBaFmqLhORs5dlvPqmz8hnzRktnUd06OzM7rqFHcWWelGsUdcK8RibQQYO4FkWmK9MlHX57a8cB2n+cIaYZl4bm+HgG0pn1wLpkuCbqtXWgaLoZNfPsRY/xI7sjxeU572gE31hCITswWCyrIsxuPGyc17nvn5ywt41vnmu6NzLJ8hiksH5gwffd6QghUG8eBUvgzj8kcz4T92b3RaEvPZxO7sfdnKpyh0xAq3tluZQiYPogSoEy4/9Dw6+Jle1k8/JllNE6gsfdkWj76Qc154M4jlUnzBs8nHwASAx85HqQn/nQmzHMcPn7VWU0iW+0HT0LOHNHho1dRuVY0uT/Vk2w6ptWJ5vvdW8gzTQNg4niSdSQhToM4fvT1Ofcdnyxb9CyEzqAd/PWNDeiNhqMmrGL0w32QzSG8C9t0MS3Ox7ieL7wZegZ8E6eJvPqfkQJOFTYaHnYdH5jjS67TFNzsY4ETCF039S+eKfNUmHpyKQPneDg0xtEHGoCHAsIXthuW2k9a0Bdm+lrHcXxO6U69f8xCTx80eGm0gAwIej6x4RYm5j7xMPjJ8U9jBw0HcqhoMJ9Je8ORuZ7PiY0apwIdZJAf9xCPanrUsfXI2F8CjswZPtXI2Ub7hGA+5cKBRw4VMCnNdHWOi9G7ZoGBnhXiY58cEYTlUXl2fGBFs0ocPeFonk55+fxm4zsuCm1HHOADom5EHToMk3/SjANufLAEqci8Xo5PnDaGAWP5CCCfooPQFyHJz89p9wc9D4d9mWaNGXPXecTZ60mavuPxdr2OOTJQsTbTojE0Qye0I+pvPkcE9+g4A+30CBSc6YW71nq+eup7jYVaHag9SbQsZfOZG8rWTNa8DAoRIBMnVDUIDB16za32wwo+zQPgSU9TUzbH+4NJMdEZOVqvcb7Rj6mPep6VyslpVdhyuGS2Gk6fZvfren4etZs1I8eHK3iAOfXNwBFs2AzV4doYPSEm6NaRbuAH0adBRuo1SUGzdExD8/j7MM5QmI/bjpxqoLVnIQsNjQjg0Msbsq0MwgEjqAa9G46hdxyxJzo624C0c/7H75we3OwCYH/HR3D0SAnnPp8ajcNGzBojwOcYcv7ZC2yXhrA5gmwgzekpcTdq+nzmmJcedrQMD/eZKtcTJKM2hr7JwT/6Dv7K+tvKTKN/+InPkRrOx+q5ST7LBy/vOLjSjO5XeGtbns+nfM5qUX5K7/N8yDT6HAFPQhD2w/QZjfFDvdxeiP9/NL5CvP5HdX0AAAAASUVORK5CYII=",
@@ -6834,7 +7054,7 @@ const AUXLIB = [
  {n:"Overhead triceps stretch",s:"30 sec each side",ph:["cd"],m:["Triceps"],e:["Bodyweight"]},
  {n:"Puppy pose",s:"45 sec",ph:["cd"],m:["Shoulders", "Chest", "Back"],e:["Bodyweight"]},
  {n:"Lat stretch (rack lean)",s:"30 sec each side",ph:["cd"],m:["Back"],e:["Bodyweight"]},
- {n:"Thread the needle",s:"30 sec each side",ph:["cd"],m:["Back", "Shoulders"],e:["Bodyweight"]},
+ {n:"Thread the needle",s:"8 each side",ph:["cd"],m:["Back", "Shoulders"],e:["Bodyweight"]},
  {n:"Child's pose",s:"45 sec",ph:["cd"],m:["Back"],e:["Bodyweight"]},
  {n:"Dead hang (decompress)",s:"30 sec",ph:["cd"],m:["Back", "Shoulders"],e:["Pull-up bar"]},
  {n:"Lying spinal twist",s:"30 sec each side",ph:["cd"],m:["Back", "Abs & Core"],e:["Bodyweight"]},
@@ -7232,13 +7452,42 @@ function editorCard(isNew){
     </div>
   </div>`;
 }
+/* ---------- My equipment, in the library ----------
+   It lived in Settings, one sheet away from the 330 exercises it governs. It
+   belongs here, above the list it filters.
+   It deliberately does NOT write to state.off. Those are two different
+   questions: myEquip is "what do I own", which shapes what the app SUGGESTS;
+   state.off is "never offer me this specific movement", which is your explicit
+   call. Deriving one from the other is a one-way door - once an exercise is off,
+   nothing records whether you turned it off or a filter did, so buying a
+   kettlebell later could not cleanly undo it.
+   Instead there is a button. It uses the machinery already here - filter by
+   equipment, then All off - so it is visible, reversible with All on, and never
+   happens behind your back. */
+function unavailableCount(){
+  return Object.values(getLib()).flat().filter(n => isOn(n) && !equipOK(n)).length;
+}
+function gearPanelHTML(){
+  const mine = myEquip(), all = equipList(), n = unavailableCount();
+  return `<div class="gear-panel">
+    <div class="gear-head">
+      <div><div class="gear-title">My equipment</div>
+      <div class="gear-sub">${mine.length} of ${all.length}. Rotation only suggests movements you can actually do.</div></div>
+      <button class="mini-btn" id="gearToggle">${cfgGearOpen ? "Hide" : "Edit"}</button>
+    </div>
+    ${cfgGearOpen ? `<div class="coach-pick wrap" style="margin-top:10px">${all.map(e =>
+      `<button data-eq="${e}" class="${mine.indexOf(e) !== -1 ? "on" : ""}">${e}</button>`).join("")}</div>` : ""}
+    ${n ? `<button class="mini-btn gear-sweep" id="gearSweep">Turn off the ${n} enabled ${n === 1 ? "movement" : "movements"} I have no gear for</button>` : ""}
+  </div>`;
+}
+let cfgGearOpen = false;
 function renderCfg(){
   if (cfgEqEdit){ renderEqCreator(); return; }
   if (cfgMode !== "ex"){ renderAuxLib(); return; }
   const groups = Object.keys(getLib());
   const shown = shownNames();
   const onCount = shown.filter(x => isOn(x.n)).length;
-  $("cfgBody").innerHTML = cfgSegHTML() + `
+  $("cfgBody").innerHTML = cfgSegHTML() + gearPanelHTML() + `
     ${cfgAdding ? editorCard(true) : ""}
     <input class="import-area" id="cfgQ" style="min-height:0;padding:12px;font-family:inherit;font-size:15px;font-weight:600;margin-bottom:8px" placeholder="Search ${Object.values(getLib()).flat().length} exercises\u2026" value="${cfgSearch}">
     ${(() => {
@@ -7303,6 +7552,27 @@ function renderCfg(){
     if (cfgOpenDD === "e") cfgEqOnly = false;
     (cfgOpenDD === "m" ? cfgMg : cfgOpenDD === "d" ? cfgDy : cfgEq).length = 0;
     renderCfg();
+  };
+  const gt = document.getElementById("gearToggle");
+  if (gt) gt.onclick = () => { cfgGearOpen = !cfgGearOpen; renderCfg(); };
+  $("cfgBody").querySelectorAll(".gear-panel button[data-eq]").forEach(b => b.onclick = () => {
+    const e = b.dataset.eq;
+    let cur = (state.myEquip && state.myEquip.length) ? state.myEquip.slice() : equipList().slice();
+    const i = cur.indexOf(e);
+    if (i === -1) cur.push(e); else cur.splice(i, 1);
+    if (!cur.length){ toast("Keep at least one \u2014 otherwise there is nothing to suggest"); return; }
+    state.myEquip = equipList().filter(x => cur.indexOf(x) !== -1);
+    save(); render(); renderCfg();
+  });
+  /* Exactly what the tour teaches by hand - filter to gear you do not own, hit
+     All off - done in one tap. Still explicit, still undone by All on. */
+  const gs = document.getElementById("gearSweep");
+  if (gs) gs.onclick = () => {
+    const hit = Object.values(getLib()).flat().filter(n => isOn(n) && !equipOK(n));
+    if (!hit.length) return;
+    hit.forEach(n => setOn(n, false));
+    save(); render(); renderCfg();
+    toast(hit.length + " turned off \u2014 All on brings them back", false);
   };
   $("cfgAllOn").onclick = () => { shownNames().forEach(x => setOn(x.n, true)); save(); render(); renderCfg(); };
   $("cfgAllOff").onclick = () => {
@@ -7447,7 +7717,7 @@ function renderAlt(mode){
     const best = bestPerf(ex.n);
     const lastF = lastFormMeta(ex.n);
     const meta = [muscleMini(ex.g) + " " + ex.g,
-      best ? `<span class="pr">Best: ${best.w}×${best.r}</span>` : null,
+      bestLabel(ex.n, best),
       (lastF && lastF.form) ? `<span class="prev-rate${lastF.form <= 2 ? " low" : ""}">Last: ${lastF.form}★</span>` : null
     ].filter(Boolean).join(" · ");
     const isStalled = false;   /* the coach reason now carries this */
@@ -7853,10 +8123,7 @@ function wireEvents(){
         state.session.ask = cs.ask || null;
       }
       if (ex.sets.every(x => x.done)){
-        if (state.session.list.every(e2 => e2.sets.every(x => x.done)) && !state.session.allSaid){
-          state.session.allSaid = true;
-          sayP("all-sets");
-        } else coachExerciseDone(ex.n);
+        if (allSetsDone()) sessionGate(); else coachExerciseDone(ex.n);
       }
       /* Cardio defaults to one block of minutes, but nothing stops you adding
          sets to it - so it gets a rest timer too, once there is a set to rest for. */
@@ -7910,10 +8177,7 @@ function wireEvents(){
       ex.sets[j].done = true;
       sndSet();
       if (ex.sets.every(x => x.done)){
-        if (state.session.list.every(e2 => e2.sets.every(x => x.done)) && !state.session.allSaid){
-          state.session.allSaid = true;
-          sayP("all-sets");
-        } else coachExerciseDone(ex.n);
+        if (allSetsDone()) sessionGate(); else coachExerciseDone(ex.n);
       }
       /* Cardio defaults to one block of minutes, but nothing stops you adding
          sets to it - so it gets a rest timer too, once there is a set to rest for. */
@@ -8002,6 +8266,18 @@ function sessionScore(list){
   }
   return score;
 }
+/* What this session would score if every set still on screen were ticked. */
+function sessionPotential(list){
+  return sessionScore((list || []).map(e => Object.assign({}, e, {
+    sets: (e.sets || []).map(x => Object.assign({}, x, {done: true}))
+  })));
+}
+/* One logged session is a data point, not a record. */
+function bestLabel(name, best){
+  if (!best) return null;
+  const once = typeof exHistory === "function" && exHistory(name).length === 1;
+  return `<span class="pr">${once ? "Only session" : "Best"}: ${best.w}\u00d7${best.r}</span>`;
+}
 function workFloor(day){
   return ["push","pull","legs","upper","lower","fullbody"].includes(day) ? 6 : 4;
 }
@@ -8034,7 +8310,7 @@ async function completeWorkout(overall){
     ex: exDetail
   });
   if (state.planned) delete state.planned[s.day];
-  const rotMsg = rotTick(s.day, light);
+  const rotMsg = rotTick(s.day, light, exDetail.map(e => e.n));
   state.session = buildSession(suggestDay());
   wuOpen = true; cdOpen = false;
   openPanel = null;
