@@ -113,6 +113,23 @@
   #setBody .set-row.coach-row{align-items:flex-start}
   #setBody .set-row.coach-row .set-ic{margin-top:2px}
   #setBody .set-row.coach-row .set-sub{white-space:normal;overflow:visible;line-height:1.45}
+  .swap-tip{font-size:11px;color:var(--muted);margin:2px 0 6px;letter-spacing:.02em}
+  .swap-picks{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .swap-pick{padding:6px 10px;border-radius:999px;font-size:12px;cursor:pointer;
+    border:1px solid var(--accent,#D7F542);background:rgba(215,245,66,.09);color:var(--accent,#D7F542)}
+  #setBody .fmt-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  #setBody .fmt-opt{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;
+    padding:9px 11px;border-radius:10px;border:1px solid var(--line,rgba(255,255,255,.12));
+    background:transparent;color:inherit;font:inherit;cursor:pointer}
+  #setBody .fmt-opt.on{border-color:var(--accent,#D7F542);background:rgba(215,245,66,.07)}
+  #setBody .fmt-dot{flex:0 0 auto;width:14px;height:14px;margin-top:2px;border-radius:50%;
+    border:1.5px solid var(--muted,#888);box-sizing:border-box}
+  #setBody .fmt-opt.on .fmt-dot{border-color:var(--accent,#D7F542);border-width:4.5px}
+  #setBody .fmt-txt{display:flex;flex-direction:column;gap:1px;min-width:0}
+  #setBody .fmt-nm{font-size:13px;font-weight:600;letter-spacing:.01em}
+  #setBody .fmt-opt.on .fmt-nm{color:var(--accent,#D7F542)}
+  #setBody .fmt-gd{font-size:11px;color:var(--muted);line-height:1.4}
+  #setBody .fmt-note{margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(127,127,127,.13);font-size:11.5px;line-height:1.5;opacity:.92}
   .set-chev{color:var(--muted);font-weight:900;font-size:13px}
   .set-tog{font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:5px 10px;
     background:var(--card2);border:1px solid var(--line);color:var(--muted)}
@@ -217,6 +234,9 @@
     border-radius:10px;padding:8px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
   .swap-panel{display:none;border-top:1px solid var(--line);padding:12px 14px;background:var(--card2)}
   .swap-panel.open{display:block}
+  .swap-panel .swap-rot{font-size:11.5px;color:var(--muted);font-weight:600;
+    margin:0 0 10px;line-height:1.45}
+  .swap-panel .swap-rot b{color:var(--ink)}
   .swap-panel label{font-size:10px;color:var(--muted);font-weight:700;display:block;margin:8px 0 5px;
     text-transform:uppercase;letter-spacing:.09em}
   .swap-panel select{width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);
@@ -344,7 +364,17 @@
     font-size:13px;font-weight:800;cursor:pointer;color:var(--ink);font-family:inherit;
     text-transform:uppercase;letter-spacing:.03em}
   .cal-month.sel{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-  .cal-foot{display:flex;gap:8px;margin-top:12px}
+  /* Always a way out. The footer rides the bottom of the sheet's own scroll box
+     rather than sitting at the end of the content, where iOS Safari's toolbar
+     covered it. */
+  .cal-foot{display:flex;gap:8px;margin-top:12px;position:sticky;bottom:0;
+    background:var(--card);padding-block:10px 2px}
+  /* In a browser tab that toolbar overlaps a bottom-fixed element and reports
+     no safe-area inset, so the sheet buys its own clearance. Installed to the
+     home screen there is no toolbar and this does not apply. */
+  @media not all and (display-mode: standalone){
+    .cal-sheet{padding-bottom:calc(18px + env(safe-area-inset-bottom) + 54px)}
+  }
   .cal-foot button{flex:1;padding:14px;border:none;border-radius:12px;font-size:13px;font-weight:800;
     cursor:pointer;font-family:inherit;text-transform:uppercase;letter-spacing:.04em}
   .cal-foot .cf-today{background:var(--accent);color:var(--accent-ink)}
@@ -964,9 +994,9 @@ const RAWLIB = {
   "Back":[["Lat pulldown",["Machine", "Band"]],["Mid row",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Low row",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Bent-over row",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Pull-ups (wide grip)",["Pull-up bar", "Band"]],["Pull-ups (neutral grip)",["Pull-up bar", "Band"]],["Pull-ups (close grip)",["Pull-up bar", "Band"]],["Chin-ups",["Pull-up bar", "Band"]],["Band-assisted pull-ups",["Band", "Pull-up bar"]],["Deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Single-arm dumbbell row",["Dumbbell", "Kettlebell", "Band"]],["Chest-supported dumbbell row",["Dumbbell", "Kettlebell", "Bench"]],["Rows",["Kettlebell", "Barbell", "Dumbbell", "Band"]],["Pull-aparts",["Band"]],["Renegade rows",["Dumbbell", "Barbell", "Kettlebell", "Band"]],["Scapular pull-ups",["Pull-up bar", "Band"]],["Pendlay row",["Barbell"]],["Yates row",["Barbell"]],["Rack pulls",["Barbell"]],["Snatch-grip deadlift",["Barbell"]],["Kroc rows",["Dumbbell"]],["Gorilla rows",["Kettlebell", "Dumbbell"]],["Inverted rows",["Barbell", "Bodyweight"]],["Straight-arm band pulldown",["Band", "Machine"]],["Superman hold",["Bodyweight"]],["Reverse snow angels",["Bodyweight"]]],
   "Shoulders":[["Shoulder press",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Reverse fly",["Machine", "Dumbbell", "Band"]],["Standing barbell overhead press",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Seated barbell overhead press",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Overhead dumbbell press",["Dumbbell"]],["Arnold press",["Dumbbell", "Kettlebell"]],["Lateral raises",["Dumbbell", "Band", "Kettlebell", "Plate"]],["Front raises",["Dumbbell", "Band", "Kettlebell", "Plate"]],["Rear delt flyes",["Dumbbell", "Band", "Bench"]],["Face pulls",["Band", "Dumbbell"]],["Upright row",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Shrugs",["Barbell", "Dumbbell", "Kettlebell"]],["Overhead press",["Kettlebell", "Barbell", "Dumbbell", "Band"]],["Pike push-ups",["Bodyweight", "Band", "Plate"]],["Z press",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Bradford press",["Barbell"]],["Cuban press",["Dumbbell", "Band", "Plate"]],["Seated lateral raises",["Dumbbell", "Bench", "Band", "Kettlebell", "Plate"]],["Leaning lateral raises",["Dumbbell", "Band", "Kettlebell", "Plate"]],["Y raises",["Dumbbell", "Band", "Plate"]],["Plate front raises",["Plate", "Dumbbell", "Band", "Kettlebell"]],["Halos",["Kettlebell", "Plate", "Dumbbell"]],["Handstand hold (wall)",["Bodyweight"]],["Wall walks",["Bodyweight"]]],
   "Biceps":[["Double-arm cable curl",["Machine"]],["Concentration cable curl",["Machine", "Dumbbell", "Kettlebell", "Band"]],["Biceps curl",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Standing dumbbell curl",["Dumbbell"]],["Seated dumbbell curl",["Dumbbell"]],["Hammer curl",["Dumbbell", "Band", "Kettlebell"]],["Incline dumbbell curl",["Dumbbell", "Bench"]],["Concentration curl",["Dumbbell", "Barbell", "Band", "Kettlebell"]],["Zottman curl",["Dumbbell"]],["Chin-ups (biceps emphasis)",["Pull-up bar", "Band"]],["Spider curls",["Dumbbell", "Bench", "Barbell", "Band", "Kettlebell"]],["Drag curls",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Reverse curls",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["21s",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Cross-body hammer curls",["Dumbbell", "Barbell", "Band", "Kettlebell"]],["Waiter curls",["Kettlebell", "Dumbbell", "Barbell", "Band"]],["Isometric curl hold",["Dumbbell"]]],
-  "Triceps":[["Triceps pressdown",["Machine", "Band"]],["Triceps extension",["Machine", "Dumbbell", "Band", "Barbell", "Kettlebell"]],["Upright dips (dip station)",["Dip station", "Bench", "Bodyweight"]],["Bench dips",["Bench", "Dip station", "Bodyweight"]],["Close-grip bench press",["Barbell", "Bench", "Dumbbell"]],["Skull crushers",["Barbell", "Bench", "Dumbbell", "Band"]],["Overhead dumbbell extension (two arm)",["Dumbbell", "Band", "Barbell", "Kettlebell"]],["Overhead dumbbell extension (one arm)",["Dumbbell", "Band", "Barbell", "Kettlebell"]],["Kickbacks",["Dumbbell", "Band"]],["Overhead band extensions",["Band", "Dumbbell", "Barbell", "Kettlebell"]],["Close-grip push-ups",["Bodyweight", "Band", "Plate"]],["JM press",["Barbell", "Bench", "Dumbbell"]],["Tate press",["Dumbbell", "Bench", "Barbell"]],["Rolling triceps extensions",["Dumbbell", "Bench", "Band", "Barbell", "Kettlebell"]],["Floor press",["Barbell", "Dumbbell", "Kettlebell"]],["Bodyweight skull crushers",["Barbell", "Bodyweight"]]],
+  "Triceps":[["Triceps pressdown",["Machine", "Band"]],["Upright dips (dip station)",["Dip station", "Bench", "Bodyweight"]],["Bench dips",["Bench", "Dip station", "Bodyweight"]],["Close-grip bench press",["Barbell", "Bench", "Dumbbell"]],["Skull crushers",["Barbell", "Bench", "Dumbbell", "Band"]],["Overhead dumbbell extension (two arm)",["Dumbbell", "Band", "Barbell", "Kettlebell"]],["Overhead dumbbell extension (one arm)",["Dumbbell", "Band", "Barbell", "Kettlebell"]],["Kickbacks",["Dumbbell", "Band"]],["Overhead band extensions",["Band", "Dumbbell", "Barbell", "Kettlebell"]],["Close-grip push-ups",["Bodyweight", "Band", "Plate"]],["JM press",["Barbell", "Bench", "Dumbbell"]],["Tate press",["Dumbbell", "Bench", "Barbell"]],["Rolling triceps extensions",["Dumbbell", "Bench", "Band", "Barbell", "Kettlebell"]],["Floor press",["Barbell", "Dumbbell", "Kettlebell"]],["Bodyweight skull crushers",["Barbell", "Bodyweight"]]],
   "Quads & Glutes":[["Leg press",["Machine"]],["Leg extension",["Machine", "Band"]],["Back squat",["Barbell"]],["Front squat",["Barbell", "Kettlebell"]],["Goblet squat",["Dumbbell", "Kettlebell", "Plate"]],["Bulgarian split squat",["Bench", "Dumbbell", "Bodyweight", "Kettlebell", "Barbell"]],["Walking lunges",["Bodyweight", "Dumbbell", "Kettlebell", "Barbell"]],["Reverse lunges",["Bodyweight", "Dumbbell", "Kettlebell", "Barbell"]],["Lateral lunges",["Bodyweight", "Dumbbell", "Kettlebell", "Barbell"]],["Step-ups",["Box/step", "Bodyweight", "Dumbbell", "Kettlebell", "Barbell"]],["Hip thrusts",["Barbell", "Bench", "Dumbbell", "Band", "Bodyweight"]],["Glute bridges",["Bodyweight", "Band", "Dumbbell", "Plate"]],["Weighted glute bridges",["Dumbbell", "Barbell", "Bodyweight", "Band", "Plate"]],["Wall sit",["Bodyweight", "Plate"]],["Jump squats",["Bodyweight"]],["Zercher squat",["Barbell"]],["Lunges",["Barbell", "Bodyweight", "Dumbbell", "Kettlebell"]],["Cyclist squats (heels elevated)",["Plate", "Dumbbell", "Kettlebell"]],["Heel-elevated goblet squats",["Dumbbell", "Plate", "Kettlebell"]],["Sissy squats",["Bodyweight", "Dumbbell", "Kettlebell"]],["Cossack squats",["Bodyweight", "Dumbbell", "Kettlebell"]],["Curtsy lunges",["Dumbbell", "Bodyweight", "Kettlebell", "Barbell"]],["Pistol squats (assisted)",["Bodyweight", "Dumbbell", "Kettlebell"]],["Weighted box step-ups",["Dumbbell", "Box/step", "Bodyweight", "Kettlebell", "Barbell"]],["Frog pumps",["Bodyweight", "Band", "Dumbbell", "Plate"]],["Single-leg glute bridge",["Bodyweight", "Band", "Dumbbell", "Plate"]],["Lateral walks",["Band"]],["Monster walks",["Band"]]],
-  "Hamstrings":[["Leg curl",["Machine", "Band"]],["Romanian deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Sumo deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Single-leg Romanian deadlift",["Bodyweight", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Swings",["Kettlebell", "Dumbbell"]],["Good mornings",["Barbell", "Band"]],["Nordic curl negatives",["Bodyweight"]],["Leg curls",["Band", "Machine"]],["Stiff-leg deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Deficit RDL",["Barbell", "Plate", "Dumbbell", "Kettlebell", "Band"]],["B-stance RDL",["Dumbbell", "Barbell", "Kettlebell", "Band"]],["Pull-throughs",["Band"]],["Sliding leg curls",["Bodyweight"]]],
+  "Hamstrings":[["Romanian deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Sumo deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Single-leg Romanian deadlift",["Bodyweight", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Kettlebell swings",["Kettlebell", "Dumbbell"]],["Good mornings",["Barbell", "Band"]],["Nordic curl negatives",["Bodyweight"]],["Leg curls",["Band", "Machine"]],["Stiff-leg deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Deficit RDL",["Barbell", "Plate", "Dumbbell", "Kettlebell", "Band"]],["B-stance RDL",["Dumbbell", "Barbell", "Kettlebell", "Band"]],["Pull-throughs",["Band"]],["Sliding leg curls",["Bodyweight"]]],
   "Calves":[["Calf press",["Machine"]],["Standing calf raises",["Bodyweight", "Dumbbell", "Barbell", "Machine", "Box/step"]],["Single-leg calf raises",["Bodyweight", "Dumbbell", "Barbell", "Machine", "Box/step"]],["Seated calf raises",["Dumbbell", "Barbell", "Plate", "Bench"]],["Donkey calf raises",["Bodyweight", "Bench", "Plate", "Dumbbell"]],["Tibialis raises",["Bodyweight", "Band"]],["Farmer walk on toes",["Dumbbell", "Kettlebell", "Plate"]]],
   "Abs & Core":[["Ab crunch",["Machine", "Bodyweight", "Band", "Plate"]],["Oblique crunch",["Machine", "Bodyweight", "Band", "Plate"]],["Plank",["Bodyweight"]],["Side plank",["Bodyweight"]],["Hanging knee raises",["Pull-up bar"]],["Hanging leg raises",["Pull-up bar"]],["Russian twists",["Bodyweight", "Kettlebell", "Dumbbell", "Plate"]],["Dead bugs",["Bodyweight"]],["Bicycle crunches",["Bodyweight"]],["Mountain climbers",["Bodyweight"]],["V-ups",["Bodyweight"]],["Ab rollout",["Barbell"]],["Pallof press",["Band"]],["Windmills",["Kettlebell", "Dumbbell"]],["Farmer's carries",["Dumbbell", "Kettlebell", "Plate"]],["Hollow body hold",["Bodyweight"]],["Sit-ups",["Bodyweight", "Plate", "Dumbbell"]],["Weighted sit-ups",["Plate", "Dumbbell", "Bodyweight"]],["Crunches",["Bodyweight", "Band", "Plate"]],["Reverse crunches",["Bodyweight"]],["Toe touches",["Bodyweight"]],["Flutter kicks",["Bodyweight"]],["Scissor kicks",["Bodyweight"]],["Plank shoulder taps",["Bodyweight"]],["Plank up-downs",["Bodyweight"]],["Side plank hip dips",["Bodyweight"]],["Copenhagen plank (bench)",["Bench", "Bodyweight"]],["L-sit hold (dip station)",["Dip station", "Bodyweight"]],["Dragon flag negatives (bench)",["Bench", "Bodyweight"]],["Hanging windshield wipers",["Pull-up bar"]],["Turkish get-up",["Kettlebell", "Dumbbell"]],["Suitcase carries",["Dumbbell", "Kettlebell", "Plate"]],["Bird dogs",["Bodyweight"]]],
   "Plyometrics":[["Box jumps (sturdy box/step)",["Box/step"]],["Broad jumps",["Bodyweight"]],["Tuck jumps",["Bodyweight"]],["Jump squats",["Bodyweight"]],["Jumping lunges",["Bodyweight", "Dumbbell"]],["Lateral bounds (skater hops)",["Bodyweight"]],["Squat jump to stick landing",["Bodyweight"]],["Clap push-ups",["Bodyweight", "Band", "Plate"]],["Plyo push-ups (hands leave floor)",["Bodyweight", "Band", "Plate"]],["Depth drops (step down, stick landing)",["Box/step"]],["Star jumps",["Bodyweight"]],["Pogo hops",["Bodyweight"]],["Single-leg hops",["Bodyweight"]]],
@@ -1010,7 +1040,7 @@ for (const g in RAWLIB){
    Both tags can apply: a lat pulldown is a cable movement on most machines. */
 const CABLE_EX = ["Lat pulldown","Mid row","Low row","Straight-arm band pulldown","Reverse fly",
   "Double-arm cable curl","Concentration cable curl","Biceps curl","Triceps pressdown",
-  "Triceps extension","Flyes","Crossover","Face pulls","Pallof press","Ab crunch","Oblique crunch",
+  "Flyes","Crossover","Face pulls","Pallof press","Ab crunch","Oblique crunch",
   "Kickbacks","Pull-throughs","Front raises","Lateral raises","Rear delt flyes"];
 /* these two are cable by definition - they were never a lever machine */
 const CABLE_ONLY = ["Double-arm cable curl","Concentration cable curl"];
@@ -1035,7 +1065,7 @@ const MUSCLES = {
   "Goblet squat":["Quads & Glutes","Abs & Core"],"Zercher squat":["Quads & Glutes","Abs & Core","Biceps"],
   "Bulgarian split squat":["Quads & Glutes","Hamstrings"],"Walking lunges":["Quads & Glutes","Hamstrings"],
   "Lunges":["Quads & Glutes","Hamstrings"],"Hip thrusts":["Quads & Glutes","Hamstrings"],
-  "Hip thrusts":["Quads & Glutes","Hamstrings"],"Swings":["Hamstrings","Quads & Glutes","Abs & Core"],
+  "Hip thrusts":["Quads & Glutes","Hamstrings"],"Kettlebell swings":["Hamstrings","Quads & Glutes","Abs & Core"],
   "Good mornings":["Hamstrings","Back"],"Pull-throughs":["Hamstrings","Quads & Glutes"],
   "Farmer's carries":["Abs & Core","Back","Shoulders"],"Suitcase carries":["Abs & Core","Back"],
   "Turkish get-up":["Abs & Core","Shoulders"],"Bent-over row":["Back","Biceps"],
@@ -1072,7 +1102,6 @@ const ADD_EQUIP = {
   "Bent-over row":["Barbell","Dumbbell","Band","Kettlebell"],
   "Flyes":["Dumbbell","Band","Bench","Machine"],
   "Leg extension":["Band"],
-  "Leg curl":["Band"],
   "Biceps curl":["Dumbbell","Barbell","Band","Kettlebell","Machine"],
   "Triceps pressdown":["Band","Machine"],
   "Goblet squat":["Dumbbell","Kettlebell"],
@@ -1086,7 +1115,23 @@ const ADD_EQUIP = {
 for (const n in ADD_EQUIP){
   if (EQUIP[n]) for (const e of ADD_EQUIP[n]) if (!EQUIP[n].includes(e)) EQUIP[n].push(e);
 }
-const NAME_MIGRATE = {"Pectoral fly": "Flyes","Flat bench press (barbell)": "Bench press","Flat bench press (dumbbell)": "Bench press","Incline bench press (barbell)": "Incline bench press","Incline bench press (dumbbell)": "Incline bench press","Dumbbell flyes": "Flyes","Banded push-ups": "Push-ups","Band chest press": "Chest press","Band flyes": "Flyes","Kettlebell floor press": "Floor press","Dumbbell pullover": "Pullover","Weighted push-ups (plate on back)": "Weighted push-ups","Band crossover": "Crossover","Barbell bent-over row": "Bent-over row","Barbell deadlift": "Deadlift","Kettlebell row": "Rows","Band pull-aparts": "Pull-aparts","Band lat pulldown": "Lat pulldown","Dumbbell deadlift": "Deadlift","Inverted rows (bar in rack)": "Inverted rows","Band rows": "Rows","Lateral raises (dumbbell)": "Lateral raises","Lateral raises (band)": "Lateral raises","Rear delt flyes (dumbbell)": "Rear delt flyes","Face pulls (band)": "Face pulls","Upright row (barbell)": "Upright row","Upright row (dumbbell)": "Upright row","Shrugs (barbell)": "Shrugs","Shrugs (dumbbell)": "Shrugs","Shrugs (kettlebell)": "Shrugs","Kettlebell overhead press": "Overhead press","Band overhead press": "Overhead press","Band upright row": "Upright row","Kettlebell halos": "Halos","Barbell curl": "Biceps curl","Concentration curl (dumbbell)": "Concentration curl","Band curls": "Biceps curl","Kettlebell curls": "Biceps curl","Reverse curls (barbell)": "Reverse curls","Reverse curls (dumbbell)": "Reverse curls","21s (barbell)": "21s","Skull crushers (barbell)": "Skull crushers","Skull crushers (dumbbell)": "Skull crushers","Dumbbell kickbacks": "Kickbacks","Band pressdowns": "Triceps pressdown","Floor press (barbell)": "Floor press","Floor press (dumbbell)": "Floor press","Bodyweight skull crushers (bar in rack)": "Bodyweight skull crushers","Back squat (barbell)": "Back squat","Front squat (barbell)": "Front squat","Goblet squat (dumbbell)": "Goblet squat","Goblet squat (kettlebell)": "Goblet squat","Walking lunges (dumbbell)": "Walking lunges","Hip thrusts (barbell)": "Hip thrusts","Hip thrusts (dumbbell)": "Hip thrusts","Kettlebell front squats": "Front squat","Barbell lunges": "Lunges","Banded lateral walks": "Lateral walks","Romanian deadlift (barbell)": "Romanian deadlift","Romanian deadlift (dumbbell)": "Romanian deadlift","Conventional deadlift (barbell)": "Deadlift","Kettlebell swings": "Swings","Good mornings (barbell)": "Good mornings","Band leg curls": "Leg curls","Band pull-throughs": "Pull-throughs","Sliding leg curls (towels)": "Sliding leg curls","Standing calf raises (dumbbell)": "Standing calf raises","Standing calf raises (barbell)": "Standing calf raises","Seated calf raises (dumbbells on knees)": "Seated calf raises","Donkey calf raises (bench lean)": "Donkey calf raises","Russian twists (kettlebell)": "Russian twists","Ab rollout (barbell)": "Ab rollout","Pallof press (band)": "Pallof press","Kettlebell windmills": "Windmills","Band crunches": "Crunches","Kettlebell swing intervals": "Kettlebell swing intervals","Kettlebell complex": "Kettlebell complex","Ruck walk (weighted pack)": "Ruck walk","Leg curls": "Leg curl","Peloton endurance ride": "Bike ride","Peloton HIIT ride": "HIIT bike ride"};
+const NAME_MIGRATE = {"Leg curl": "Seated leg curl","Triceps extension": "Overhead dumbbell extension (two arm)","Pectoral fly": "Flyes","Flat bench press (barbell)": "Bench press","Flat bench press (dumbbell)": "Bench press","Incline bench press (barbell)": "Incline bench press","Incline bench press (dumbbell)": "Incline bench press","Dumbbell flyes": "Flyes","Banded push-ups": "Push-ups","Band chest press": "Chest press","Band flyes": "Flyes","Kettlebell floor press": "Floor press","Dumbbell pullover": "Pullover","Weighted push-ups (plate on back)": "Weighted push-ups","Band crossover": "Crossover","Barbell bent-over row": "Bent-over row","Barbell deadlift": "Deadlift","Kettlebell row": "Rows","Band pull-aparts": "Pull-aparts","Band lat pulldown": "Lat pulldown","Dumbbell deadlift": "Deadlift","Inverted rows (bar in rack)": "Inverted rows","Band rows": "Rows","Lateral raises (dumbbell)": "Lateral raises","Lateral raises (band)": "Lateral raises","Rear delt flyes (dumbbell)": "Rear delt flyes","Face pulls (band)": "Face pulls","Upright row (barbell)": "Upright row","Upright row (dumbbell)": "Upright row","Shrugs (barbell)": "Shrugs","Shrugs (dumbbell)": "Shrugs","Shrugs (kettlebell)": "Shrugs","Kettlebell overhead press": "Overhead press","Band overhead press": "Overhead press","Band upright row": "Upright row","Kettlebell halos": "Halos","Barbell curl": "Biceps curl","Concentration curl (dumbbell)": "Concentration curl","Band curls": "Biceps curl","Kettlebell curls": "Biceps curl","Reverse curls (barbell)": "Reverse curls","Reverse curls (dumbbell)": "Reverse curls","21s (barbell)": "21s","Skull crushers (barbell)": "Skull crushers","Skull crushers (dumbbell)": "Skull crushers","Dumbbell kickbacks": "Kickbacks","Band pressdowns": "Triceps pressdown","Floor press (barbell)": "Floor press","Floor press (dumbbell)": "Floor press","Bodyweight skull crushers (bar in rack)": "Bodyweight skull crushers","Back squat (barbell)": "Back squat","Front squat (barbell)": "Front squat","Goblet squat (dumbbell)": "Goblet squat","Goblet squat (kettlebell)": "Goblet squat","Walking lunges (dumbbell)": "Walking lunges","Hip thrusts (barbell)": "Hip thrusts","Hip thrusts (dumbbell)": "Hip thrusts","Kettlebell front squats": "Front squat","Barbell lunges": "Lunges","Banded lateral walks": "Lateral walks","Romanian deadlift (barbell)": "Romanian deadlift","Romanian deadlift (dumbbell)": "Romanian deadlift","Conventional deadlift (barbell)": "Deadlift","Swings": "Kettlebell swings","Good mornings (barbell)": "Good mornings","Band leg curls": "Leg curls","Band pull-throughs": "Pull-throughs","Sliding leg curls (towels)": "Sliding leg curls","Standing calf raises (dumbbell)": "Standing calf raises","Standing calf raises (barbell)": "Standing calf raises","Seated calf raises (dumbbells on knees)": "Seated calf raises","Donkey calf raises (bench lean)": "Donkey calf raises","Russian twists (kettlebell)": "Russian twists","Ab rollout (barbell)": "Ab rollout","Pallof press (band)": "Pallof press","Kettlebell windmills": "Windmills","Band crunches": "Crunches","Kettlebell swing intervals": "Kettlebell swing intervals","Kettlebell complex": "Kettlebell complex","Ruck walk (weighted pack)": "Ruck walk","Leg curls": "Leg curl","Peloton endurance ride": "Bike ride","Peloton HIIT ride": "HIIT bike ride"};
+/* Retiring "Leg curl" earlier left two entries pointing AT it - "Leg curls" and
+   "Band leg curls" - and the loop that applies this map walks keys in insertion
+   order, so those two landed on a name that is no longer a library row and
+   stranded the history under it. Collapse every chain to its final name once,
+   here, so the order the map is written in stops mattering. */
+function migrateResolve(m){
+  for (const k in m){
+    let v = m[k], hops = 0;
+    while (m[v] !== undefined && m[v] !== v && hops++ < 20) v = m[v];
+    m[k] = v;
+  }
+  for (const k in m) if (m[k] === k) delete m[k];   /* a name that maps to itself is not a migration */
+  return m;
+}
+migrateResolve(NAME_MIGRATE);
+
 const EQUIPMENT = ["Machine","Cable","Barbell","EZ bar","Dumbbell","Kettlebell","Band","Bodyweight","Pull-up bar","Dip station","Bench","Plate","Box/step","Ab wheel","Suspension trainer","Treadmill","Bike","Rower","Elliptical","Jump rope"];
 
 const TIMED = new Set(["Plank","Side plank","Wall sit","Hollow body hold","Mountain climbers","Jumping jacks","High knees","Superman hold","Handstand hold (wall)","Isometric curl hold","Side plank hip dips","Copenhagen plank (bench)","L-sit hold (dip station)","Plank shoulder taps",...LIB["Cardio"]]);
@@ -1161,9 +1206,9 @@ const SUGGEST = {
   "Low row":{w:50,r:10},"Bent-over row":{w:40,r:10},
   "Shoulder press":{w:30,r:10},"Reverse fly":{w:30,r:12},
   "Double-arm cable curl":{w:30,r:10},"Concentration cable curl":{w:20,r:10},
-  "Triceps pressdown":{w:30,r:12},"Triceps extension":{w:20,r:12},
+  "Triceps pressdown":{w:30,r:12},
   "Leg press":{w:90,r:10},"Leg extension":{w:40,r:12},
-  "Leg curl":{w:30,r:12},"Calf press":{w:70,r:15},
+  "Calf press":{w:70,r:15},
   "Ab crunch":{w:30,r:15},"Oblique crunch":{w:20,r:15},
   /* Barbell (45 lb bar; start with bar or light plates) */
   "Bench press":{w:45,r:10},"Incline bench press":{w:45,r:10},
@@ -1195,7 +1240,7 @@ const SUGGEST = {
   "Upright row":{w:12,r:10},"Pullover":{w:20,r:12},
   "Renegade rows":{w:15,r:8},"Weighted sit-ups":{w:10,r:12},
   /* Kettlebell */
-  "Goblet squat":{w:25,r:10},"Swings":{w:25,r:15},
+  "Goblet squat":{w:25,r:10},"Kettlebell swings":{w:25,r:15},
   "Front squat":{w:25,r:10},"Rows":{w:25,r:10},
   "Floor press":{w:20,r:10},"Overhead press":{w:20,r:8},
   "Biceps curl":{w:15,r:10},"Shrugs":{w:25,r:12},
@@ -1375,6 +1420,18 @@ function rotateEvery(){
 }
 /* Roughly how long is a block, in weeks? Days come round about 1.3 times a week. */
 function rotWeeks(n){ return Math.round(n / 1.3); }
+/* Session style: one global choice, so every program and the default program
+   follow it without needing to know formats exist. See
+   claude/superset-v1-spec.md for why it is global and not per day. */
+const FMT_NEW_AT = 60;                     /* roughly six months at 3 a week */
+function sessionStyle(){ return state && state.fmt === "superset" ? "superset" : "straight"; }
+function lifterNew(){ return ((state && state.history) || []).length < FMT_NEW_AT; }
+/* One line each, so the list still reads at a glance when circuits and the
+   rest land beside them. The reasoning belongs in a deep dive, not here. */
+const FMT_OPTS = [
+  {id:"straight", name:"Regular sets", good:"Going heavy, learning a new lift, your best numbers."},
+  {id:"superset", name:"Supersets",    good:"The same work in about half the time."}
+];
 /* Which direction must this slot keep?
    Anchored to the DAY, not to whatever is standing in the slot. Reading it
    from the slot lets the day drift: a movement tagged both ways (Seated wall
@@ -1412,6 +1469,23 @@ function rotTick(day, light, done){
 }
 /* How many times has this movement been done in this day's slot? */
 function exReps(dayK, n){ return ((state.exN || {})[dayK + "|" + n]) || 0; }
+/* Which slots are the anchors, honouring whatever was anchored before?
+   Pure - it never writes, so render() can call it. rotateDay persists the
+   result, because that is the moment the choice is actually made. */
+function rotAnchorIdx(dayK, plan){
+  const held = (((state && state.rotAnchor) || {})[dayK] || []);
+  const idx = [];
+  for (const n of held){
+    const i = plan.findIndex(e => e.n === n);
+    if (i !== -1 && idx.indexOf(i) === -1) idx.push(i);
+  }
+  if (idx.length >= ROT_ANCHORS) return idx.slice(0, ROT_ANCHORS);
+  for (const i of rotAnchors(plan)){            /* top up from the ranking */
+    if (idx.indexOf(i) === -1) idx.push(i);
+    if (idx.length === ROT_ANCHORS) break;
+  }
+  return idx;
+}
 function rotateDay(dayK, every){
   const plan = (state.plan || {})[dayK];
   if (!plan || !plan.length) return null;
@@ -1425,7 +1499,9 @@ function rotateDay(dayK, every){
      completed session, and burning an offset on a session that rotated nothing
      would walk the ranking for no reason. */
   const seq = (state.rotSeq[dayK] || 0) + 1;
-  const anchors = rotAnchors(plan);
+  const anchors = rotAnchorIdx(dayK, plan);
+  state.rotAnchor = state.rotAnchor || {};
+  state.rotAnchor[dayK] = anchors.map(i => plan[i].n);
   const taken = plan.map(e => e.n);
   const changes = [];
   plan.forEach((e, i) => {
@@ -1438,6 +1514,7 @@ function rotateDay(dayK, every){
        structural lift, and the old rule froze all of them. */
     const n = pickForGroup(e.g, taken, seq + i, {
       force: rotForce(dayK, e.n), klass: exBand({n: e.n, g: e.g}),
+      fromLen: jointLen(e.n), fromPath: exPath(e.n),
       exact: true, fresh: true, strict: true
     });
     if (n && n !== e.n){
@@ -1506,6 +1583,64 @@ function exBand(ex){
   if (EX_MULTI.test(n)) return "assistance";
   return EX_BIGM.indexOf(g) !== -1 ? "core" : "assistance";
 }
+/* ---- Superset pairing rules ------------------------------------------
+   Which two movements may share a round, and why. Every verdict traces to a
+   source; the reasoning and the library-wide sweep live in
+   claude/superset-v1-spec.md.
+     no    - refused, cannot be built
+     avoid - buildable by hand, never suggested
+     warn  - offered with a note
+     good  - recommended
+     ok    - fine, no preference either way
+   Day tags answer "which day is this", which cannot see hamstrings against
+   quads, so opposition on the muscle group is checked alongside push/pull. */
+const PAIR_ANTI = { "Quads & Glutes":"Hamstrings", "Hamstrings":"Quads & Glutes",
+  "Chest":"Back", "Back":"Chest", "Biceps":"Triceps", "Triceps":"Biceps",
+  "Calves":"Tibialis" };
+function pairOver(x, y){ return (x || []).some(v => (y || []).indexOf(v) !== -1); }
+function pairNoCore(x){ return (x || []).filter(v => v !== "Abs & Core"); }
+function pairMulti(n){ return EX_MULTI.test(origName(n)); }
+function pairBarOnly(n){
+  const e = equipTags(n) || [];
+  return e.indexOf("Barbell") !== -1 && e.indexOf("Machine") === -1 && e.indexOf("Cable") === -1;
+}
+/* Opposing movements: push against pull where the day tags can see it, and
+   opposing muscle groups where they cannot (leg curl against leg extension). */
+function pairAnti(a, b){
+  const pp = x => (dayTags(x) || []).filter(t => t === "Push" || t === "Pull");
+  const da = pp(a), db = pp(b);
+  if (da.length === 1 && db.length === 1 && !pairOver(da, db)) return true;
+  const ta = rolesFor(a).t || [], tb = rolesFor(b).t || [];
+  return ta.some(t => PAIR_ANTI[t] && tb.indexOf(PAIR_ANTI[t]) !== -1);
+}
+function pairOK(a, b){
+  if (a === b) return {lv:"no", why:"That is the same exercise twice."};
+  const ga = findGroup(a), gb = findGroup(b);
+  if (ga === "Plyometrics" || gb === "Plyometrics")
+    return {lv:"no", why:"Jumping and power work is the one thing supersets make worse."};
+  const ba = exBand({n:a, g:ga}), bb = exBand({n:b, g:gb});
+  if (ba === "structural" && bb === "structural")
+    return {lv:"no", why:"Both of these load your spine under a heavy bar. Do them on their own."};
+  if (pairOver(rolesFor(a).t, rolesFor(b).t))
+    return {lv:"avoid", why:"Same muscle \u2014 the second one loses about a full set\u2019s worth of work."};
+  if (ba === "structural" || bb === "structural")
+    return {lv:"avoid", why:"Heavy spine-loaded lifts belong on their own \u2014 pair the smaller stuff instead."};
+  const anti = pairAnti(a, b);
+  const warns = [];
+  if (pairMulti(a) && pairMulti(b) && !anti)
+    warns.push("Two big lifts that do not oppose each other is a lot. One big, one small works better.");
+  if (pairOver(pairNoCore(rolesFor(a).st), pairNoCore(rolesFor(b).t)) ||
+      pairOver(pairNoCore(rolesFor(b).st), pairNoCore(rolesFor(a).t)))
+    warns.push("One of these holds you steady while the other works it. Expect the second to feel harder.");
+  if (pairBarOnly(a) && pairBarOnly(b))
+    warns.push("Two barbell lifts means setting up twice every round.");
+  if (warns.length) return {lv:"warn", why:warns[0], all:warns, anti:anti};
+  if (anti) return {lv:"good", why:"Opposite movements \u2014 you get more reps this way, not fewer.", anti:true};
+  return {lv:"ok", why:"These two do not fight each other."};
+}
+/* Never suggested; buildable only when the user insists. */
+function pairSuggestable(a, b){ const r = pairOK(a, b); return r.lv === "good" || r.lv === "ok" || r.lv === "warn"; }
+
 /* Timers land on quarter minutes - 2:00, 1:45, never 2:05. */
 function round15(sec){ return Math.max(15, Math.round(sec / 15) * 15); }
 
@@ -2085,7 +2220,7 @@ const DAYS = [
     {g:"Shoulders", n:"Shrugs"}]},
   {id:"legs", name:"Legs", defaults:[
     {g:"Quads & Glutes", n:"Goblet squat"},{g:"Hamstrings", n:"Romanian deadlift"},
-    {g:"Quads & Glutes", n:"Walking lunges"},{g:"Hamstrings", n:"Swings"},
+    {g:"Quads & Glutes", n:"Walking lunges"},{g:"Hamstrings", n:"Kettlebell swings"},
     {g:"Abs & Core", n:"Plank"}]},
   {id:"cardio", name:"Cardio / Rest", defaults:[{g:"Cardio", n:"Bike ride"}]},
 ];
@@ -2194,49 +2329,132 @@ const COND_FLAVORS = {
   walk: ["12-3-30 treadmill"],
   mixed: ["HIIT bike ride","Treadmill incline intervals","Cross trainer intervals","Zone 2 bike ride"]
 };
-function pickForGroup(g, exclude, rank, want){
-  let names = (getLib()[g] || []).filter(n => isOn(n) && !exclude.includes(n));
-  if (!names.length) return null;
+/* ---------- Joint length ----------
+   Which position is the OTHER joint in -- the one the two-joint muscle crosses
+   besides the one you are working? "long" = that muscle is stretched, "short"
+   = slack, "mid" = a real third position (arm hanging at the side). Absent
+   means the group has no two-joint muscle to vary, or this movement does not
+   train it, and rotation then has no length preference to express.
+     Hamstrings / Quads  - hip     (hamstrings; rectus femoris)
+     Triceps   / Biceps  - shoulder (long heads)
+     Calves              - knee     (gastrocnemius)
+   First pass generated by rule, reviewed by Erik. */
+const JOINT_LEN = {
+  /* Hamstrings */
+  "Romanian deadlift":"long", "Sumo deadlift":"long", "Single-leg Romanian deadlift":"long",
+  "Kettlebell swings":"long", "Good mornings":"long", "Nordic curl negatives":"short",
+  "Stiff-leg deadlift":"long", "Deficit RDL":"long", "B-stance RDL":"long",
+  "Pull-throughs":"long", "Sliding leg curls":"short", "Seated leg curl":"long",
+  "Lying leg curl":"short", "45-degree back extension":"long", "Glute-ham raise":"short",
+  "TRX hamstring curl":"short",
+  /* Quads & Glutes */
+  "Leg press":"short", "Leg extension":"short", "Back squat":"short",
+  "Front squat":"short", "Goblet squat":"short", "Bulgarian split squat":"long",
+  "Walking lunges":"long", "Reverse lunges":"long", "Lateral lunges":"long",
+  "Step-ups":"long", "Wall sit":"short", "Jump squats":"short",
+  "Zercher squat":"short", "Lunges":"long", "Cyclist squats (heels elevated)":"short",
+  "Heel-elevated goblet squats":"short", "Sissy squats":"long", "Cossack squats":"long",
+  "Curtsy lunges":"long", "Pistol squats (assisted)":"long", "Weighted box step-ups":"long",
+  "Hack squat":"short", "Belt squat":"short", "Smith machine squat":"short",
+  "Step-downs":"long", "Reverse Nordic curl":"long", "Split squat":"long",
+  "TRX pistol squat":"long", "Shrimp squats":"long", "Clean":"mid",
+  "Power clean":"mid", "Hang clean":"mid", "Snatch":"mid",
+  "Power snatch":"mid", "Thrusters":"mid", "Skater squats":"long",
+  /* Triceps */
+  "Triceps pressdown":"short", "Upright dips (dip station)":"short", "Bench dips":"short",
+  "Close-grip bench press":"mid", "Skull crushers":"long", "Overhead dumbbell extension (two arm)":"long",
+  "Overhead dumbbell extension (one arm)":"long", "Kickbacks":"short", "Overhead band extensions":"long",
+  "Close-grip push-ups":"mid", "JM press":"mid", "Tate press":"mid",
+  "Rolling triceps extensions":"long", "Bodyweight skull crushers":"long", "Overhead cable extension":"long",
+  "Reverse-grip pushdown":"short", "California press":"mid", "Korean dips":"short",
+  "Ring dips":"short",
+  /* Biceps */
+  "Double-arm cable curl":"mid", "Concentration cable curl":"short", "Biceps curl":"mid",
+  "Standing dumbbell curl":"mid", "Seated dumbbell curl":"mid", "Hammer curl":"mid",
+  "Incline dumbbell curl":"long", "Concentration curl":"short", "Zottman curl":"mid",
+  "Chin-ups (biceps emphasis)":"mid", "Spider curls":"short", "Drag curls":"long",
+  "Reverse curls":"mid", "21s":"mid", "Cross-body hammer curls":"mid",
+  "Waiter curls":"short", "Isometric curl hold":"mid", "Preacher curl":"short",
+  "EZ bar curl":"mid", "Bayesian cable curl":"long", "Incline hammer curl":"long",
+  /* Calves */
+  "Calf press":"long", "Standing calf raises":"long", "Single-leg calf raises":"long",
+  "Seated calf raises":"short", "Donkey calf raises":"long", "Farmer walk on toes":"long",
+  "Leg press calf raise":"long", "Smith machine calf raise":"long",
+};
+function jointLen(n){ return JOINT_LEN[n] || null; }
+/* Which way you travel. Only the lunge-and-step family, because that is where
+   the app held eleven movements it could not tell apart. "still" means the feet
+   stay put (split squat, pistol) - a real fourth answer, not a missing one. */
+const EX_PATH = {"Lunges":"fwd","Walking lunges":"fwd","Weighted box step-ups":"fwd","Step-ups":"fwd","Reverse lunges":"back","Step-downs":"back","Lateral lunges":"side","Cossack squats":"side","Curtsy lunges":"cross","Split squat":"still","Bulgarian split squat":"still","Pistol squats (assisted)":"still","TRX pistol squat":"still","Shrimp squats":"still","Skater squats":"still","Sissy squats":"still"};
+function exPath(n){
+  const ov = state && state.pathOv && state.pathOv[n];
+  return ov || EX_PATH[origName(n)] || null;
+}
+function pathWord(p){
+  return p === "fwd" ? "also steps forward" : p === "back" ? "also steps back"
+       : p === "side" ? "also steps out to the side" : p === "cross" ? "also steps across"
+       : p === "still" ? "also keeps your feet planted" : "the same kind of movement";
+}
+/* One pass over a muscle group, keeping the REASON each candidate was set
+   aside instead of discarding it. pickForGroup used to compute this and throw
+   the reasoning away; the swap panel needs it, and there must be exactly one
+   answer to "would the app pick this" - so the picker now reads from here.
+   Every step below is a preference that steps aside rather than empty the
+   list, which is why a reason is recorded only when the step actually bit. */
+const FORCE_WORD = {Push: "a pushing movement", Pull: "a pulling movement", Legs: "a leg movement"};
+function swapRank(g, exclude, want){
   want = want || {};
-  /* Never offer a movement you have no way of doing. Falls back to the full
-     list rather than returning nothing if the filter empties a group. */
-  const owned = names.filter(equipOK);
-  if (owned.length) names = owned;
-  /* Direction first: a pull day must not hand you an overhead press.
-     When BUILDING a day, an imperfect exercise beats an empty slot, so this
-     falls back. When ROTATING (strict), the slot already holds something that
-     works - a group with no candidate left in the right direction means the
-     honest answer is to leave it alone rather than put a lateral raise on
-     pull day. The Shoulders group is mostly presses and raises, so this is
-     reached often, not rarely. */
+  const rows = (getLib()[g] || [])
+    .filter(n => isOn(n) && !(exclude || []).includes(n))
+    .map(n => ({n: n, why: null}));
+  if (!rows.length) return [];
+  const live = () => rows.filter(r => !r.why);
+  /* `why` may be a string or a function of the name, so a reason can name the
+     thing it is comparing against instead of waving at it. */
+  const prefer = (test, why) => {
+    const on = live();
+    const keep = on.filter(r => test(r.n));
+    if (!keep.length) return false;              /* would empty it - skip the step */
+    if (keep.length === on.length) return true;  /* nothing to set aside */
+    for (const r of on) if (!test(r.n)) r.why = (typeof why === "function") ? why(r.n) : why;
+    return true;
+  };
+  prefer(equipOK, "needs kit you haven't got");
   if (want.force){
-    const dir = names.filter(n => dayTags(n).includes(want.force));
-    if (dir.length) names = dir;
-    else if (want.strict) return null;
+    const dirOK = prefer(n => dayTags(n).includes(want.force),
+                         "not " + (FORCE_WORD[want.force] || "the right movement"));
+    if (!dirOK && want.strict) return [];
   }
-  /* Then movement class. BUILDING a day wants a floor - lead with the compound
-     while you are fresh. SWAPPING one movement for another wants a match: a
-     lateral raise should become another raise, not a barbell press, or the day
-     quietly gets heavier every time it rotates. */
   if (want.klass){
-    if (want.exact){
-      const same = names.filter(n => exBand({n: n, g: g}) === want.klass);
-      if (same.length) names = same;
-    }
-    if (!want.exact || names.length < 2){
-      const need = CLASS_RANK[want.klass] || 0;
-      const heavy = names.filter(n => (CLASS_RANK[exBand({n: n, g: g})] || 0) >= need);
-      if (heavy.length) names = heavy;
-    }
+    const need = CLASS_RANK[want.klass] || 0;
+    const step = n => {
+      const d = (CLASS_RANK[exBand({n: n, g: g})] || 0) - need;
+      return d > 0 ? "a bigger lift than this slot"
+           : d < 0 ? "a smaller lift than this slot"
+           : "a different kind of movement";
+    };
+    if (want.exact) prefer(n => exBand({n: n, g: g}) === want.klass, step);
+    if (!want.exact || live().length < 2)
+      prefer(n => (CLASS_RANK[exBand({n: n, g: g})] || 0) >= need, step);
   }
-  const inPlan = n => Object.values(state.plan).flat().some(e => e.n === n);
-  /* Building a day favours what you know. Rotating a slot wants the opposite -
-     the staler the better, and never something already sitting in another day. */
+  /* Eleven lunges that differ only in direction used to look identical to the
+     ranking, so swapping one for another bought a new name and nothing else. */
+  if (want.fromPath)
+    prefer(n => exPath(n) !== want.fromPath, pathWord(want.fromPath));
+  if (want.fromLen)
+    prefer(n => { const l = jointLen(n); return l && l !== want.fromLen; },
+           "works the muscle at the same length");
+  const inPlan = n => Object.values(state.plan || {}).flat().some(e => e.n === n);
   const score = want.fresh
     ? n => sinceDone(n) - (inPlan(n) ? 5000 : 0)
     : n => (lastPerf(n) ? 2 : 0) + (inPlan(n) ? 1 : 0);
-  const ranked = [...names].sort((a, b) => score(b) - score(a));
-  return ranked[(rank || 0) % ranked.length];
+  for (const r of rows) r.s = score(r.n);
+  return live().sort((a, b) => b.s - a.s).concat(rows.filter(r => r.why));
+}
+function pickForGroup(g, exclude, rank, want){
+  const ok = swapRank(g, exclude || [], want).filter(r => !r.why);
+  if (!ok.length) return null;
+  return ok[(rank || 0) % ok.length].n;
 }
 function dayNonce(type){ return (state.shuffleN || {})[type] || 0; }
 function genFresh(type){
@@ -2874,8 +3092,7 @@ async function doCloudPush(){
 /* ---------- Settings hub & account screen ---------- */
 let acctBannerHide = false;
 function openDataSheet(){
-  $("dataOverlay").classList.add("on");
-  $("dataSheet").classList.add("on");
+  sheetOpen("data");
 }
 function closeDataSheet(){
   $("dataOverlay").classList.remove("on");
@@ -2919,10 +3136,23 @@ function openSettings(){
     <span class="set-ic">${ico("varietyart")}</span>
     <div class="set-main"><div class="set-name">Variety</div>
     <div class="set-sub">${rotN
-      ? "Each accessory changes after you have done it " + rotN + " times \u2014 about " + rotWeeks(rotN) + " weeks. Skip one and its clock waits. Your two steadiest lifts never change, so you can keep adding weight to them."
+      ? "Your two steadiest lifts never change, so you can keep adding weight to them. Everything else swaps for a new movement once you have done it " + rotN + " times \u2014 about " + rotWeeks(rotN) + " weeks. Skip one and its count waits."
       : "Your days never change on their own"}</div>
     <div class="coach-pick">${[["0","Off"],["8","Every 8"],["4","Every 4"]].map(([v,lab]) =>
       `<button data-rot="${v}" class="${String(rotN) === v ? "on" : ""}">${lab}</button>`).join("")}</div>
+    </div></div>`);
+  const fmtNow = sessionStyle();
+  rows.push(`<div class="set-row coach-row">
+    <span class="set-ic">${ico("bolt")}</span>
+    <div class="set-main"><div class="set-name">Session style</div>
+    <div class="fmt-list">${FMT_OPTS.map(o =>
+      `<button class="fmt-opt${o.id === fmtNow ? " on" : ""}" data-fmt="${o.id}">
+        <span class="fmt-dot"></span>
+        <span class="fmt-txt"><span class="fmt-nm">${o.name}</span><span class="fmt-gd">Good for: ${o.good}</span></span>
+      </button>`).join("")}</div>${
+      fmtNow === "superset" && lifterNew()
+      ? `<div class="fmt-note">New to lifting? In the one study on beginners, regular sets came out ahead on one lift out of four \u2014 the rest tied, in half the time. Very likely fine either way.</div>`
+      : ""}
     </div></div>`);
   if (!a2hsInstalled()){
     rows.push(`<div class="set-row coach-row" id="a2hsRow">
@@ -2937,15 +3167,16 @@ function openSettings(){
   rows.push(`<div class="set-row" data-go="tour">
     <span class="set-ic">${ico("tourart")}</span>
     <div class="set-main"><div class="set-name">App Tour</div>
-    <div class="set-sub">Replay the intro — great for showing a friend</div></div><span class="set-chev">▸</span></div>`);
+    <div class="set-sub">Replay the intro — great for showing a friend</div>
+    <button class="sub-link" id="tourHubLink">Jump straight to a deep dive ▸</button>
+    </div><span class="set-chev">▸</span></div>`);
   rows.push(`<div class="set-row" data-go="data">
     <span class="set-ic">${ico("exportart")}</span>
     <div class="set-main"><div class="set-name">Data & Export</div>
     <div class="set-sub">JSON backups and CSV \u00b7 lives on the Body tab</div></div><span class="set-chev">\u25B8</span></div>`);
   $("setBody").innerHTML = rows.join("")
     + `<div class="set-foot">AddPlates \u00b7 ${SYNC_ENABLED ? (sbUser ? "cloud sync on" : "local \u2014 not signed in") : "demo build"} \u00b7 programs-v3</div>`;
-  $("setOverlay").classList.add("on");
-  $("setSheet").classList.add("on");
+  sheetOpen("set");
   const i2 = document.getElementById("a2hsInstall2");
   if (i2) i2.onclick = async ev => {
     ev.stopPropagation();
@@ -2955,6 +3186,11 @@ function openSettings(){
   };
   const vl = document.getElementById("voiceLink");
   if (vl) vl.onclick = ev => { ev.stopPropagation(); if (soundOn()) ac(); openVoiceSheet(); };
+  $("setBody").querySelectorAll(".fmt-list button[data-fmt]").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    state.fmt = b.dataset.fmt === "superset" ? "superset" : "straight";
+    save(); render(); openSettings();
+  });
   $("setBody").querySelectorAll(".coach-pick button[data-rot]").forEach(b => b.onclick = ev => {
     ev.stopPropagation();
     state.rotate = Number(b.dataset.rot) || false;
@@ -2968,6 +3204,17 @@ function openSettings(){
     save(); render();
     openSettings();                       /* refresh in place */
   });
+  {
+    /* The deep dives sit behind a hub step 33 steps into the main tour. */
+    const hub = document.getElementById("tourHubLink");
+    if (hub) hub.onclick = e => {
+      e.stopPropagation();
+      closeSettings();
+      openOb();
+      const i = tourSeq().findIndex(x => x.hub);
+      if (i >= 0){ obStep = i; renderTour(); }
+    };
+  }
   $("setBody").querySelectorAll(".set-row[data-go]").forEach(r => r.onclick = () => {
     const go = r.dataset.go;
     if (go === "snd"){
@@ -2990,8 +3237,7 @@ function closeSettings(){
   $("setSheet").classList.remove("on");
 }
 function openAcctSheet(){
-  $("acctOverlay").classList.add("on");
-  $("acctSheet").classList.add("on");
+  sheetOpen("acct");
   renderAccount();
 }
 function closeAcctSheet(){
@@ -3563,6 +3809,18 @@ function chartSVG(name){
   </svg>`;
 }
 
+/* Sheets share one z-index, so document order decides who wins - and Settings
+   sits near the end of it. Opening a sheet from inside another one therefore
+   put the new sheet UNDERNEATH. Each open claims the next layer instead. */
+let sheetZ = 101;
+function sheetOpen(name){
+  if (!document.querySelector(".cal-sheet.on")) sheetZ = 101;   /* nothing stacked: start over */
+  sheetZ += 2;
+  const ov = document.getElementById(name + "Overlay");
+  const sh = document.getElementById(name + "Sheet");
+  if (ov){ ov.style.zIndex = sheetZ - 1; ov.classList.add("on"); }
+  if (sh){ sh.style.zIndex = sheetZ; sh.classList.add("on"); }
+}
 const $ = id => document.getElementById(id);
 const iso = d => d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
 const todayISO = () => iso(new Date());
@@ -3585,8 +3843,7 @@ const MONTHS = ["January","February","March","April","May","June","July","August
 function openCal(){
   const d = new Date(viewDate + "T12:00:00");
   calYear = d.getFullYear(); calMonth = d.getMonth(); calMode = "days";
-  $("calOverlay").classList.add("on");
-  $("calSheet").classList.add("on");
+  sheetOpen("cal");
   renderCal();
 }
 function closeCal(){
@@ -4448,16 +4705,95 @@ $("restSkip").onclick = () => { restEnd = null; $("rest").classList.remove("on")
 
 /* ---------- Render ---------- */
 function groupOptions(sel){ return Object.keys(getLib()).map(g => `<option value="${g}" ${g===sel?"selected":""}>${gi(g)}${g}</option>`).join(""); }
-function exOptions(group, sel){
+function exOptions(group, sel, adv){
   const all = getLib()[group] || [];
   const enabled = all.filter(isOn);
   let names = enabled.length ? all.filter(n => isOn(n) || n === sel) : all;
-  return names.map(n => `<option ${n===sel?"selected":""}>${n}</option>`).join("");
+  if (!adv || !adv.ok.length)
+    return names.map(n => `<option ${n===sel?"selected":""}>${n}</option>`).join("");
+  const opt = (n, why) => `<option ${n===sel?"selected":""} value="${n.replace(/"/g,"&quot;")}">${
+    n}${why ? " \u2014 " + why : ""}</option>`;
+  const listed = {};
+  adv.ok.forEach(r => listed[r.n] = 1); adv.no.forEach(r => listed[r.n] = 1);
+  let h = `<optgroup label="Suggested">${adv.ok.map(r => opt(r.n)).join("")}</optgroup>`;
+  if (adv.no.length)
+    h += `<optgroup label="Not ideal here">${adv.no.map(r => opt(r.n, r.why)).join("")}</optgroup>`;
+  /* Whatever is in the slot must always be selectable, even when the ranking
+     set it aside - otherwise the dropdown silently changes the exercise. */
+  const rest = names.filter(n => !listed[n]);
+  if (rest.length) h += `<optgroup label="Everything else">${rest.map(n => opt(n)).join("")}</optgroup>`;
+  return h;
+}
+/* How far through its rotation is this movement? The count exists in state.exN
+   and was visible nowhere, which made the whole feature unverifiable. */
+function rotLineHTML(n){
+  const every = rotateEvery();
+  if (!every) return "";
+  const day = state.session && state.session.day;
+  const plan = (state.plan || {})[day];
+  if (!plan || !plan.length) return "";
+  const i = plan.findIndex(e => e.n === n);
+  if (i === -1) return "";                       /* added just for today, not in the rotation */
+  if (plan[i].pin || rotAnchorIdx(day, plan).indexOf(i) !== -1)
+    return `<div class="swap-rot">One of your two steady lifts on ${dayLabel(day)} \u2014 it stays put so you can keep adding weight.</div>`;
+  const done = exReps(day, n), left = Math.max(0, every - done);
+  return `<div class="swap-rot">Done <b>${done} of ${every}</b> on ${dayLabel(day)} \u2014 ` +
+    (left <= 1 ? "it swaps itself next time." : "it swaps itself after " + left + " more.") + `</div>`;
+}
+/* What rotation itself would do with this slot, shown rather than hidden.
+   Same call rotateDay makes, minus `strict` - the panel must still offer
+   something when nothing fits perfectly, where rotation may leave a slot be. */
+function swapAdvice(idx, group, n, isAdd){
+  const s = state.session;
+  if (!s || !s.list || !group) return null;
+  const i = Number(idx);
+  const cur = isAdd || !isFinite(i) ? null : s.list[i];
+  const taken = s.list.filter((e, k) => k !== i).map(e => e.n);
+  const want = {fresh: true};
+  if (cur){
+    const f = rotForce(s.day, cur.n);
+    if (f) want.force = f;
+    want.klass = exBand({n: cur.n, g: cur.g});
+    want.exact = true;
+    /* Only meaningful against the group it came from. */
+    if (group === cur.g){ want.fromLen = jointLen(cur.n); want.fromPath = exPath(cur.n); }
+  }
+  const rows = swapRank(group, taken, want);
+  if (!rows.length) return null;
+  return {ok: rows.filter(r => !r.why), no: rows.filter(r => r.why), from: cur ? cur.n : null};
+}
+/* Redraw the chip row in place. Rebuilding the whole panel would close the
+   dropdown the user just used. */
+function swapPicksHTML(panel, adv, sel){
+  const box = panel.querySelector(".swap-picks");
+  const tip = panel.querySelector(".swap-tip");
+  const picks = adv ? adv.ok.filter(r => r.n !== sel).slice(0, 3) : [];
+  if (!box) return;
+  box.innerHTML = picks.map(r =>
+    `<button class="swap-pick" data-pick="${r.n.replace(/"/g,"&quot;")}">${r.n}</button>`).join("");
+  box.style.display = picks.length ? "" : "none";
+  if (tip) tip.style.display = picks.length ? "" : "none";
+  swapPicksWire(panel);
+}
+function swapPicksWire(panel){
+  panel.querySelectorAll(".swap-pick").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    const selEx = panel.querySelector(".sel-ex");
+    if (selEx) selEx.value = b.dataset.pick;
+    panel.querySelectorAll(".swap-pick").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+  });
 }
 function swapPanelHTML(idx, g, n, isAdd){
+  const adv = swapAdvice(idx, g, n, isAdd);
+  const picks = adv ? adv.ok.filter(r => r.n !== n).slice(0, 3) : [];
   return `<div class="swap-panel open">
+    ${isAdd ? "" : rotLineHTML(n)}
+    ${picks.length ? `<div class="swap-tip">Best swaps here</div>
+      <div class="swap-picks">${picks.map(r =>
+        `<button class="swap-pick" data-pick="${r.n.replace(/"/g,"&quot;")}">${r.n}</button>`).join("")}</div>` : ""}
     <label>Muscle group</label><select class="sel-group">${groupOptions(g)}</select>
-    <label>Exercise</label><select class="sel-ex">${exOptions(g, n)}</select>
+    <label>Exercise</label><select class="sel-ex">${exOptions(g, n, adv)}</select>
     <div class="panel-btns">
       <button class="p-btn confirm" data-idx="${idx}">${isAdd ? "Add" : "Swap"}</button>
       ${isAdd ? "" : `<button class="p-btn remove" data-idx="${idx}">Remove</button>`}
@@ -4465,13 +4801,32 @@ function swapPanelHTML(idx, g, n, isAdd){
     </div></div>`;
 }
 
+/* Movements you do one side at a time. The number you log means one side, so
+   without this the same "12" could be twelve reps or twenty-four, and Coach
+   reads a halved session as holding steady. Warm-ups and stretches already had
+   this ("20 sec each side"); main exercises had nothing.
+   Movements that ALTERNATE within a set - walking lunges, alternating presses -
+   are deliberately not here: the set already covers both sides. */
+const EX_TWO_SIDED = {"Single-arm dumbbell press":1,"One-arm push-ups (assisted)":1,"Single-arm dumbbell row":1,"Single-arm lat pulldown":1,"Concentration cable curl":1,"Concentration curl":1,"Cross-body hammer curls":1,"Overhead dumbbell extension (one arm)":1,"Bulgarian split squat":1,"Reverse lunges":1,"Lateral lunges":1,"Step-ups":1,"Curtsy lunges":1,"Pistol squats (assisted)":1,"Weighted box step-ups":1,"Single-leg glute bridge":1,"Step-downs":1,"Split squat":1,"TRX pistol squat":1,"Shrimp squats":1,"Skater squats":1,"Single-leg Romanian deadlift":1,"B-stance RDL":1,"Single-leg calf raises":1,"Oblique crunch":1,"Side plank":1,"Windmills":1,"Side plank hip dips":1,"Copenhagen plank (bench)":1,"Turkish get-up":1,"Suitcase carries":1,"Turkish sit-ups":1,"Side plank reach through":1,"Single-leg hops":1};
+function exSides(n){
+  const ov = state && state.sides && state.sides[n];
+  if (ov) return ov === 2 || ov === "2" ? 2 : 1;
+  return EX_TWO_SIDED[origName(n)] ? 2 : 1;
+}
 function unitLabel(ex){
   const m = trackMode(ex.n, ex.g);
-  return m === "sec" ? "sec" : m === "min" ? "min" : "reps";
+  if (m === "sec") return "sec";
+  if (m === "min") return "min";
+  return exSides(ex.n) > 1 ? "reps/side" : "reps";
 }
 function wLabel(ex){
   const m = trackMode(ex.n, ex.g);
   return m === "min" ? "level" : m === "wr" ? "lbs" : "";
+}
+/* The third column is weight for a lifted set and the timer for a held one -
+   so the heading has to say which. */
+function colLabel(ex){
+  return trackMode(ex.n, ex.g) === "sec" ? "Timer" : wLabel(ex);
 }
 
 function render(){
@@ -4611,23 +4966,37 @@ function render(){
       </div>
       ${openChart === i ? `<div class="chart-panel"><h4>Best set over time</h4>${chart ? chart + '<div class="chart-cap">Tap any dot for details</div>' : '<div class="chart-empty">Log this exercise in at least 2 workouts to see your trend.</div>'}</div>` : ""}
       <div class="sets">
-        <div class="set-labels"><span>Set</span><span>Previous</span><span>${wLabel(ex)}</span><span>${unitLabel(ex)}</span><span></span></div>
+        <div class="set-labels"><span>Set</span><span>Previous</span><span>${colLabel(ex)}</span><span>${unitLabel(ex)}</span><span></span></div>
         ${ex.sets.map((s,j) => {
           /* how it went last time, not just what the numbers were - a set you
              rated 2 stars reads very differently from the same weight at 5 */
           const psf = prev && prev[j] && prev[j].sf ? Number(prev[j].sf) : 0;
+          const tmode = trackMode(ex.n, ex.g);
+          /* A held set has no weight, so "— × 79" was the wrong shape for it
+             and 79 was seconds, not reps. Say it the way the set is measured. */
+          const pNum = pv => tmode === "sec" ? fmt(Number(pv.r) || 0)
+                           : tmode === "min" ? (Number(pv.r) || 0) + " min"
+                           : `${pv.w||"—"} × ${pv.r||"—"}`;
           const p = prev && prev[j]
-            ? `${prev[j].w||"—"} × ${prev[j].r||"—"}${psf ? ` <span class="prev-rate${psf <= 2 ? " low" : ""}">${psf}★</span>` : ""}`
+            ? `${pNum(prev[j])}${psf ? ` <span class="prev-rate${psf <= 2 ? " low" : ""}">${psf}★</span>` : ""}`
             : "—";
           const ph = prev && prev[j] ? prev[j] : {w:"", r:""};
-          const tmode = trackMode(ex.n, ex.g);
           const tsec = tmode === "sec" ? (Number(s.r)||0) : tmode === "min" ? Math.round((Number(s.r)||0) * 60) : 0;
-          const prevCell = tsec > 0 && !s.done
+          const timerBtn = tsec > 0 && !s.done
             ? `<button class="t-start" data-i="${i}" data-j="${j}" data-sec="${tsec}">${ico("clock")} ${fmt(tsec)}</button>`
+            : null;
+          /* A held set has no weight, so that column was dead space showing a
+             dash while the timer sat under the "Previous" heading. The timer
+             moves into the empty column and Previous goes back to meaning
+             previous. Minute-tracked work keeps its level input, so the timer
+             stays where it was there. */
+          const timerInW = timerBtn && tmode === "sec";
+          const prevCell = (timerBtn && !timerInW)
+            ? timerBtn
             : `<span class="prev">${p}</span>`;
           const wCell = (tmode === "wr" || tmode === "min")
             ? `<input type="text" inputmode="decimal" value="${s.w}" placeholder="${ph.w}" data-i="${i}" data-j="${j}" data-f="w">`
-            : `<span class="prev" style="text-align:center;opacity:.4">—</span>`;
+            : (timerInW ? timerBtn : `<span class="prev" style="text-align:center;opacity:.4">—</span>`);
           return `<div class="aux-wrap sswipe"><div class="aux-del">${ico("trash")}<span>Remove</span></div>
           <div class="set-row ${s.done?"logged":""}" data-si="${i}" data-sj="${j}">
             <span class="set-num">${j+1}</span>
@@ -4960,8 +5329,7 @@ function openMeasSheet(){
     return `<div class="mf-field"><label>${m.label} (${m.unit})</label>
       <input type="text" inputmode="decimal" data-k="${m.k}" value="${val}" placeholder="${last ? last.val : ""}"></div>`;
   }).join("");
-  $("measOverlay").classList.add("on");
-  $("measSheet").classList.add("on");
+  sheetOpen("meas");
 }
 function closeMeasSheet(){
   $("measOverlay").classList.remove("on");
@@ -5040,8 +5408,7 @@ function openDataSheet(){
   $("importArea").value = "";
   importArmed = false;
   $("importBtn").textContent = "Import & replace data";
-  $("dataOverlay").classList.add("on");
-  $("dataSheet").classList.add("on");
+  sheetOpen("data");
 }
 function closeDataSheet(){
   $("dataOverlay").classList.remove("on");
@@ -5446,8 +5813,7 @@ function applyTheme(id){
 function realWorkouts(){ return state.history.filter(h => !h.shield && !h.light).length; }
 function spendable(){ return state.coins || 0; }
 function openShop(){
-  $("shopOverlay").classList.add("on");
-  $("shopSheet").classList.add("on");
+  sheetOpen("shop");
   renderShop();
 }
 function closeShop(){
@@ -6093,14 +6459,18 @@ function clipStart(job){
       if (!clipCur || clipCur.src !== src) return;   /* we were replaced; not our turn to hand off */
       clipCur = null;
       const n = clipNext; clipNext = null;
+      /* The waiting slot had no expiry: a line parked behind a long clip played
+         whenever the channel freed up, which is how a set-finished line landed
+         in the middle of the next exercise. */
+      if (n && Date.now() - n.at > CLIP_STALE){ n.quiet("waited too long"); return; }
       if (n) clipStart(n);
     };
     src.start();
     clipCur = {key: job.key, prio: clipPrio(job.key), src: src, at: Date.now()};
   }catch(e){ clipCur = null; job.quiet("play error"); }
 }
-function channelPlay(key, buf, c, quiet){
-  const job = {key: key, buf: buf, c: c, quiet: quiet};
+function channelPlay(key, buf, c, quiet, asked){
+  const job = {key: key, buf: buf, c: c, quiet: quiet, at: asked || Date.now()};
   if (!clipCur){ clipStart(job); return; }
   if (clipCur.key === key || (clipNext && clipNext.key === key)) return;   /* no echo */
   /* barely started and something more important showed up - swap before anyone
@@ -6113,10 +6483,19 @@ function channelPlay(key, buf, c, quiet){
   if (!clipNext || clipPrio(key) > clipPrio(clipNext.key)) clipNext = job;
   else quiet("channel busy");
 }
+/* How long a spoken line may wait before it stops being true. Two paths can
+   delay one: the single waiting slot below, and the network fetch the first
+   time a clip is ever played - whose promise used to resolve and play
+   unconditionally, however much later. "Halfway there" five seconds into a
+   twenty-second hang, and "Complete, breathe and reset" three seconds before a
+   stretch timer ended, were both a cue arriving after its moment had passed. */
+const CLIP_STALE = 10000;
 function playClip(key){
   const def = VOICE_PACK[key];
   if (!def) return;
   if (!soundOn()) return;
+  const asked = Date.now();
+  const stale = () => Date.now() - asked > CLIP_STALE;
   /* pack off: the system voice IS the coach */
   if (!packOn()) { say(def.t); return; }
   /* pack on: Brian holds the mic. A clip the server does not have falls back to the
@@ -6125,7 +6504,10 @@ function playClip(key){
   const quiet = why => console.log("[pack] silent (" + why + "):", key);
   const c = ac(); if (!c){ quiet("no audio context"); return; }
   const playBuf = buf => {
-    const go = () => { channelPlay(key, buf, c, quiet); };
+    const go = () => {
+      if (stale()){ quiet("too late to matter"); return; }
+      channelPlay(key, buf, c, quiet, asked);
+    };
     /* iOS parks contexts non-running (suspended/interrupted) — wait for a running context */
     if (c.state === "running"){ go(); return; }
     let done = false;
@@ -6137,7 +6519,7 @@ function playClip(key){
   fetch("voice/" + def.f)
     .then(r => { if (!r.ok || ((r.headers.get("content-type") || "").includes("text/html"))) throw 0; return r.arrayBuffer(); })
     .then(ab => new Promise((res, rej) => c.decodeAudioData(ab, res, rej)))
-    .then(buf => { packBuffers.set(key, buf); playBuf(buf); })
+    .then(buf => { packBuffers.set(key, buf); playBuf(buf); })   /* playBuf drops it if the moment has gone */
     .catch(() => { quiet("clip missing — system voice covering"); say(def.t); });
 }
 function sayP(key){
@@ -6276,8 +6658,7 @@ function openVoiceSheet(){
     sayP("coach-hello");
     openVoiceSheet();
   });
-  $("voiceOverlay").classList.add("on");
-  $("voiceSheet").classList.add("on");
+  sheetOpen("voice");
 }
 function closeVoiceSheet(){
   $("voiceOverlay").classList.remove("on");
@@ -6411,8 +6792,7 @@ function openFormSheet(){
     if (idx === -1) overallTemp.issues.push(x); else overallTemp.issues.splice(idx,1);
     b.classList.toggle("on", idx === -1);
   });
-  $("formOverlay").classList.add("on");
-  $("formSheet").classList.add("on");
+  sheetOpen("form");
 }
 function closeFormSheet(){
   $("formOverlay").classList.remove("on");
@@ -6807,7 +7187,7 @@ const GROUP2DAY = {
    The user's own pick in the editor always wins over this. */
 /* roles, rep targets and timed-mode flags for the additions */
 Object.assign(MUSCLES, {"Wrist curl":["Forearms"],"Reverse wrist curl":["Forearms"],"Behind-the-back wrist curl":["Forearms"],"Wrist roller":["Forearms","Shoulders"],"Plate pinch hold":["Forearms"],"Dead hang":["Forearms","Back"],"Farmer hold":["Forearms","Back","Shoulders"],"Towel pull-ups":["Back","Biceps","Forearms"],"Landmine press":["Chest","Shoulders","Triceps"],"Guillotine press":["Chest","Triceps","Shoulders"],"Larsen press":["Chest","Triceps","Shoulders"],"Reverse-grip bench press":["Chest","Triceps","Shoulders"],"T-bar row":["Back","Biceps","Shoulders"],"Meadows row":["Back","Biceps","Shoulders"],"Seal row":["Back","Biceps","Shoulders"],"Chest-supported machine row":["Back","Biceps","Shoulders"],"Single-arm lat pulldown":["Back","Biceps"],"Reverse-grip lat pulldown":["Back","Biceps"],"Back extension":["Back","Hamstrings","Quads & Glutes"],"Reverse hyperextension":["Back","Quads & Glutes","Hamstrings"],"Smith machine row":["Back","Biceps","Shoulders"],"Cable lateral raise":["Shoulders"],"Machine lateral raise":["Shoulders"],"Landmine shoulder press":["Shoulders","Triceps"],"Behind-the-neck press":["Shoulders","Triceps"],"Viking press":["Shoulders","Triceps","Chest"],"Scaption raise":["Shoulders"],"Powell raise":["Shoulders"],"Preacher curl":["Biceps","Forearms"],"EZ bar curl":["Biceps","Forearms"],"Bayesian cable curl":["Biceps","Forearms"],"Incline hammer curl":["Biceps","Forearms"],"Overhead cable extension":["Triceps"],"Reverse-grip pushdown":["Triceps"],"California press":["Triceps","Chest","Shoulders"],"Hack squat":["Quads & Glutes","Hamstrings"],"Belt squat":["Quads & Glutes","Hamstrings"],"Smith machine squat":["Quads & Glutes","Hamstrings"],"Hip abduction":["Quads & Glutes"],"Hip adduction":["Quads & Glutes"],"Cable glute kickback":["Quads & Glutes","Hamstrings"],"Step-downs":["Quads & Glutes","Hamstrings"],"Reverse Nordic curl":["Quads & Glutes"],"Split squat":["Quads & Glutes","Hamstrings"],"Seated leg curl":["Hamstrings","Calves"],"Lying leg curl":["Hamstrings","Calves"],"45-degree back extension":["Hamstrings","Quads & Glutes","Back"],"Glute-ham raise":["Hamstrings","Quads & Glutes","Calves"],"Leg press calf raise":["Calves"],"Smith machine calf raise":["Calves"],"Cable crunch":["Abs & Core"],"Cable woodchopper":["Abs & Core","Shoulders"],"Toes to bar":["Abs & Core","Back","Forearms"],"Hollow rocks":["Abs & Core","Quads & Glutes"],"Side bends":["Abs & Core"],"Landmine rotation":["Abs & Core","Shoulders"],"TRX row":["Back","Biceps","Shoulders"],"TRX push-ups":["Chest","Triceps","Shoulders"],"TRX fallout":["Abs & Core","Shoulders","Back"],"TRX pistol squat":["Quads & Glutes","Hamstrings"],"TRX hamstring curl":["Hamstrings","Quads & Glutes"],"Rowing machine steady state":["Cardio","Back","Quads & Glutes"],"Rowing machine intervals":["Cardio","Back","Quads & Glutes"],"Jump rope":["Cardio","Calves"],"Double unders":["Cardio","Calves"],"Stair climber":["Cardio","Quads & Glutes"],"Sled push":["Cardio","Quads & Glutes","Hamstrings"],"Battle ropes":["Cardio","Shoulders","Back"],"Swimming":["Cardio","Back","Shoulders"],"Medicine ball slams":["Plyometrics","Abs & Core","Back","Shoulders"],"Rotational medicine ball throw":["Plyometrics","Abs & Core","Shoulders"],"Depth jumps":["Plyometrics","Quads & Glutes","Calves"],"Bounding":["Plyometrics","Quads & Glutes","Calves"],"Archer push-ups":["Chest","Triceps","Shoulders"],"Pseudo planche push-ups":["Chest","Shoulders","Triceps"],"One-arm push-ups (assisted)":["Chest","Triceps","Shoulders"],"Ring push-ups":["Chest","Triceps","Shoulders"],"Archer pull-ups":["Back","Biceps","Shoulders"],"Typewriter pull-ups":["Back","Biceps","Shoulders"],"Negative pull-ups":["Back","Biceps","Forearms"],"Muscle-ups":["Back","Chest","Triceps","Biceps"],"Skin the cat":["Back","Shoulders"],"Tuck front lever hold":["Back","Abs & Core","Shoulders"],"Back lever hold (tucked)":["Back","Chest","Shoulders"],"Korean dips":["Triceps","Chest","Shoulders"],"Ring dips":["Triceps","Chest","Shoulders"],"Handstand push-ups (wall)":["Shoulders","Triceps","Chest"],"Tuck planche hold":["Shoulders","Chest"],"Human flag (tucked)":["Abs & Core","Back","Shoulders"],"Shrimp squats":["Quads & Glutes","Hamstrings"],"Archer rows":["Back","Biceps","Shoulders"]});
-Object.assign(SUGGEST, {"Wrist curl":{w:"",r:12},"Reverse wrist curl":{w:"",r:12},"Behind-the-back wrist curl":{w:"",r:12},"Wrist roller":{w:"",r:12},"Plate pinch hold":{w:"",r:30},"Dead hang":{w:"",r:30},"Farmer hold":{w:"",r:30},"Towel pull-ups":{w:"",r:10},"Landmine press":{w:"",r:10},"Guillotine press":{w:"",r:10},"Larsen press":{w:"",r:10},"Reverse-grip bench press":{w:"",r:10},"T-bar row":{w:"",r:8},"Meadows row":{w:"",r:8},"Seal row":{w:"",r:10},"Chest-supported machine row":{w:"",r:10},"Single-arm lat pulldown":{w:"",r:10},"Reverse-grip lat pulldown":{w:"",r:10},"Back extension":{w:"",r:8},"Reverse hyperextension":{w:"",r:8},"Smith machine row":{w:"",r:10},"Cable lateral raise":{w:"",r:12},"Machine lateral raise":{w:"",r:12},"Landmine shoulder press":{w:"",r:10},"Behind-the-neck press":{w:"",r:10},"Viking press":{w:"",r:10},"Scaption raise":{w:"",r:12},"Powell raise":{w:"",r:12},"Preacher curl":{w:"",r:12},"EZ bar curl":{w:"",r:12},"Bayesian cable curl":{w:"",r:12},"Incline hammer curl":{w:"",r:12},"Overhead cable extension":{w:"",r:12},"Reverse-grip pushdown":{w:"",r:12},"California press":{w:"",r:10},"Hack squat":{w:"",r:8},"Belt squat":{w:"",r:8},"Smith machine squat":{w:"",r:8},"Hip abduction":{w:"",r:10},"Hip adduction":{w:"",r:10},"Cable glute kickback":{w:"",r:12},"Step-downs":{w:"",r:8},"Reverse Nordic curl":{w:"",r:12},"Split squat":{w:"",r:8},"Seated leg curl":{w:"",r:12},"Lying leg curl":{w:"",r:12},"45-degree back extension":{w:"",r:8},"Glute-ham raise":{w:"",r:8},"Leg press calf raise":{w:"",r:12},"Smith machine calf raise":{w:"",r:12},"Cable crunch":{w:"",r:12},"Cable woodchopper":{w:"",r:12},"Toes to bar":{w:"",r:12},"Hollow rocks":{w:"",r:12},"Side bends":{w:"",r:12},"Landmine rotation":{w:"",r:12},"TRX row":{w:"",r:10},"TRX push-ups":{w:"",r:10},"TRX fallout":{w:"",r:12},"TRX pistol squat":{w:"",r:8},"TRX hamstring curl":{w:"",r:12},"Rowing machine steady state":{w:"",r:20},"Rowing machine intervals":{w:"",r:20},"Jump rope":{w:"",r:20},"Double unders":{w:"",r:20},"Stair climber":{w:"",r:20},"Sled push":{w:"",r:20},"Battle ropes":{w:"",r:20},"Swimming":{w:"",r:20},"Medicine ball slams":{w:"",r:12},"Rotational medicine ball throw":{w:"",r:10},"Depth jumps":{w:"",r:12},"Bounding":{w:"",r:8},"Archer push-ups":{w:"",r:10},"Pseudo planche push-ups":{w:"",r:10},"One-arm push-ups (assisted)":{w:"",r:10},"Ring push-ups":{w:"",r:10},"Archer pull-ups":{w:"",r:10},"Typewriter pull-ups":{w:"",r:10},"Negative pull-ups":{w:"",r:10},"Muscle-ups":{w:"",r:10},"Skin the cat":{w:"",r:10},"Tuck front lever hold":{w:"",r:20},"Back lever hold (tucked)":{w:"",r:20},"Korean dips":{w:"",r:10},"Ring dips":{w:"",r:10},"Handstand push-ups (wall)":{w:"",r:10},"Tuck planche hold":{w:"",r:20},"Human flag (tucked)":{w:"",r:20},"Shrimp squats":{w:"",r:8},"Archer rows":{w:"",r:10}});
+Object.assign(SUGGEST, {"Wrist curl":{w:"",r:12},"Reverse wrist curl":{w:"",r:12},"Behind-the-back wrist curl":{w:"",r:12},"Wrist roller":{w:"",r:12},"Plate pinch hold":{w:"",r:30},"Dead hang":{w:"",r:30},"Farmer hold":{w:"",r:30},"Towel pull-ups":{w:"",r:10},"Landmine press":{w:"",r:10},"Guillotine press":{w:"",r:10},"Larsen press":{w:"",r:10},"Reverse-grip bench press":{w:"",r:10},"T-bar row":{w:"",r:8},"Meadows row":{w:"",r:8},"Seal row":{w:"",r:10},"Chest-supported machine row":{w:"",r:10},"Single-arm lat pulldown":{w:"",r:10},"Reverse-grip lat pulldown":{w:"",r:10},"Back extension":{w:"",r:8},"Reverse hyperextension":{w:"",r:8},"Smith machine row":{w:"",r:10},"Cable lateral raise":{w:"",r:12},"Machine lateral raise":{w:"",r:12},"Landmine shoulder press":{w:"",r:10},"Behind-the-neck press":{w:"",r:10},"Viking press":{w:"",r:10},"Scaption raise":{w:"",r:12},"Powell raise":{w:"",r:12},"Preacher curl":{w:"",r:12},"EZ bar curl":{w:"",r:12},"Bayesian cable curl":{w:"",r:12},"Incline hammer curl":{w:"",r:12},"Overhead cable extension":{w:"",r:12},"Reverse-grip pushdown":{w:"",r:12},"California press":{w:"",r:10},"Hack squat":{w:"",r:8},"Belt squat":{w:"",r:8},"Smith machine squat":{w:"",r:8},"Hip abduction":{w:"",r:10},"Hip adduction":{w:"",r:10},"Cable glute kickback":{w:"",r:12},"Step-downs":{w:"",r:8},"Reverse Nordic curl":{w:"",r:12},"Split squat":{w:"",r:8},"Seated leg curl":{w:30,r:12},"Lying leg curl":{w:30,r:12},"45-degree back extension":{w:"",r:8},"Glute-ham raise":{w:"",r:8},"Leg press calf raise":{w:"",r:12},"Smith machine calf raise":{w:"",r:12},"Cable crunch":{w:"",r:12},"Cable woodchopper":{w:"",r:12},"Toes to bar":{w:"",r:12},"Hollow rocks":{w:"",r:12},"Side bends":{w:"",r:12},"Landmine rotation":{w:"",r:12},"TRX row":{w:"",r:10},"TRX push-ups":{w:"",r:10},"TRX fallout":{w:"",r:12},"TRX pistol squat":{w:"",r:8},"TRX hamstring curl":{w:"",r:12},"Rowing machine steady state":{w:"",r:20},"Rowing machine intervals":{w:"",r:20},"Jump rope":{w:"",r:20},"Double unders":{w:"",r:20},"Stair climber":{w:"",r:20},"Sled push":{w:"",r:20},"Battle ropes":{w:"",r:20},"Swimming":{w:"",r:20},"Medicine ball slams":{w:"",r:12},"Rotational medicine ball throw":{w:"",r:10},"Depth jumps":{w:"",r:12},"Bounding":{w:"",r:8},"Archer push-ups":{w:"",r:10},"Pseudo planche push-ups":{w:"",r:10},"One-arm push-ups (assisted)":{w:"",r:10},"Ring push-ups":{w:"",r:10},"Archer pull-ups":{w:"",r:10},"Typewriter pull-ups":{w:"",r:10},"Negative pull-ups":{w:"",r:10},"Muscle-ups":{w:"",r:10},"Skin the cat":{w:"",r:10},"Tuck front lever hold":{w:"",r:20},"Back lever hold (tucked)":{w:"",r:20},"Korean dips":{w:"",r:10},"Ring dips":{w:"",r:10},"Handstand push-ups (wall)":{w:"",r:10},"Tuck planche hold":{w:"",r:20},"Human flag (tucked)":{w:"",r:20},"Shrimp squats":{w:"",r:8},"Archer rows":{w:"",r:10}});
 ["Plate pinch hold","Dead hang","Farmer hold","Tuck front lever hold","Back lever hold (tucked)","Tuck planche hold","Human flag (tucked)"].forEach(n => TIMED.add(n));
 GROUP2DAY["Forearms"] = ["Pull"];
 GROUP_SUGGEST["Forearms"] = {w:"", r:12};
@@ -7338,8 +7718,7 @@ function trackMode(n, g){
 
 function openCfg(){
   cfgEdit = null; cfgAdding = false; cfgTmp = null; auxEdit = null; cfgErr = false;
-  $("cfgOverlay").classList.add("on");
-  $("cfgSheet").classList.add("on");
+  sheetOpen("cfg");
   renderCfg();
 }
 function closeCfg(){
@@ -7374,7 +7753,7 @@ $("cfgPlus").onclick = () => {
   cfgErr = false;
   cfgEdit = null;
   edOpenDD = null; edHelp = null;
-  cfgTmp = cfgAdding ? {name:"", t:[], s:[], st:[], as:[], days:[], equip:[], track:""} : null;
+  cfgTmp = cfgAdding ? {name:"", t:[], s:[], st:[], as:[], days:[], equip:[], track:"", sides:1} : null;
   renderCfg();
 };
 const TAG_HELP = {
@@ -7387,15 +7766,18 @@ const TAG_HELP = {
 };
 let edHelp = null;
 
+const SIDE_OPTS = [["1","Both together"],["2","One side at a time"]];
+const SIDE_LABEL = {"1":"Both together","2":"One side at a time"};
 function edDD(){
   const groups = Object.keys(getLib());
   return [["t",ROLE_LABELS.t,groups],["s",ROLE_LABELS.s,groups],["st",ROLE_LABELS.st,groups],
           ["as",ROLE_LABELS.as,groups],["d","Workout",WORKOUTS],["e","Equipment",equipList()],["tr","Tracked as",TRACK_OPTS.map(x => x[1])],
-          ["b","Rest class",BAND_OPTS.map(x => x[1])]];
+          ["b","Rest class",BAND_OPTS.map(x => x[1])],["sd","Sides",SIDE_OPTS.map(x => x[1])]];
 }
 function edSel(k){
   if (k === "tr") return cfgTmp.track ? [TRACK_LABEL[cfgTmp.track]] : [];
   if (k === "b")  return cfgTmp.band ? [BAND_LABEL[cfgTmp.band]] : [];
+  if (k === "sd") return [SIDE_LABEL[String(cfgTmp.sides || 1)]];
   /* on a new exercise, show what the movement implies until you overrule it */
   if (k === "d" && !cfgTmp.days.length && cfgTmp.name && cfgTmp.t.length){
     const f = exForce(cfgTmp.name, cfgTmp.t[0]);
@@ -7421,7 +7803,7 @@ function editorCard(isNew){
     const def = dd.find(x => x[0] === edOpenDD);
     const sel = edSel(edOpenDD);
     panel = `<div class="dd-panel" style="margin-top:8px">
-      ${(edOpenDD === "tr" || edOpenDD === "b") ? "" : `<div class="dd-row dd-clear" data-edclear="1">Clear ${def[1].toLowerCase()}</div>`}
+      ${(edOpenDD === "tr" || edOpenDD === "b" || edOpenDD === "sd") ? "" : `<div class="dd-row dd-clear" data-edclear="1">Clear ${def[1].toLowerCase()}</div>`}
       ${def[2].map(o => `<div class="dd-row ${sel.includes(o) ? "sel" : ""}" data-edv="${o.replace(/"/g,"&quot;")}">${o}<span>${sel.includes(o) ? "\u2713" : ""}</span></div>`).join("")}
     </div>`;
   }
@@ -7593,7 +7975,7 @@ function renderCfg(){
     cfgAdding = false;
     edOpenDD = null; edHelp = null;
     cfgEdit = n;
-    cfgTmp = {name: n, orig: n, t:[...r.t], s:[...r.s], st:[...r.st], as:[...r.as], days:[...dayTags(n)], equip:[...equipTags(n)], track: trackMode(n), band: exBand({n: n, g: findGroup(n)})};
+    cfgTmp = {name: n, orig: n, t:[...r.t], s:[...r.s], st:[...r.st], as:[...r.as], days:[...dayTags(n)], equip:[...equipTags(n)], track: trackMode(n), band: exBand({n: n, g: findGroup(n)}), sides: exSides(n)};
     renderCfg();
   });
   $("cfgBody").querySelectorAll(".qm").forEach(q => q.onclick = ev => {
@@ -7611,8 +7993,9 @@ function renderCfg(){
   $("cfgBody").querySelectorAll(".dd-row[data-edv]").forEach(r => r.onclick = () => {
     if ($("cfgEN")) cfgTmp.name = $("cfgEN").value;
     const v = r.dataset.edv;
-    if (edOpenDD === "tr" || edOpenDD === "b"){
+    if (edOpenDD === "tr" || edOpenDD === "b" || edOpenDD === "sd"){
       if (edOpenDD === "b") cfgTmp.band = (BAND_OPTS.find(x => x[1] === v) || ["core"])[0];
+      else if (edOpenDD === "sd") cfgTmp.sides = Number((SIDE_OPTS.find(x => x[1] === v) || ["1"])[0]);
       else cfgTmp.track = (TRACK_OPTS.find(x => x[1] === v) || ["wr"])[0];
       edOpenDD = null;
       renderCfg();
@@ -7651,6 +8034,11 @@ function renderCfg(){
     state.track = state.track || {};
     state.band = state.band || {};
     if (cfgTmp.band) state.band[cfgTmp.name] = cfgTmp.band;
+    /* Only stored when it differs from what the app ships, so a later change to
+       the shipped list still reaches anyone who never touched this. */
+    state.sides = state.sides || {};
+    if (Number(cfgTmp.sides) === 2 || EX_TWO_SIDED[origName(cfgTmp.name)]) state.sides[cfgTmp.name] = Number(cfgTmp.sides) || 1;
+    else delete state.sides[cfgTmp.name];
     const roleData = {t:cfgTmp.t, s:cfgTmp.s, st:cfgTmp.st, as:cfgTmp.as};
     /* never silently default to Push - use what the movement says */
     if (!cfgTmp.days.length) cfgTmp.days = exForce(cfgTmp.name, cfgTmp.t[0]) || ["Push"];
@@ -7867,8 +8255,15 @@ function wirePreviewEvents(dayId){
   });
   document.querySelectorAll(".sel-group").forEach(sel => sel.onchange = () => {
     const panel = sel.closest(".swap-panel");
-    panel.querySelector(".sel-ex").innerHTML = exOptions(sel.value, getLib()[sel.value][0]);
+    /* Re-rank for the new group, or changing group silently drops the advice. */
+    const cf = panel.querySelector(".p-btn.confirm");
+    const idx2 = cf ? cf.dataset.idx : null;
+    const adv2 = swapAdvice(idx2, sel.value, null, idx2 === "add");
+    const first = (adv2 && adv2.ok.length) ? adv2.ok[0].n : getLib()[sel.value][0];
+    panel.querySelector(".sel-ex").innerHTML = exOptions(sel.value, first, adv2);
+    swapPicksHTML(panel, adv2, first);
   });
+  document.querySelectorAll(".swap-panel").forEach(p => swapPicksWire(p));
   document.querySelectorAll(".p-btn.confirm").forEach(b => b.onclick = () => {
     const panel = b.closest(".swap-panel");
     const g = panel.querySelector(".sel-group").value;
@@ -8173,7 +8568,12 @@ function wireEvents(){
     const ex = state.session.list[i];
     markStarted();
     if (soundOn()) ac();   /* no AudioContext in silent mode — keeps background audio alive */
-    startWorkTimer(sec, ex.n.replace(/\s*\([^)]*\)/, ""), () => {
+    const label = ex.n.replace(/\s*\([^)]*\)/, "");
+    /* A held set you do one side at a time runs the clock twice off one tap,
+       exactly the way the stretches already do. Ticking the box twice would be
+       two extra taps per set while you are holding a plank. */
+    const sides = exSides(ex.n);
+    const finish = () => {
       ex.sets[j].done = true;
       sndSet();
       if (ex.sets.every(x => x.done)){
@@ -8183,7 +8583,19 @@ function wireEvents(){
          sets to it - so it gets a rest timer too, once there is a set to rest for. */
       if (trackMode(ex.n, ex.g) !== "min" || ex.sets.length > 1) startRest(ex, ex.sets[j]);
       save(); render();
-    });
+    };
+    const runSide = round => startWorkTimer(sec,
+      sides > 1 ? label + " \u00b7 side " + round + " of " + sides : label,
+      () => {
+        if (round < sides){
+          sayP("switch-sides");
+          toast("Switch sides \u2014 " + fmt(sec) + " to go", false);
+          setTimeout(() => runSide(round + 1), 900);
+          return;
+        }
+        finish();
+      });
+    runSide(1);
   });
   document.querySelectorAll(".add-set").forEach(b => b.onclick = () => {
     const sets = state.session.list[b.dataset.i].sets;
@@ -8201,8 +8613,15 @@ function wireEvents(){
   });
   document.querySelectorAll(".sel-group").forEach(sel => sel.onchange = () => {
     const panel = sel.closest(".swap-panel");
-    panel.querySelector(".sel-ex").innerHTML = exOptions(sel.value, getLib()[sel.value][0]);
+    /* Re-rank for the new group, or changing group silently drops the advice. */
+    const cf = panel.querySelector(".p-btn.confirm");
+    const idx2 = cf ? cf.dataset.idx : null;
+    const adv2 = swapAdvice(idx2, sel.value, null, idx2 === "add");
+    const first = (adv2 && adv2.ok.length) ? adv2.ok[0].n : getLib()[sel.value][0];
+    panel.querySelector(".sel-ex").innerHTML = exOptions(sel.value, first, adv2);
+    swapPicksHTML(panel, adv2, first);
   });
+  document.querySelectorAll(".swap-panel").forEach(p => swapPicksWire(p));
   document.querySelectorAll(".p-btn.confirm").forEach(b => b.onclick = () => {
     const panel = b.closest(".swap-panel");
     const g = panel.querySelector(".sel-group").value;
