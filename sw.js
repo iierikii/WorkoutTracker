@@ -13,7 +13,7 @@
 
    Bump SW_VERSION on every change, so `navigator.serviceWorker` telling you a
    new worker took over actually means something. */
-const SW_VERSION = "sw-1";
+const SW_VERSION = "sw-2";
 
 self.addEventListener("install", () => {
   /* Take over on the next page load rather than waiting for every tab to close.
@@ -37,6 +37,45 @@ self.addEventListener("activate", (e) => {
 
 /* No fetch listener. See the note at the top - this is the safety property, not
    an omission. */
+
+/* A push arrives with the app closed - this is the whole reason the worker
+   exists. `userVisibleOnly` was set when subscribing, so a push MUST result in
+   a visible notification; showing nothing gets the subscription revoked. Hence
+   the fallback text rather than an early return on bad data. */
+self.addEventListener("push", (e) => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (err) {
+    try { d = { body: e.data.text() }; } catch (err2) { d = {}; }
+  }
+  e.waitUntil(self.registration.showNotification(d.title || "Rest over \u2014 next set", {
+    body: d.body || "Time for the next one.",
+    tag: d.tag || "addplates-rest",     /* replaces an earlier one rather than stacking */
+    renotify: true,
+    icon: "icon-192.png",
+    badge: "icon-192.png",
+    data: { url: d.url || "./" }
+  }));
+});
+
+/* Tapping it should land you back in the workout, not open a second copy. */
+self.addEventListener("notificationclick", (e) => {
+  e.notification.close();
+  const want = (e.notification.data && e.notification.data.url) || "./";
+  e.waitUntil((async () => {
+    const all = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of all){ if ("focus" in c) return c.focus(); }
+    if (self.clients.openWindow) return self.clients.openWindow(want);
+  })());
+});
+
+/* iOS can retire a subscription on its own. Clearing it here means the app can
+   tell the difference between "off" and "quietly stopped working". */
+self.addEventListener("pushsubscriptionchange", (e) => {
+  e.waitUntil((async () => {
+    const all = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of all) c.postMessage({ pushSubscriptionLost: true });
+  })());
+});
 
 self.addEventListener("message", (e) => {
   if (e.data === "sw-version" && e.source) e.source.postMessage({swVersion: SW_VERSION});

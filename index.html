@@ -3155,6 +3155,15 @@ function openSettings(){
       ? `<div class="fmt-note">New to lifting? In the one study on beginners, regular sets came out ahead on one lift out of four \u2014 the rest tied, in half the time. Very likely fine either way.</div>`
       : ""}
     </div></div>`);
+  const nS = notifState();
+  rows.push(`<div class="set-row coach-row" id="notifRow">
+    <span class="set-ic">${ico("bolt")}</span>
+    <div class="set-main"><div class="set-name">Rest timer alerts</div>
+    <div class="set-sub">${notifWhy(nS)}</div>
+    <div class="coach-pick">${nS === "on"
+      ? `<button id="notifOff">Turn off</button><button id="notifTest">Send a test</button>`
+      : `<button id="notifOn"${(nS === "unsupported" || nS === "needs install" || nS === "blocked" || nS === "no worker") ? " disabled" : ""}>Turn on</button>`}</div>
+    </div></div>`);
   if (!a2hsInstalled()){
     rows.push(`<div class="set-row coach-row" id="a2hsRow">
       <span class="set-ic">${ico("a2hsart")}</span>
@@ -3184,6 +3193,19 @@ function openSettings(){
     if (!a2hsPrompt) return;
     try{ a2hsPrompt.prompt(); await a2hsPrompt.userChoice; }catch(e){}
     a2hsPrompt = null; openSettings();
+  };
+  const nOn = document.getElementById("notifOn");
+  if (nOn) nOn.onclick = ev => { ev.stopPropagation(); notifEnable(); };
+  const nOff = document.getElementById("notifOff");
+  if (nOff) nOff.onclick = ev => { ev.stopPropagation(); notifDisable(); };
+  const nTest = document.getElementById("notifTest");
+  if (nTest) nTest.onclick = async ev => {
+    ev.stopPropagation();
+    try{
+      const reg = swReg || await navigator.serviceWorker.ready;
+      await reg.showNotification("Rest over \u2014 next set", {
+        body: "Test from Settings.", tag: "addplates-test", icon: "icon-192.png"});
+    }catch(e){ toast("Could not show it \u2014 " + ((e && e.message) || "unknown"), false); }
   };
   const vl = document.getElementById("voiceLink");
   if (vl) vl.onclick = ev => { ev.stopPropagation(); if (soundOn()) ac(); openVoiceSheet(); };
@@ -4283,7 +4305,7 @@ window.addEventListener("appinstalled", () => { a2hsPrompt = null; render(); });
    sw.js for why that matters for a single-file app.
    Registration is guarded on https because a service worker is refused on
    file:// and plain http, and an unhandled rejection there is noise. */
-const BUILD_ID = "2026-09-17a";
+const BUILD_ID = "2026-09-17b";
 let swState = "off";
 let swReg = null;
 function swRegister(){
@@ -4302,6 +4324,94 @@ function swRegister(){
 /* No automatic reload on controllerchange. With no fetch handler there is no
    stale content to reload away from, and a page that reloads itself mid-set is
    worse than the problem it would solve. Revisit if caching is ever added. */
+/* ---------- Rest-timer alerts ----------
+   Step 2: ask for permission, register this device, and prove a notification
+   can actually appear. Nothing is scheduled yet - that needs a server, because
+   iOS gives a web app no way to schedule one for later, which is the whole
+   reason this is not just a setTimeout.
+
+   Two iOS rules shape all of it: permission can only be asked for from a real
+   tap, and none of it works at all until the app is on the Home Screen. */
+const VAPID_PUBLIC = "BCKctwiItMDtAEZ1zfkkobQmKo47D4dkns4AKSDvsxwZkWBEZHcMUhveQtFpfwG075I0rxB-aNHu9pJ0Wv8R9hA";
+function b64ToBytes(s){
+  const pad = "=".repeat((4 - s.length % 4) % 4);
+  const raw = atob((s + pad).replace(/-/g, "+").replace(/_/g, "/"));
+  const out = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+  return out;
+}
+function notifSupported(){
+  return typeof Notification !== "undefined" && "serviceWorker" in navigator && "PushManager" in window;
+}
+/* Why the row is not offering to turn anything on, in words the user can act on. */
+function notifState(){
+  if (!notifSupported()) return "unsupported";
+  if (!a2hsInstalled()) return "needs install";
+  if (swState !== "on") return "no worker";
+  const p = Notification.permission;
+  if (p === "denied") return "blocked";
+  if (p !== "granted") return "off";
+  return (state && state.pushSub) ? "on" : "granted";
+}
+function notifWhy(s){
+  return s === "unsupported"  ? "This browser cannot show notifications."
+       : s === "needs install" ? "Only works once AddPlates is on your Home Screen \u2014 add it first."
+       : s === "no worker"     ? "Waiting on the background helper. Close the app fully and reopen."
+       : s === "blocked"       ? "You said no earlier. iOS Settings \u2192 AddPlates \u2192 Notifications to change it."
+       : s === "on"            ? "This phone will get a nudge when rest is over, even with the app closed."
+       : s === "granted"       ? "Allowed, but this phone is not registered yet. Tap to finish."
+       : "Get a nudge when rest is over, even with the app closed.";
+}
+async function notifEnable(){
+  const s = notifState();
+  if (s === "unsupported" || s === "needs install" || s === "blocked" || s === "no worker"){
+    toast(notifWhy(s), false); return;
+  }
+  try{
+    /* Must be inside the tap that called this - iOS refuses otherwise. */
+    const perm = await Notification.requestPermission();
+    if (perm !== "granted"){ toast("No problem \u2014 leaving notifications off.", false); openSettings(); return; }
+    const reg = swReg || await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC)
+    });
+    /* Kept so the next step has something to send to. The endpoint is a URL
+       Apple hands out for this install; it is not an account or an identity. */
+    state.pushSub = JSON.parse(JSON.stringify(sub));
+    save();
+    await reg.showNotification("Rest over \u2014 next set", {
+      body: "That is what one will look like.", tag: "addplates-test",
+      icon: "icon-192.png", badge: "icon-192.png"
+    });
+    toast("Notifications on \u2014 check your lock screen.");
+  }catch(e){
+    console.log("[push] enable failed:", e && e.message);
+    toast("Could not turn those on \u2014 " + ((e && e.message) || "unknown error"), false);
+  }
+  openSettings();
+}
+async function notifDisable(){
+  try{
+    const reg = swReg || await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    if (sub) await sub.unsubscribe();
+  }catch(e){ console.log("[push] unsubscribe failed:", e && e.message); }
+  /* iOS gives no way to hand permission back, so this is the app's own switch:
+     no subscription means nothing to send to. */
+  delete state.pushSub;
+  save(); openSettings();
+}
+/* iOS can retire a push subscription without telling the user. The worker
+   forwards that so the Settings row can go back to "tap to finish" rather than
+   claiming to be on while silently sending nowhere. */
+if ("serviceWorker" in navigator){
+  navigator.serviceWorker.addEventListener("message", e => {
+    if (e.data && e.data.pushSubscriptionLost && state && state.pushSub){
+      delete state.pushSub; save();
+    }
+  });
+}
 function swLine(){
   return "build " + BUILD_ID + (swState === "on" ? "" : " \u00b7 sw " + swState);
 }
