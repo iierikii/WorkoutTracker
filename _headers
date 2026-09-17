@@ -1,0 +1,12 @@
+# The service worker must never be served from cache, or a deploy cannot reach
+# a phone that already has the old one. Browsers mostly bypass the HTTP cache
+# for this file already; this makes it certain.
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Same reasoning for the page itself: it is the whole app, and a stale copy is
+# indistinguishable from a deploy that silently failed.
+/index.html
+  Cache-Control: no-cache
+/
+  Cache-Control: no-cache

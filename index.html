@@ -3176,7 +3176,7 @@ function openSettings(){
     <div class="set-main"><div class="set-name">Data & Export</div>
     <div class="set-sub">JSON backups and CSV \u00b7 lives on the Body tab</div></div><span class="set-chev">\u25B8</span></div>`);
   $("setBody").innerHTML = rows.join("")
-    + `<div class="set-foot">AddPlates \u00b7 ${SYNC_ENABLED ? (sbUser ? "cloud sync on" : "local \u2014 not signed in") : "demo build"} \u00b7 programs-v3</div>`;
+    + `<div class="set-foot">AddPlates \u00b7 ${SYNC_ENABLED ? (sbUser ? "cloud sync on" : "local \u2014 not signed in") : "demo build"} \u00b7 programs-v3 \u00b7 ${swLine()}</div>`;
   sheetOpen("set");
   const i2 = document.getElementById("a2hsInstall2");
   if (i2) i2.onclick = async ev => {
@@ -4277,6 +4277,34 @@ function doneCardHTML(entries){
 let a2hsPrompt = null;
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); a2hsPrompt = e; });
 window.addEventListener("appinstalled", () => { a2hsPrompt = null; render(); });
+/* ---------- Service worker ----------
+   Step 1 of background notifications. The worker exists and updates cleanly;
+   it deliberately has no fetch handler, so it cannot affect what loads. See
+   sw.js for why that matters for a single-file app.
+   Registration is guarded on https because a service worker is refused on
+   file:// and plain http, and an unhandled rejection there is noise. */
+const BUILD_ID = "2026-09-17a";
+let swState = "off";
+let swReg = null;
+function swRegister(){
+  if (!("serviceWorker" in navigator)) { swState = "unsupported"; return; }
+  /* Browsers treat localhost and 127.0.0.1 as secure, which is what makes the
+     local test harness able to exercise this at all. */
+  const localOK = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+  if (location.protocol !== "https:" && !localOK){ swState = "needs https"; return; }
+  navigator.serviceWorker.register("sw.js").then(r => {
+    swReg = r; swState = "on";
+    /* Check for a new worker every time the app is opened, so a deploy lands on
+       the next launch rather than whenever the browser decides to look. */
+    try { r.update(); } catch(e){}
+  }).catch(e => { swState = "failed"; console.log("[sw] register failed:", e && e.message); });
+}
+/* No automatic reload on controllerchange. With no fetch handler there is no
+   stale content to reload away from, and a page that reloads itself mid-set is
+   worse than the problem it would solve. Revisit if caching is ever added. */
+function swLine(){
+  return "build " + BUILD_ID + (swState === "on" ? "" : " \u00b7 sw " + swState);
+}
 function a2hsInstalled(){
   try{
     if (window.navigator && window.navigator.standalone) return true;            /* iOS */
@@ -7531,6 +7559,7 @@ window.addEventListener("resize", () => {
 });
 $("acctOverlay").onclick = closeAcctSheet;
 $("cfgClose").onclick = closeCfg;
+swRegister();
 $("cfgPlus").onclick = () => {
   if (cfgMode !== "ex"){
     auxAdding = !auxAdding;
