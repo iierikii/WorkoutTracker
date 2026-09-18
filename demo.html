@@ -117,6 +117,22 @@
   .swap-picks{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
   .swap-pick{padding:6px 10px;border-radius:999px;font-size:12px;cursor:pointer;
     border:1px solid var(--accent,#D7F542);background:rgba(215,245,66,.09);color:var(--accent,#D7F542)}
+  .exercise.pair .pair-ex{font-size:14px}
+  .exercise.pair .pair-amp{opacity:.5;margin:0 2px;font-weight:400}
+  .pair-round{grid-column:1/-1;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);margin:8px 0 2px;padding-left:2px}
+  .pair-round.done{opacity:.45}
+  .pair-sets .set-name-cell{font-style:normal;font-weight:800;font-size:12px;
+    color:var(--accent,#D7F542);text-align:center;line-height:22px;height:22px;
+    border-radius:7px;background:rgba(215,245,66,.10)}
+  .pair-head-row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+  .pair-head-row + .pair-head-row{margin-top:4px}
+  .pair-head-row .pair-ex{font-size:14px;font-weight:700;min-width:0;
+    display:flex;align-items:center;gap:8px}
+  .pair-tag{flex:0 0 auto;font-size:12px;font-weight:800;color:var(--accent,#D7F542);
+    background:rgba(215,245,66,.10);border-radius:7px;width:22px;height:22px;
+    line-height:22px;text-align:center}
+  .ar-m{opacity:.8}
   #setBody .fmt-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
   #setBody .fmt-opt{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;
     padding:9px 11px;border-radius:10px;border:1px solid var(--line,rgba(255,255,255,.12));
@@ -284,7 +300,15 @@
     letter-spacing:.08em;font-style:italic}
   .log{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
     padding:14px;margin-bottom:8px;font-size:14px;cursor:pointer}
-  .log-top{display:flex;justify-content:space-between;align-items:center}
+  /* The meta line used to sit opposite the day name under space-between, so a
+     long one wrapped into the name with no gutter and a short one flew to the
+     right edge - every row landing somewhere different. Name and rating on one
+     line, everything else on its own beneath, left-aligned like every other
+     card in the app. */
+  .log-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .log-top b{flex:0 0 auto}
+  .log-stars{flex:0 0 auto;white-space:nowrap;letter-spacing:.5px}
+  .log-sub{margin-top:3px;color:var(--muted);font-size:12px;font-weight:600;line-height:1.4}
   .log b{font-weight:800}
   .log span{color:var(--muted);font-size:12px;font-weight:600}
   .log-detail{display:none;margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
@@ -991,9 +1015,9 @@
 /* ---------- Exercise library ---------- */
 const RAWLIB = {
   "Chest":[["Chest press",["Machine", "Band", "Dumbbell", "Barbell", "Bench"]],["Flyes",["Machine", "Dumbbell", "Band", "Bench"]],["Bench press",["Barbell", "Bench", "Dumbbell"]],["Incline bench press",["Barbell", "Bench", "Dumbbell"]],["Incline dumbbell flyes",["Dumbbell", "Bench", "Band"]],["Chest dips (forward lean)",["Bodyweight", "Dip station", "Bench"]],["Push-ups",["Bodyweight", "Band", "Plate"]],["Wide push-ups",["Bodyweight", "Band", "Plate"]],["Diamond push-ups",["Bodyweight", "Band", "Plate"]],["Decline push-ups (feet elevated)",["Bodyweight", "Band", "Plate"]],["Floor press",["Kettlebell", "Barbell", "Dumbbell"]],["Pullover",["Dumbbell", "Bench", "Kettlebell"]],["Single-arm dumbbell press",["Dumbbell", "Bench"]],["Alternating dumbbell press",["Dumbbell", "Bench"]],["Squeeze press",["Dumbbell", "Bench"]],["Close-grip dumbbell press",["Dumbbell", "Bench"]],["Deficit push-ups",["Bodyweight", "Band", "Plate"]],["Incline push-ups (hands elevated)",["Bodyweight", "Band", "Plate"]],["Weighted push-ups",["Plate", "Bodyweight", "Band"]],["Svend press",["Plate", "Dumbbell"]],["Crossover",["Band", "Dumbbell", "Bench"]],["Around-the-worlds",["Dumbbell", "Bench", "Band"]]],
-  "Back":[["Lat pulldown",["Machine", "Band"]],["Mid row",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Low row",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Bent-over row",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Pull-ups (wide grip)",["Pull-up bar", "Band"]],["Pull-ups (neutral grip)",["Pull-up bar", "Band"]],["Pull-ups (close grip)",["Pull-up bar", "Band"]],["Chin-ups",["Pull-up bar", "Band"]],["Band-assisted pull-ups",["Band", "Pull-up bar"]],["Deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Single-arm dumbbell row",["Dumbbell", "Kettlebell", "Band"]],["Chest-supported dumbbell row",["Dumbbell", "Kettlebell", "Bench"]],["Rows",["Kettlebell", "Barbell", "Dumbbell", "Band"]],["Pull-aparts",["Band"]],["Renegade rows",["Dumbbell", "Barbell", "Kettlebell", "Band"]],["Scapular pull-ups",["Pull-up bar", "Band"]],["Pendlay row",["Barbell"]],["Yates row",["Barbell"]],["Rack pulls",["Barbell"]],["Snatch-grip deadlift",["Barbell"]],["Kroc rows",["Dumbbell"]],["Gorilla rows",["Kettlebell", "Dumbbell"]],["Inverted rows",["Barbell", "Bodyweight"]],["Straight-arm band pulldown",["Band", "Machine"]],["Superman hold",["Bodyweight"]],["Reverse snow angels",["Bodyweight"]]],
+  "Back":[["Lat pulldown",["Machine", "Band"]],["Mid row",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Low row",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Bent-over row",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Pull-ups (wide grip)",["Pull-up bar", "Bodyweight", "Band"]],["Pull-ups (neutral grip)",["Pull-up bar", "Bodyweight", "Band"]],["Pull-ups (close grip)",["Pull-up bar", "Bodyweight", "Band"]],["Chin-ups",["Pull-up bar", "Bodyweight", "Band"]],["Band-assisted pull-ups",["Band", "Pull-up bar"]],["Deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Single-arm dumbbell row",["Dumbbell", "Kettlebell", "Band"]],["Chest-supported dumbbell row",["Dumbbell", "Kettlebell", "Bench"]],["Rows",["Kettlebell", "Barbell", "Dumbbell", "Band"]],["Pull-aparts",["Band"]],["Renegade rows",["Dumbbell", "Barbell", "Kettlebell", "Band"]],["Scapular pull-ups",["Pull-up bar", "Bodyweight", "Band"]],["Pendlay row",["Barbell"]],["Yates row",["Barbell"]],["Rack pulls",["Barbell"]],["Snatch-grip deadlift",["Barbell"]],["Kroc rows",["Dumbbell"]],["Gorilla rows",["Kettlebell", "Dumbbell"]],["Inverted rows",["Barbell", "Bodyweight"]],["Straight-arm band pulldown",["Band", "Machine"]],["Superman hold",["Bodyweight"]],["Reverse snow angels",["Bodyweight"]]],
   "Shoulders":[["Shoulder press",["Machine", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Reverse fly",["Machine", "Dumbbell", "Band"]],["Standing barbell overhead press",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Seated barbell overhead press",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Overhead dumbbell press",["Dumbbell"]],["Arnold press",["Dumbbell", "Kettlebell"]],["Lateral raises",["Dumbbell", "Band", "Kettlebell", "Plate"]],["Front raises",["Dumbbell", "Band", "Kettlebell", "Plate"]],["Rear delt flyes",["Dumbbell", "Band", "Bench"]],["Face pulls",["Band", "Dumbbell"]],["Upright row",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Shrugs",["Barbell", "Dumbbell", "Kettlebell"]],["Overhead press",["Kettlebell", "Barbell", "Dumbbell", "Band"]],["Pike push-ups",["Bodyweight", "Band", "Plate"]],["Z press",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Bradford press",["Barbell"]],["Cuban press",["Dumbbell", "Band", "Plate"]],["Seated lateral raises",["Dumbbell", "Bench", "Band", "Kettlebell", "Plate"]],["Leaning lateral raises",["Dumbbell", "Band", "Kettlebell", "Plate"]],["Y raises",["Dumbbell", "Band", "Plate"]],["Plate front raises",["Plate", "Dumbbell", "Band", "Kettlebell"]],["Halos",["Kettlebell", "Plate", "Dumbbell"]],["Handstand hold (wall)",["Bodyweight"]],["Wall walks",["Bodyweight"]]],
-  "Biceps":[["Double-arm cable curl",["Machine"]],["Concentration cable curl",["Machine", "Dumbbell", "Kettlebell", "Band"]],["Biceps curl",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Standing dumbbell curl",["Dumbbell"]],["Seated dumbbell curl",["Dumbbell"]],["Hammer curl",["Dumbbell", "Band", "Kettlebell"]],["Incline dumbbell curl",["Dumbbell", "Bench"]],["Concentration curl",["Dumbbell", "Barbell", "Band", "Kettlebell"]],["Zottman curl",["Dumbbell"]],["Chin-ups (biceps emphasis)",["Pull-up bar", "Band"]],["Spider curls",["Dumbbell", "Bench", "Barbell", "Band", "Kettlebell"]],["Drag curls",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Reverse curls",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["21s",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Cross-body hammer curls",["Dumbbell", "Barbell", "Band", "Kettlebell"]],["Waiter curls",["Kettlebell", "Dumbbell", "Barbell", "Band"]],["Isometric curl hold",["Dumbbell"]]],
+  "Biceps":[["Double-arm cable curl",["Machine"]],["Concentration cable curl",["Machine", "Dumbbell", "Kettlebell", "Band"]],["Biceps curl",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Standing dumbbell curl",["Dumbbell"]],["Seated dumbbell curl",["Dumbbell"]],["Hammer curl",["Dumbbell", "Band", "Kettlebell"]],["Incline dumbbell curl",["Dumbbell", "Bench"]],["Concentration curl",["Dumbbell", "Barbell", "Band", "Kettlebell"]],["Zottman curl",["Dumbbell"]],["Chin-ups (biceps emphasis)",["Pull-up bar", "Bodyweight", "Band"]],["Spider curls",["Dumbbell", "Bench", "Barbell", "Band", "Kettlebell"]],["Drag curls",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Reverse curls",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["21s",["Barbell", "Dumbbell", "Band", "Kettlebell"]],["Cross-body hammer curls",["Dumbbell", "Barbell", "Band", "Kettlebell"]],["Waiter curls",["Kettlebell", "Dumbbell", "Barbell", "Band"]],["Isometric curl hold",["Dumbbell"]]],
   "Triceps":[["Triceps pressdown",["Machine", "Band"]],["Upright dips (dip station)",["Dip station", "Bench", "Bodyweight"]],["Bench dips",["Bench", "Dip station", "Bodyweight"]],["Close-grip bench press",["Barbell", "Bench", "Dumbbell"]],["Skull crushers",["Barbell", "Bench", "Dumbbell", "Band"]],["Overhead dumbbell extension (two arm)",["Dumbbell", "Band", "Barbell", "Kettlebell"]],["Overhead dumbbell extension (one arm)",["Dumbbell", "Band", "Barbell", "Kettlebell"]],["Kickbacks",["Dumbbell", "Band"]],["Overhead band extensions",["Band", "Dumbbell", "Barbell", "Kettlebell"]],["Close-grip push-ups",["Bodyweight", "Band", "Plate"]],["JM press",["Barbell", "Bench", "Dumbbell"]],["Tate press",["Dumbbell", "Bench", "Barbell"]],["Rolling triceps extensions",["Dumbbell", "Bench", "Band", "Barbell", "Kettlebell"]],["Floor press",["Barbell", "Dumbbell", "Kettlebell"]],["Bodyweight skull crushers",["Barbell", "Bodyweight"]]],
   "Quads & Glutes":[["Leg press",["Machine"]],["Leg extension",["Machine", "Band"]],["Back squat",["Barbell"]],["Front squat",["Barbell", "Kettlebell"]],["Goblet squat",["Dumbbell", "Kettlebell", "Plate"]],["Bulgarian split squat",["Bench", "Dumbbell", "Bodyweight", "Kettlebell", "Barbell"]],["Walking lunges",["Bodyweight", "Dumbbell", "Kettlebell", "Barbell"]],["Reverse lunges",["Bodyweight", "Dumbbell", "Kettlebell", "Barbell"]],["Lateral lunges",["Bodyweight", "Dumbbell", "Kettlebell", "Barbell"]],["Step-ups",["Box/step", "Bodyweight", "Dumbbell", "Kettlebell", "Barbell"]],["Hip thrusts",["Barbell", "Bench", "Dumbbell", "Band", "Bodyweight"]],["Glute bridges",["Bodyweight", "Band", "Dumbbell", "Plate"]],["Weighted glute bridges",["Dumbbell", "Barbell", "Bodyweight", "Band", "Plate"]],["Wall sit",["Bodyweight", "Plate"]],["Jump squats",["Bodyweight"]],["Zercher squat",["Barbell"]],["Lunges",["Barbell", "Bodyweight", "Dumbbell", "Kettlebell"]],["Cyclist squats (heels elevated)",["Plate", "Dumbbell", "Kettlebell"]],["Heel-elevated goblet squats",["Dumbbell", "Plate", "Kettlebell"]],["Sissy squats",["Bodyweight", "Dumbbell", "Kettlebell"]],["Cossack squats",["Bodyweight", "Dumbbell", "Kettlebell"]],["Curtsy lunges",["Dumbbell", "Bodyweight", "Kettlebell", "Barbell"]],["Pistol squats (assisted)",["Bodyweight", "Dumbbell", "Kettlebell"]],["Weighted box step-ups",["Dumbbell", "Box/step", "Bodyweight", "Kettlebell", "Barbell"]],["Frog pumps",["Bodyweight", "Band", "Dumbbell", "Plate"]],["Single-leg glute bridge",["Bodyweight", "Band", "Dumbbell", "Plate"]],["Lateral walks",["Band"]],["Monster walks",["Band"]]],
   "Hamstrings":[["Romanian deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Sumo deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Single-leg Romanian deadlift",["Bodyweight", "Barbell", "Dumbbell", "Kettlebell", "Band"]],["Kettlebell swings",["Kettlebell", "Dumbbell"]],["Good mornings",["Barbell", "Band"]],["Nordic curl negatives",["Bodyweight"]],["Leg curls",["Band", "Machine"]],["Stiff-leg deadlift",["Barbell", "Dumbbell", "Kettlebell", "Band"]],["Deficit RDL",["Barbell", "Plate", "Dumbbell", "Kettlebell", "Band"]],["B-stance RDL",["Dumbbell", "Barbell", "Kettlebell", "Band"]],["Pull-throughs",["Band"]],["Sliding leg curls",["Bodyweight"]]],
@@ -1352,10 +1376,44 @@ function myEquip(){
   const m = state && state.myEquip;
   return (m && m.length) ? m : equipList();          /* unset = no filter */
 }
+/* ---------- Kit you must HAVE, not kit you could use ----------
+   equipTags() is a list of alternatives: a deadlift works with a barbell OR
+   dumbbells OR kettlebells. That is right for how you load a movement and wrong
+   for the thing you lie on, hang from or stand on. Bench press was tagged
+   Bench + Barbell + Dumbbell and offered to anyone owning any ONE of the three,
+   so a bench and no bar got you a bench press.
+   Each entry is a list of groups, ALL of which must be met; inside a group any
+   one will do - a dip needs a dip station OR a bench, and either is fine.
+   First pass by rule (any fixture in the tags), then three corrections by hand:
+   calf raises do not need the box, and archer rows take rings OR a bar. */
+const EX_NEEDS = {"Chest press": [["Bench"]], "Flyes": [["Bench"]], "Bench press": [["Bench"]], "Incline bench press": [["Bench"]], "Incline dumbbell flyes": [["Bench"]], "Chest dips (forward lean)": [["Bench", "Dip station"]], "Pullover": [["Bench"]], "Single-arm dumbbell press": [["Bench"]], "Alternating dumbbell press": [["Bench"]], "Squeeze press": [["Bench"]], "Close-grip dumbbell press": [["Bench"]], "Crossover": [["Bench"]], "Around-the-worlds": [["Bench"]], "Guillotine press": [["Bench"]], "Larsen press": [["Bench"]], "Reverse-grip bench press": [["Bench"]], "TRX push-ups": [["Suspension trainer"]], "Ring push-ups": [["Suspension trainer"]], "Pull-ups (wide grip)": [["Pull-up bar"]], "Pull-ups (neutral grip)": [["Pull-up bar"]], "Pull-ups (close grip)": [["Pull-up bar"]], "Chin-ups": [["Pull-up bar"]], "Band-assisted pull-ups": [["Pull-up bar"]], "Chest-supported dumbbell row": [["Bench"]], "Scapular pull-ups": [["Pull-up bar"]], "Seal row": [["Bench"]], "Reverse hyperextension": [["Bench"]], "TRX row": [["Suspension trainer"]], "Archer pull-ups": [["Pull-up bar"]], "Typewriter pull-ups": [["Pull-up bar"]], "Negative pull-ups": [["Pull-up bar"]], "Muscle-ups": [["Pull-up bar"]], "Skin the cat": [["Pull-up bar"]], "Tuck front lever hold": [["Pull-up bar"]], "Back lever hold (tucked)": [["Pull-up bar"]], "Rear delt flyes": [["Bench"]], "Seated lateral raises": [["Bench"]], "Powell raise": [["Bench"]], "Incline dumbbell curl": [["Bench"]], "Chin-ups (biceps emphasis)": [["Pull-up bar"]], "Spider curls": [["Bench"]], "Preacher curl": [["Bench"]], "Incline hammer curl": [["Bench"]], "Upright dips (dip station)": [["Bench", "Dip station"]], "Bench dips": [["Bench", "Dip station"]], "Close-grip bench press": [["Bench"]], "Skull crushers": [["Bench"]], "JM press": [["Bench"]], "Tate press": [["Bench"]], "Rolling triceps extensions": [["Bench"]], "California press": [["Bench"]], "Korean dips": [["Dip station"]], "Ring dips": [["Suspension trainer"]], "Bulgarian split squat": [["Bench"]], "Step-ups": [["Box/step"]], "Hip thrusts": [["Bench"]], "Weighted box step-ups": [["Box/step"]], "Step-downs": [["Box/step"]], "TRX pistol squat": [["Suspension trainer"]], "TRX hamstring curl": [["Suspension trainer"]], "Seated calf raises": [["Bench"]], "Donkey calf raises": [["Bench"]], "Hanging knee raises": [["Pull-up bar"]], "Hanging leg raises": [["Pull-up bar"]], "Copenhagen plank (bench)": [["Bench"]], "L-sit hold (dip station)": [["Dip station"]], "Dragon flag negatives (bench)": [["Bench"]], "Hanging windshield wipers": [["Pull-up bar"]], "Toes to bar": [["Pull-up bar"]], "TRX fallout": [["Suspension trainer"]], "Human flag (tucked)": [["Pull-up bar"]], "Box jumps (sturdy box/step)": [["Box/step"]], "Depth drops (step down, stick landing)": [["Box/step"]], "Depth jumps": [["Box/step"]], "Lateral box jumps": [["Box/step"]], "Dead hang": [["Pull-up bar"]], "Towel pull-ups": [["Pull-up bar"]]};
+function exNeeds(n){ return EX_NEEDS[origName(n)] || null; }
+/* What is actually missing, in the words the kit picker uses. */
+function missingKit(n){
+  const mine = myEquip(), out = [];
+  (exNeeds(n) || []).forEach(grp => {
+    if (!grp.some(x => mine.indexOf(x) !== -1)) out.push(grp.join(" or "));
+  });
+  if (!out.length){
+    /* Same filtering as equipOK, or this says nothing is missing while the
+       movement is being refused - the kit you own is in the tag list. */
+    const req = [].concat.apply([], exNeeds(n) || []);
+    const t = equipTags(n).filter(x => req.indexOf(x) === -1);
+    if (t.length && !t.some(x => mine.indexOf(x) !== -1)) out.push(t.slice(0, 3).join(" or "));
+  }
+  return out.length ? out.join(" and ") : null;
+}
 function equipOK(n){
-  const t = equipTags(n);
-  if (!t || !t.length) return true;
   const mine = myEquip();
+  const need = exNeeds(n);
+  if (need && !need.every(grp => grp.some(x => mine.indexOf(x) !== -1))) return false;
+  /* The remaining tags are the ways to LOAD it, and any one will do. The kit you
+     must have is taken out first - otherwise owning the bench satisfied the
+     "or" and a bench with no bar still offered you a bench press, which is the
+     whole fault this is here to fix. */
+  const req = [].concat.apply([], need || []);
+  const t = equipTags(n).filter(x => req.indexOf(x) === -1);
+  if (!t.length) return true;
   return t.some(x => mine.indexOf(x) !== -1);
 }
 /* how many workouts ago did you last do this? bigger = staler = better to pick */
@@ -1425,6 +1483,17 @@ function rotWeeks(n){ return Math.round(n / 1.3); }
    claude/superset-v1-spec.md for why it is global and not per day. */
 const FMT_NEW_AT = 60;                     /* roughly six months at 3 a week */
 function sessionStyle(){ return state && state.fmt === "superset" ? "superset" : "straight"; }
+/* Change format and your numbers dip for a session or two - the same work
+   arranged differently is genuinely harder at first. The between-session
+   verdicts (stuck, slipping, take weight off) compare you against a you who
+   was training a different way, so they are held back until the log has caught
+   up. Within-session responses are untouched: a set that goes badly today is
+   still a set that goes badly today. */
+const FMT_GRACE = 2;
+function fmtGrace(){
+  if (!state || state.fmtSince == null) return 0;
+  return Math.max(0, FMT_GRACE - (((state.history) || []).length - state.fmtSince));
+}
 function lifterNew(){ return ((state && state.history) || []).length < FMT_NEW_AT; }
 /* One line each, so the list still reads at a glance when circuits and the
    rest land beside them. The reasoning belongs in a deep dive, not here. */
@@ -1514,7 +1583,7 @@ function rotateDay(dayK, every){
        structural lift, and the old rule froze all of them. */
     const n = pickForGroup(e.g, taken, seq + i, {
       force: rotForce(dayK, e.n), klass: exBand({n: e.n, g: e.g}),
-      fromLen: jointLen(e.n), fromPath: exPath(e.n),
+      fromLen: jointLen(e.n), fromPath: exPath(e.n), fromMus: exMuscles(e.n).p,
       exact: true, fresh: true, strict: true
     });
     if (n && n !== e.n){
@@ -1628,7 +1697,7 @@ function pairOK(a, b){
   const anti = pairAnti(a, b);
   const warns = [];
   if (pairMulti(a) && pairMulti(b) && !anti)
-    warns.push("Two big lifts that do not oppose each other is a lot. One big, one small works better.");
+    warns.push("Two big lifts back to back is a lot. One big and one small works better.");
   if (pairOver(pairNoCore(rolesFor(a).st), pairNoCore(rolesFor(b).t)) ||
       pairOver(pairNoCore(rolesFor(b).st), pairNoCore(rolesFor(a).t)))
     warns.push("One of these holds you steady while the other works it. Expect the second to feel harder.");
@@ -1639,6 +1708,60 @@ function pairOK(a, b){
   return {lv:"ok", why:"These two do not fight each other."};
 }
 /* Never suggested; buildable only when the user insists. */
+/* ---- Grouping a session into supersets -------------------------------
+   Pure: same list in, same groups out, no state written. render() can call it
+   every frame, which is what keeps a swap or an added exercise from leaving a
+   stale pairing behind.
+
+   Returns an array of index groups: [[0],[1,2],[3],[4,5]]. A group of one is an
+   ordinary exercise. Nothing is reordered - a pair is always two adjacent-ish
+   slots, and the second one is pulled up to sit with the first, so the order you
+   see is still the order you planned.
+
+   Slot 0 is never paired. Your heaviest lift of the day is where fatigue costs
+   the most weight on the bar, and Mang 2025 says to keep supersets for the
+   accessory work; see claude/superset-v1-spec.md. */
+function pairPlan(list){
+  const solo = (list || []).map((_, i) => [i]);
+  if (!list || list.length < 3) return solo;
+  if (typeof sessionStyle === "function" && sessionStyle() !== "superset") return solo;
+  const used = new Array(list.length).fill(false);
+  used[0] = true;
+  const out = [[0]];
+  /* warn is "buildable by hand, worth a note" - not "choose this for me". A card
+     whose own subtitle says the pairing is a lot to ask should never have been
+     built automatically. Across push/pull/legs/upper/lower it costs exactly one
+     pair, on Push, where the split has already ruled out anything better. */
+  const RANK = {good: 3, ok: 2};
+  for (let i = 1; i < list.length; i++){
+    if (used[i]) continue;
+    used[i] = true;
+    /* Nearest acceptable partner, best verdict first. Nearest matters: pulling a
+       movement up from the far end of the day rearranges the session more than
+       the pairing is worth. */
+    let best = -1, bestScore = 0;
+    for (let j = i + 1; j < list.length; j++){
+      if (used[j]) continue;
+      const r = pairOK(list[i].n, list[j].n);
+      const score = RANK[r.lv] || 0;
+      if (!score) continue;
+      const near = 1 / (1 + (j - i));            /* ties break toward the closer one */
+      if (score + near > bestScore){ bestScore = score + near; best = j; }
+    }
+    if (best === -1){ out.push([i]); continue; }
+    used[best] = true;
+    out.push([i, best]);
+  }
+  return out;
+}
+/* What the card says about itself, and why these two are together. */
+function pairWhy(list, g){
+  if (!g || g.length < 2) return "";
+  const r = pairOK(list[g[0]].n, list[g[1]].n);
+  return r.lv === "good" ? "Opposite movements \u2014 you get more reps this way."
+       : r.lv === "warn" ? r.why
+       : "These two do not fight each other.";
+}
 function pairSuggestable(a, b){ const r = pairOK(a, b); return r.lv === "good" || r.lv === "ok" || r.lv === "warn"; }
 
 /* Timers land on quarter minutes - 2:00, 1:45, never 2:05. */
@@ -1725,6 +1848,7 @@ function cleanRun(hist, top){
 /* Stuck = no improvement across N real sessions AND at least M days elapsed.
    More reps at the same weight counts as improvement. */
 function stuckState(hist, L){
+  if (fmtGrace()) return null;      /* just changed format - see fmtGrace() */
   if (hist.length < L.stallSessions) return null;
   const win = hist.slice(-L.stallSessions);
   const score = x => (x.w > 0 ? x.w * 1000 + x.r : x.r);
@@ -1789,8 +1913,11 @@ function coachFor(ex){
   }
   /* 4. Readiness called low today */
   if (typeof readinessToday === "function" && readinessToday() === "low"){
+    /* No weight in this line. The shape is "replay", which repeats each set's
+       own previous load - so naming one number is a promise the sets do not
+       keep the moment a past session was not flat. */
     return mk(curW, curR, "hold-readiness",
-      "You called readiness low. Holding" + atW + " — recovery beats a PR today.",
+      "You called readiness low. Repeating last session exactly — recovery beats a PR today.",
       "coach-hold-ready", "replay");
   }
   /* 5. Last time here was rough */
@@ -2202,6 +2329,29 @@ function coachSet(i, j){
   return null;
 }
 
+/* In a superset you are meant to walk straight to the partner lift, so anything
+   the coach wants to SAY or ASK waits until the round is finished. The silent
+   half - easing the reps that are left, nudging the last set's weight - has
+   already happened inside coachSet(), because that changes the card you are
+   about to look at. Straight sets are unaffected: restMode() returns null and
+   everything is delivered on the spot, exactly as before. */
+function coachDeliver(cs, ex, st){
+  if (!state.session) return;
+  const q = state.session.held || (state.session.held = []);
+  const one = c => ({n: ex.n, msg: c.msg || null, speak: c.speak || null, ask: c.ask || null});
+  if (cs && restMode(ex, st) === "within"){ q.push(one(cs)); return; }
+  const out = q.splice(0, q.length);
+  if (cs) out.push(one(cs));
+  if (!out.length) return;
+  const msgs = out.filter(x => x.msg);
+  if (msgs.length === 1) toast(msgs[0].msg, false);
+  else if (msgs.length > 1) toast(msgs.map(x => x.n + " \u2014 " + x.msg).join("   \u00b7   "), false);
+  const spoke = out.filter(x => x.speak);
+  if (spoke.length) sayP(spoke[spoke.length - 1].speak);
+  const asks = out.filter(x => x.ask);
+  state.session.ask = asks.length ? asks[asks.length - 1].ask : null;
+}
+
 const demoURL = n => {
   const q = equipTags(n).includes("Machine")
     ? n + " machine exercise form"
@@ -2385,6 +2535,60 @@ function jointLen(n){ return JOINT_LEN[n] || null; }
 /* Which way you travel. Only the lunge-and-step family, because that is where
    the app held eleven movements it could not tell apart. "still" means the feet
    stay put (split squat, pistol) - a real fourth answer, not a missing one. */
+/* ---------- What each movement actually trains ----------
+   Group -> muscle, generated by rule from the agreed muscle tree and reviewed.
+   This is what finally lets the app tell a front raise from a lateral raise:
+   before this, 63 movements across Back, Chest and Shoulders carried identical
+   tags and the ranking treated them as interchangeable.
+   p = the muscle you came to train. s = real work, worth about half of it.
+   u = braced, gripped or held; loaded, but not training. Whether u counts
+   toward a week's volume is still an open decision - it is kept separate so
+   that decision costs one line, not 328. */
+const MUS_LABEL = {"pectoralis-major-clavicular":"Upper chest","pectoralis-major-sternocostal":"Mid / lower chest","pectoralis-minor":"Pec minor","serratus-anterior":"Serratus","latissimus-dorsi":"Lats","trapezius-upper":"Upper traps","trapezius-middle":"Mid traps","trapezius-lower":"Lower traps","rhomboids":"Rhomboids","teres-major":"Teres major","erector-spinae":"Lower back","deltoid-anterior":"Front delt","deltoid-lateral":"Side delt","deltoid-posterior":"Rear delt","rotator-cuff":"Rotator cuff","biceps-brachii-long":"Biceps, long head","biceps-brachii-short":"Biceps, short head","brachialis":"Brachialis","triceps-brachii-long":"Triceps, long head","triceps-brachii-lateral":"Triceps, lateral head","triceps-brachii-medial":"Triceps, medial head","brachioradialis":"Brachioradialis","flexor-carpi":"Wrist flexors","extensor-carpi":"Wrist extensors","flexor-digitorum":"Grip","rectus-femoris":"Rectus femoris","vastus-lateralis":"Outer quad","vastus-medialis":"Inner quad","vastus-intermedius":"Deep quad","gluteus-maximus":"Glute max","gluteus-medius":"Glute medius","gluteus-minimus":"Glute minimus","adductor-group":"Inner thigh","iliopsoas":"Hip flexors","biceps-femoris-long":"Hamstring, long head","biceps-femoris-short":"Hamstring, short head","semitendinosus":"Semitendinosus","semimembranosus":"Semimembranosus","gastrocnemius":"Gastrocnemius","soleus":"Soleus","tibialis-anterior":"Shin","rectus-abdominis":"Abs","obliques":"Obliques","transversus-abdominis":"Deep core","quadratus-lumborum":"QL"};
+const MUS_LATIN = {"pectoralis-major-clavicular":"pectoralis major, clavicular head","pectoralis-major-sternocostal":"pectoralis major, sternocostal head","pectoralis-minor":"pectoralis minor","serratus-anterior":"serratus anterior","latissimus-dorsi":"latissimus dorsi","trapezius-upper":"trapezius, upper fibres","trapezius-middle":"trapezius, middle fibres","trapezius-lower":"trapezius, lower fibres","rhomboids":"rhomboid major and minor","teres-major":"teres major","erector-spinae":"erector spinae","deltoid-anterior":"deltoid, anterior head","deltoid-lateral":"deltoid, lateral head","deltoid-posterior":"deltoid, posterior head","rotator-cuff":"supraspinatus, infraspinatus, teres minor, subscapularis","biceps-brachii-long":"biceps brachii, long head","biceps-brachii-short":"biceps brachii, short head","brachialis":"brachialis","triceps-brachii-long":"triceps brachii, long head","triceps-brachii-lateral":"triceps brachii, lateral head","triceps-brachii-medial":"triceps brachii, medial head","brachioradialis":"brachioradialis","flexor-carpi":"flexor carpi radialis and ulnaris","extensor-carpi":"extensor carpi radialis and ulnaris","flexor-digitorum":"flexor digitorum superficialis and profundus","rectus-femoris":"rectus femoris","vastus-lateralis":"vastus lateralis","vastus-medialis":"vastus medialis","vastus-intermedius":"vastus intermedius","gluteus-maximus":"gluteus maximus","gluteus-medius":"gluteus medius","gluteus-minimus":"gluteus minimus","adductor-group":"adductor magnus, longus, brevis, gracilis","iliopsoas":"iliopsoas","biceps-femoris-long":"biceps femoris, long head","biceps-femoris-short":"biceps femoris, short head","semitendinosus":"semitendinosus","semimembranosus":"semimembranosus","gastrocnemius":"gastrocnemius","soleus":"soleus","tibialis-anterior":"tibialis anterior","rectus-abdominis":"rectus abdominis","obliques":"external and internal oblique","transversus-abdominis":"transversus abdominis","quadratus-lumborum":"quadratus lumborum"};
+const MUS_GROUP = {"pectoralis-major-clavicular":"Chest","pectoralis-major-sternocostal":"Chest","pectoralis-minor":"Chest","serratus-anterior":"Chest","latissimus-dorsi":"Back","trapezius-upper":"Back","trapezius-middle":"Back","trapezius-lower":"Back","rhomboids":"Back","teres-major":"Back","erector-spinae":"Back","deltoid-anterior":"Shoulders","deltoid-lateral":"Shoulders","deltoid-posterior":"Shoulders","rotator-cuff":"Shoulders","biceps-brachii-long":"Biceps","biceps-brachii-short":"Biceps","brachialis":"Biceps","triceps-brachii-long":"Triceps","triceps-brachii-lateral":"Triceps","triceps-brachii-medial":"Triceps","brachioradialis":"Forearms","flexor-carpi":"Forearms","extensor-carpi":"Forearms","flexor-digitorum":"Forearms","rectus-femoris":"Quads","vastus-lateralis":"Quads","vastus-medialis":"Quads","vastus-intermedius":"Quads","gluteus-maximus":"Glutes & Hips","gluteus-medius":"Glutes & Hips","gluteus-minimus":"Glutes & Hips","adductor-group":"Glutes & Hips","iliopsoas":"Glutes & Hips","biceps-femoris-long":"Hamstrings","biceps-femoris-short":"Hamstrings","semitendinosus":"Hamstrings","semimembranosus":"Hamstrings","gastrocnemius":"Calves","soleus":"Calves","tibialis-anterior":"Calves","rectus-abdominis":"Abs & Core","obliques":"Abs & Core","transversus-abdominis":"Abs & Core","quadratus-lumborum":"Abs & Core"};
+const MUS_PHRASE = {"pectoralis-major-clavicular":"the upper chest","pectoralis-major-sternocostal":"the middle and lower chest","pectoralis-minor":"under the chest","serratus-anterior":"the ribs at your side","latissimus-dorsi":"the lats","teres-major":"the lats","trapezius-upper":"the top of your traps","trapezius-middle":"the middle of your back","trapezius-lower":"the lower traps","rhomboids":"between the shoulder blades","erector-spinae":"the lower back","deltoid-anterior":"the front of the shoulder","deltoid-lateral":"the side of the shoulder","deltoid-posterior":"the back of the shoulder","rotator-cuff":"the rotator cuff","biceps-brachii-long":"the outer biceps","biceps-brachii-short":"the inner biceps","brachialis":"under the biceps","triceps-brachii-long":"the long head of the triceps","triceps-brachii-lateral":"the outer triceps","triceps-brachii-medial":"the inner triceps","brachioradialis":"the top of the forearm","flexor-carpi":"the wrist flexors","extensor-carpi":"the wrist extensors","flexor-digitorum":"your grip","rectus-femoris":"the front of the thigh","vastus-lateralis":"the quads","vastus-medialis":"the quads","vastus-intermedius":"the quads","gluteus-maximus":"the glutes","gluteus-medius":"the side of the hip","gluteus-minimus":"the side of the hip","adductor-group":"the inner thigh","iliopsoas":"the hip flexors","biceps-femoris-long":"the hamstrings","biceps-femoris-short":"the hamstrings","semitendinosus":"the hamstrings","semimembranosus":"the hamstrings","gastrocnemius":"the calves","soleus":"the lower calf","tibialis-anterior":"the shin","rectus-abdominis":"the abs","obliques":"the sides of your middle","transversus-abdominis":"the deep core","quadratus-lumborum":"the side of your lower back"};
+const EX_MUSCLE = {"Chest press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Flyes":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","deltoid-anterior"],"u":[]},"Bench press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Incline bench press":{"p":["pectoralis-major-clavicular"],"s":["pectoralis-major-sternocostal","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Incline dumbbell flyes":{"p":["pectoralis-major-clavicular"],"s":["pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Chest dips (forward lean)":{"p":["pectoralis-major-sternocostal"],"s":["triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Push-ups":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Wide push-ups":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Diamond push-ups":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Decline push-ups (feet elevated)":{"p":["pectoralis-major-clavicular"],"s":["pectoralis-major-sternocostal","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Floor press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Pullover":{"p":["pectoralis-major-sternocostal","latissimus-dorsi"],"s":["pectoralis-major-clavicular","serratus-anterior"],"u":[]},"Single-arm dumbbell press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Alternating dumbbell press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Squeeze press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Close-grip dumbbell press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Deficit push-ups":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Incline push-ups (hands elevated)":{"p":["pectoralis-major-sternocostal"],"s":["triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Weighted push-ups":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Svend press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Crossover":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","deltoid-anterior"],"u":[]},"Around-the-worlds":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular"],"u":[]},"Landmine press":{"p":["pectoralis-major-clavicular"],"s":["pectoralis-major-sternocostal","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Guillotine press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Larsen press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"Reverse-grip bench press":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"u":[]},"TRX push-ups":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Archer push-ups":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Pseudo planche push-ups":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"One-arm push-ups (assisted)":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Ring push-ups":{"p":["pectoralis-major-sternocostal"],"s":["pectoralis-major-clavicular","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior","serratus-anterior"],"u":["rectus-abdominis"]},"Lat pulldown":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":[]},"Mid row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Low row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Bent-over row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi","erector-spinae"]},"Pull-ups (wide grip)":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":["flexor-digitorum","flexor-carpi"]},"Pull-ups (neutral grip)":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":["flexor-digitorum","flexor-carpi"]},"Pull-ups (close grip)":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":["flexor-digitorum","flexor-carpi"]},"Chin-ups":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":["flexor-digitorum","flexor-carpi"]},"Band-assisted pull-ups":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":["flexor-digitorum","flexor-carpi"]},"Deadlift":{"p":["erector-spinae"],"s":["latissimus-dorsi","trapezius-upper","gluteus-maximus","biceps-femoris-long"],"u":["flexor-digitorum","flexor-carpi"]},"Single-arm dumbbell row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi","erector-spinae"]},"Chest-supported dumbbell row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Rows":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Pull-aparts":{"p":["deltoid-posterior","trapezius-middle"],"s":["rhomboids","rotator-cuff"],"u":[]},"Renegade rows":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi","erector-spinae"]},"Scapular pull-ups":{"p":["trapezius-lower","latissimus-dorsi"],"s":["rhomboids","teres-major"],"u":["flexor-digitorum","flexor-carpi"]},"Pendlay row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi","erector-spinae"]},"Yates row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi","erector-spinae"]},"Rack pulls":{"p":["erector-spinae"],"s":["latissimus-dorsi","trapezius-upper","gluteus-maximus","biceps-femoris-long"],"u":["flexor-digitorum","flexor-carpi"]},"Snatch-grip deadlift":{"p":["erector-spinae"],"s":["latissimus-dorsi","trapezius-upper","gluteus-maximus","biceps-femoris-long"],"u":["flexor-digitorum","flexor-carpi"]},"Kroc rows":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Gorilla rows":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Inverted rows":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Straight-arm band pulldown":{"p":["latissimus-dorsi"],"s":["teres-major","trapezius-lower"],"u":[]},"Superman hold":{"p":["erector-spinae"],"s":["gluteus-maximus","trapezius-lower"],"u":[]},"Reverse snow angels":{"p":["deltoid-posterior","trapezius-lower","trapezius-middle"],"s":["rhomboids","rotator-cuff"],"u":[]},"T-bar row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi","erector-spinae"]},"Meadows row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi","erector-spinae"]},"Seal row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Chest-supported machine row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Single-arm lat pulldown":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":["erector-spinae"]},"Reverse-grip lat pulldown":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":[]},"Back extension":{"p":["erector-spinae"],"s":["latissimus-dorsi","trapezius-upper","gluteus-maximus","biceps-femoris-long"],"u":[]},"Reverse hyperextension":{"p":["erector-spinae"],"s":["latissimus-dorsi","trapezius-upper","gluteus-maximus","biceps-femoris-long"],"u":[]},"Smith machine row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"TRX row":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Archer pull-ups":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":["flexor-digitorum","flexor-carpi"]},"Typewriter pull-ups":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":["flexor-digitorum","flexor-carpi"]},"Negative pull-ups":{"p":["latissimus-dorsi"],"s":["teres-major","biceps-brachii-long","biceps-brachii-short","rhomboids"],"u":["flexor-digitorum","flexor-carpi"]},"Muscle-ups":{"p":["latissimus-dorsi"],"s":[],"u":[]},"Skin the cat":{"p":["latissimus-dorsi"],"s":[],"u":[]},"Tuck front lever hold":{"p":["latissimus-dorsi"],"s":[],"u":[]},"Back lever hold (tucked)":{"p":["latissimus-dorsi"],"s":[],"u":[]},"Archer rows":{"p":["latissimus-dorsi","trapezius-middle","rhomboids"],"s":["biceps-brachii-long","deltoid-posterior"],"u":["flexor-digitorum","flexor-carpi"]},"Shoulder press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Reverse fly":{"p":["deltoid-posterior"],"s":["trapezius-middle","rhomboids","rotator-cuff"],"u":[]},"Standing barbell overhead press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":["rectus-abdominis"]},"Seated barbell overhead press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":["rectus-abdominis"]},"Overhead dumbbell press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Arnold press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Lateral raises":{"p":["deltoid-lateral"],"s":["trapezius-upper","trapezius-lower","serratus-anterior","rotator-cuff"],"u":[]},"Front raises":{"p":["deltoid-anterior"],"s":["pectoralis-major-clavicular"],"u":[]},"Rear delt flyes":{"p":["deltoid-posterior"],"s":["trapezius-middle","rhomboids","rotator-cuff"],"u":[]},"Face pulls":{"p":["deltoid-posterior"],"s":["trapezius-middle","rhomboids","rotator-cuff"],"u":[]},"Upright row":{"p":["deltoid-lateral","trapezius-upper"],"s":["biceps-brachii-short"],"u":[]},"Shrugs":{"p":["trapezius-upper"],"s":["flexor-digitorum"],"u":[]},"Overhead press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":["rectus-abdominis"]},"Pike push-ups":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Z press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Bradford press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Cuban press":{"p":["rotator-cuff"],"s":["deltoid-posterior","trapezius-lower"],"u":[]},"Seated lateral raises":{"p":["deltoid-lateral"],"s":["trapezius-upper","trapezius-lower","serratus-anterior","rotator-cuff"],"u":[]},"Leaning lateral raises":{"p":["deltoid-lateral"],"s":["trapezius-upper","trapezius-lower","serratus-anterior","rotator-cuff"],"u":[]},"Y raises":{"p":["trapezius-lower"],"s":["deltoid-posterior","trapezius-middle"],"u":[]},"Plate front raises":{"p":["deltoid-anterior"],"s":["pectoralis-major-clavicular"],"u":[]},"Halos":{"p":["deltoid-lateral"],"s":["rotator-cuff","obliques"],"u":[]},"Handstand hold (wall)":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":["rectus-abdominis"]},"Wall walks":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Cable lateral raise":{"p":["deltoid-lateral"],"s":["trapezius-upper","trapezius-lower","serratus-anterior","rotator-cuff"],"u":[]},"Machine lateral raise":{"p":["deltoid-lateral"],"s":["trapezius-upper","trapezius-lower","serratus-anterior","rotator-cuff"],"u":[]},"Landmine shoulder press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Behind-the-neck press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Viking press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Scaption raise":{"p":["deltoid-lateral"],"s":["trapezius-upper","trapezius-lower","serratus-anterior","rotator-cuff"],"u":[]},"Powell raise":{"p":["deltoid-posterior"],"s":["trapezius-middle","rotator-cuff"],"u":[]},"Handstand push-ups (wall)":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":["rectus-abdominis"]},"Tuck planche hold":{"p":["deltoid-anterior"],"s":["pectoralis-major-sternocostal","triceps-brachii-long"],"u":[]},"Push press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Push jerk":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":["rectus-abdominis"]},"Devil press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Bent press":{"p":["deltoid-anterior"],"s":["deltoid-lateral","triceps-brachii-long","triceps-brachii-lateral","trapezius-upper"],"u":[]},"Arm bar":{"p":["rotator-cuff"],"s":["deltoid-posterior","trapezius-lower"],"u":[]},"Standing shoulder external rotation":{"p":["rotator-cuff"],"s":["deltoid-posterior","trapezius-lower"],"u":["rectus-abdominis"]},"Cuban rotation":{"p":["rotator-cuff"],"s":["deltoid-posterior","trapezius-lower"],"u":[]},"Shoulder dislocates":{"p":["rotator-cuff"],"s":["deltoid-posterior","trapezius-lower"],"u":[]},"Seated wall angels":{"p":["rotator-cuff"],"s":["deltoid-posterior","trapezius-lower"],"u":[]},"Double-arm cable curl":{"p":["biceps-brachii-long","biceps-brachii-short"],"s":["brachialis"],"u":[]},"Concentration cable curl":{"p":["biceps-brachii-short"],"s":["biceps-brachii-long","brachialis"],"u":[]},"Biceps curl":{"p":["biceps-brachii-long","biceps-brachii-short"],"s":["brachialis"],"u":[]},"Standing dumbbell curl":{"p":["biceps-brachii-long","biceps-brachii-short"],"s":["brachialis"],"u":[]},"Seated dumbbell curl":{"p":["biceps-brachii-long","biceps-brachii-short"],"s":["brachialis"],"u":[]},"Hammer curl":{"p":["brachialis","brachioradialis"],"s":["biceps-brachii-long","biceps-brachii-short"],"u":[]},"Incline dumbbell curl":{"p":["biceps-brachii-long"],"s":["biceps-brachii-short","brachialis"],"u":[]},"Concentration curl":{"p":["biceps-brachii-short"],"s":["biceps-brachii-long","brachialis"],"u":[]},"Zottman curl":{"p":["brachioradialis","extensor-carpi"],"s":["brachialis","biceps-brachii-short"],"u":[]},"Chin-ups (biceps emphasis)":{"p":["biceps-brachii-long","biceps-brachii-short"],"s":["brachialis","latissimus-dorsi"],"u":[]},"Spider curls":{"p":["biceps-brachii-short"],"s":["biceps-brachii-long","brachialis"],"u":[]},"Drag curls":{"p":["biceps-brachii-long"],"s":["biceps-brachii-short","brachialis"],"u":[]},"Reverse curls":{"p":["brachioradialis","extensor-carpi"],"s":["brachialis","biceps-brachii-short"],"u":[]},"21s":{"p":["biceps-brachii-long","biceps-brachii-short"],"s":["brachialis"],"u":[]},"Cross-body hammer curls":{"p":["brachialis","brachioradialis"],"s":["biceps-brachii-long","biceps-brachii-short"],"u":[]},"Waiter curls":{"p":["biceps-brachii-short"],"s":["biceps-brachii-long","brachialis"],"u":[]},"Isometric curl hold":{"p":["biceps-brachii-long","biceps-brachii-short"],"s":["brachialis"],"u":[]},"Preacher curl":{"p":["biceps-brachii-short"],"s":["biceps-brachii-long","brachialis"],"u":[]},"EZ bar curl":{"p":["biceps-brachii-long","biceps-brachii-short"],"s":["brachialis"],"u":[]},"Bayesian cable curl":{"p":["biceps-brachii-long"],"s":["biceps-brachii-short","brachialis"],"u":[]},"Incline hammer curl":{"p":["brachialis","brachioradialis"],"s":["biceps-brachii-long","biceps-brachii-short"],"u":[]},"Triceps pressdown":{"p":["triceps-brachii-lateral","triceps-brachii-medial"],"s":["triceps-brachii-long","pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Upright dips (dip station)":{"p":["triceps-brachii-lateral","triceps-brachii-medial"],"s":["triceps-brachii-long","pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Bench dips":{"p":["triceps-brachii-lateral","triceps-brachii-medial"],"s":["triceps-brachii-long","pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Close-grip bench press":{"p":["triceps-brachii-lateral","triceps-brachii-medial","triceps-brachii-long"],"s":["pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Skull crushers":{"p":["triceps-brachii-long"],"s":["triceps-brachii-lateral","triceps-brachii-medial"],"u":[]},"Overhead dumbbell extension (two arm)":{"p":["triceps-brachii-long"],"s":["triceps-brachii-lateral","triceps-brachii-medial"],"u":[]},"Overhead dumbbell extension (one arm)":{"p":["triceps-brachii-long"],"s":["triceps-brachii-lateral","triceps-brachii-medial"],"u":[]},"Kickbacks":{"p":["triceps-brachii-lateral","triceps-brachii-medial"],"s":["triceps-brachii-long"],"u":[]},"Overhead band extensions":{"p":["triceps-brachii-long"],"s":["triceps-brachii-lateral","triceps-brachii-medial"],"u":[]},"Close-grip push-ups":{"p":["triceps-brachii-lateral","triceps-brachii-medial","triceps-brachii-long"],"s":["pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"JM press":{"p":["triceps-brachii-lateral","triceps-brachii-medial","triceps-brachii-long"],"s":["pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Tate press":{"p":["triceps-brachii-lateral","triceps-brachii-medial","triceps-brachii-long"],"s":["pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Rolling triceps extensions":{"p":["triceps-brachii-long"],"s":["triceps-brachii-lateral","triceps-brachii-medial"],"u":[]},"Bodyweight skull crushers":{"p":["triceps-brachii-long"],"s":["triceps-brachii-lateral","triceps-brachii-medial"],"u":[]},"Overhead cable extension":{"p":["triceps-brachii-long"],"s":["triceps-brachii-lateral","triceps-brachii-medial"],"u":[]},"Reverse-grip pushdown":{"p":["triceps-brachii-lateral","triceps-brachii-medial"],"s":["triceps-brachii-long"],"u":[]},"California press":{"p":["triceps-brachii-lateral","triceps-brachii-medial","triceps-brachii-long"],"s":["pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Korean dips":{"p":["triceps-brachii-lateral","triceps-brachii-medial"],"s":["triceps-brachii-long","pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Ring dips":{"p":["triceps-brachii-lateral","triceps-brachii-medial"],"s":["triceps-brachii-long","pectoralis-major-sternocostal","deltoid-anterior"],"u":[]},"Leg press":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Leg extension":{"p":["rectus-femoris","vastus-lateralis","vastus-medialis","vastus-intermedius"],"s":[],"u":[]},"Back squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group","erector-spinae"],"u":[]},"Front squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group","erector-spinae"],"u":[]},"Goblet squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Bulgarian split squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Walking lunges":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Reverse lunges":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Lateral lunges":{"p":["adductor-group"],"s":["gluteus-maximus","gluteus-medius","vastus-lateralis","vastus-medialis","vastus-intermedius"],"u":["erector-spinae"]},"Step-ups":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Hip thrusts":{"p":["gluteus-maximus"],"s":["biceps-femoris-long","erector-spinae","gluteus-medius"],"u":[]},"Glute bridges":{"p":["gluteus-maximus"],"s":["biceps-femoris-long","erector-spinae","gluteus-medius"],"u":[]},"Weighted glute bridges":{"p":["gluteus-maximus"],"s":["biceps-femoris-long","erector-spinae","gluteus-medius"],"u":[]},"Wall sit":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius"],"s":[],"u":[]},"Jump squats":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Zercher squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group","erector-spinae"],"u":[]},"Lunges":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Cyclist squats (heels elevated)":{"p":["rectus-femoris","vastus-lateralis","vastus-medialis","vastus-intermedius"],"s":[],"u":["erector-spinae"]},"Heel-elevated goblet squats":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Sissy squats":{"p":["rectus-femoris","vastus-lateralis","vastus-medialis","vastus-intermedius"],"s":[],"u":["erector-spinae"]},"Cossack squats":{"p":["adductor-group"],"s":["gluteus-maximus","gluteus-medius","vastus-lateralis","vastus-medialis","vastus-intermedius"],"u":["erector-spinae"]},"Curtsy lunges":{"p":["gluteus-medius","gluteus-minimus"],"s":["gluteus-maximus"],"u":["erector-spinae"]},"Pistol squats (assisted)":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Weighted box step-ups":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Frog pumps":{"p":["gluteus-maximus"],"s":["biceps-femoris-long","erector-spinae","gluteus-medius"],"u":[]},"Single-leg glute bridge":{"p":["gluteus-maximus"],"s":["biceps-femoris-long","erector-spinae","gluteus-medius"],"u":[]},"Lateral walks":{"p":["gluteus-medius","gluteus-minimus"],"s":["gluteus-maximus"],"u":[]},"Monster walks":{"p":["gluteus-medius","gluteus-minimus"],"s":["gluteus-maximus"],"u":[]},"Hack squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Belt squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Smith machine squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Hip abduction":{"p":["gluteus-medius","gluteus-minimus"],"s":["gluteus-maximus"],"u":[]},"Hip adduction":{"p":["adductor-group"],"s":["gluteus-maximus","gluteus-medius","vastus-lateralis","vastus-medialis","vastus-intermedius"],"u":[]},"Cable glute kickback":{"p":["gluteus-maximus"],"s":["biceps-femoris-long","erector-spinae","gluteus-medius"],"u":[]},"Step-downs":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Reverse Nordic curl":{"p":["rectus-femoris","vastus-lateralis","vastus-medialis","vastus-intermedius"],"s":[],"u":[]},"Split squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"TRX pistol squat":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Shrimp squats":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Clean":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group","erector-spinae"],"u":[]},"Power clean":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group","erector-spinae"],"u":[]},"Hang clean":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group","erector-spinae"],"u":[]},"Snatch":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group","erector-spinae"],"u":[]},"Power snatch":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group","erector-spinae"],"u":[]},"Thrusters":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group","erector-spinae"],"u":[]},"Skater squats":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["rectus-femoris","adductor-group"],"u":["erector-spinae"]},"Romanian deadlift":{"p":["biceps-femoris-long","semitendinosus","semimembranosus"],"s":["gluteus-maximus","erector-spinae","adductor-group"],"u":["flexor-digitorum","trapezius-upper"]},"Sumo deadlift":{"p":["biceps-femoris-long","semitendinosus","semimembranosus","adductor-group","gluteus-maximus"],"s":["erector-spinae","vastus-lateralis","vastus-medialis","vastus-intermedius"],"u":["flexor-digitorum","trapezius-upper"]},"Single-leg Romanian deadlift":{"p":["biceps-femoris-long","semitendinosus","semimembranosus"],"s":["gluteus-maximus","erector-spinae","adductor-group"],"u":["flexor-digitorum","trapezius-upper"]},"Kettlebell swings":{"p":["biceps-femoris-long","semitendinosus","semimembranosus","gluteus-maximus"],"s":["erector-spinae","adductor-group"],"u":["flexor-digitorum","trapezius-upper"]},"Good mornings":{"p":["biceps-femoris-long","semitendinosus","semimembranosus"],"s":["gluteus-maximus","erector-spinae"],"u":["trapezius-upper"]},"Nordic curl negatives":{"p":["biceps-femoris-long","biceps-femoris-short","semitendinosus","semimembranosus"],"s":["gastrocnemius","gluteus-maximus"],"u":[]},"Stiff-leg deadlift":{"p":["biceps-femoris-long","semitendinosus","semimembranosus"],"s":["gluteus-maximus","erector-spinae","adductor-group"],"u":["flexor-digitorum","trapezius-upper"]},"Deficit RDL":{"p":["biceps-femoris-long","semitendinosus","semimembranosus"],"s":["gluteus-maximus","erector-spinae"],"u":[]},"B-stance RDL":{"p":["biceps-femoris-long","semitendinosus","semimembranosus"],"s":["gluteus-maximus","erector-spinae"],"u":[]},"Pull-throughs":{"p":["biceps-femoris-long","semitendinosus","semimembranosus","gluteus-maximus"],"s":["erector-spinae"],"u":["trapezius-upper"]},"Sliding leg curls":{"p":["biceps-femoris-long","biceps-femoris-short","semitendinosus","semimembranosus"],"s":["gastrocnemius"],"u":[]},"Seated leg curl":{"p":["biceps-femoris-long","biceps-femoris-short","semitendinosus","semimembranosus"],"s":["gastrocnemius"],"u":[]},"Lying leg curl":{"p":["biceps-femoris-long","biceps-femoris-short","semitendinosus","semimembranosus"],"s":["gastrocnemius"],"u":[]},"45-degree back extension":{"p":["erector-spinae","gluteus-maximus"],"s":["biceps-femoris-long","semitendinosus","semimembranosus"],"u":[]},"Glute-ham raise":{"p":["biceps-femoris-long","biceps-femoris-short","semitendinosus","semimembranosus"],"s":["gastrocnemius","gluteus-maximus"],"u":[]},"TRX hamstring curl":{"p":["biceps-femoris-long","biceps-femoris-short","semitendinosus","semimembranosus"],"s":["gastrocnemius"],"u":[]},"Calf press":{"p":["gastrocnemius"],"s":["soleus"],"u":[]},"Standing calf raises":{"p":["gastrocnemius"],"s":["soleus"],"u":[]},"Single-leg calf raises":{"p":["gastrocnemius"],"s":["soleus"],"u":[]},"Seated calf raises":{"p":["soleus"],"s":["gastrocnemius"],"u":[]},"Donkey calf raises":{"p":["gastrocnemius"],"s":["soleus"],"u":[]},"Tibialis raises":{"p":["tibialis-anterior"],"s":[],"u":[]},"Farmer walk on toes":{"p":["gastrocnemius"],"s":["soleus"],"u":["flexor-digitorum","trapezius-upper"]},"Leg press calf raise":{"p":["gastrocnemius"],"s":["soleus"],"u":[]},"Smith machine calf raise":{"p":["gastrocnemius"],"s":["soleus"],"u":[]},"Ab crunch":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"Oblique crunch":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":[]},"Plank":{"p":["transversus-abdominis","rectus-abdominis"],"s":["obliques","quadratus-lumborum","erector-spinae"],"u":[]},"Side plank":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":[]},"Hanging knee raises":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":["flexor-digitorum","latissimus-dorsi"]},"Hanging leg raises":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":["flexor-digitorum","latissimus-dorsi"]},"Russian twists":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":[]},"Dead bugs":{"p":["transversus-abdominis","rectus-abdominis"],"s":["obliques","quadratus-lumborum","erector-spinae"],"u":[]},"Bicycle crunches":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":[]},"Mountain climbers":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"V-ups":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":[]},"Ab rollout":{"p":["transversus-abdominis","rectus-abdominis"],"s":["obliques","quadratus-lumborum","erector-spinae"],"u":[]},"Pallof press":{"p":["transversus-abdominis","rectus-abdominis"],"s":["obliques","quadratus-lumborum","erector-spinae"],"u":[]},"Windmills":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":[]},"Farmer's carries":{"p":["transversus-abdominis","rectus-abdominis"],"s":["obliques","quadratus-lumborum","erector-spinae"],"u":["flexor-digitorum","trapezius-upper"]},"Hollow body hold":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":["flexor-digitorum","trapezius-upper"]},"Sit-ups":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"Weighted sit-ups":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"Crunches":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"Reverse crunches":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"Toe touches":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":[]},"Flutter kicks":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":[]},"Scissor kicks":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":[]},"Plank shoulder taps":{"p":["transversus-abdominis","rectus-abdominis"],"s":["obliques","quadratus-lumborum","erector-spinae"],"u":[]},"Plank up-downs":{"p":["transversus-abdominis","rectus-abdominis"],"s":["obliques","quadratus-lumborum","erector-spinae"],"u":[]},"Side plank hip dips":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":[]},"Copenhagen plank (bench)":{"p":["adductor-group"],"s":["obliques","transversus-abdominis"],"u":[]},"L-sit hold (dip station)":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":["flexor-digitorum","trapezius-upper"]},"Dragon flag negatives (bench)":{"p":["obliques","quadratus-lumborum","latissimus-dorsi"],"s":["rectus-abdominis","deltoid-anterior"],"u":[]},"Hanging windshield wipers":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":["flexor-digitorum","latissimus-dorsi"]},"Turkish get-up":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"Suitcase carries":{"p":["obliques","quadratus-lumborum"],"s":["transversus-abdominis"],"u":["flexor-digitorum","trapezius-upper"]},"Bird dogs":{"p":["erector-spinae"],"s":["gluteus-maximus","quadratus-lumborum"],"u":[]},"Cable crunch":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"Cable woodchopper":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":[]},"Toes to bar":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":[]},"Hollow rocks":{"p":["rectus-abdominis","iliopsoas"],"s":["transversus-abdominis","obliques"],"u":[]},"Side bends":{"p":["obliques","quadratus-lumborum"],"s":["transversus-abdominis"],"u":[]},"Landmine rotation":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":[]},"TRX fallout":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"Human flag (tucked)":{"p":["obliques","quadratus-lumborum","latissimus-dorsi"],"s":["rectus-abdominis","deltoid-anterior"],"u":[]},"Turkish sit-ups":{"p":["rectus-abdominis"],"s":["obliques","transversus-abdominis"],"u":[]},"Side plank reach through":{"p":["obliques"],"s":["rectus-abdominis","transversus-abdominis","quadratus-lumborum"],"u":[]},"Goblet carry":{"p":["transversus-abdominis","rectus-abdominis"],"s":["obliques","quadratus-lumborum","erector-spinae"],"u":["flexor-digitorum","trapezius-upper"]},"Box jumps (sturdy box/step)":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Broad jumps":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Tuck jumps":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Jumping lunges":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Lateral bounds (skater hops)":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Squat jump to stick landing":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Clap push-ups":{"p":["pectoralis-major-sternocostal","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"s":["serratus-anterior"],"u":["rectus-abdominis"]},"Plyo push-ups (hands leave floor)":{"p":["pectoralis-major-sternocostal","triceps-brachii-lateral","triceps-brachii-medial","deltoid-anterior"],"s":["serratus-anterior"],"u":["rectus-abdominis"]},"Depth drops (step down, stick landing)":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Star jumps":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Pogo hops":{"p":["gastrocnemius","soleus"],"s":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"u":["rectus-abdominis"]},"Single-leg hops":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Medicine ball slams":{"p":["obliques","rectus-abdominis","deltoid-anterior"],"s":["latissimus-dorsi","triceps-brachii-long"],"u":["erector-spinae"]},"Rotational medicine ball throw":{"p":["obliques","rectus-abdominis","deltoid-anterior"],"s":["latissimus-dorsi","triceps-brachii-long"],"u":["erector-spinae"]},"Depth jumps":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Bounding":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Lateral box jumps":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["soleus","biceps-femoris-long"],"u":["rectus-abdominis","erector-spinae"]},"Treadmill walk":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Treadmill jog":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Treadmill run":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Treadmill incline intervals":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Treadmill sprints":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Bike ride":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["gastrocnemius","biceps-femoris-long"],"u":[]},"HIIT bike ride":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["gastrocnemius","biceps-femoris-long"],"u":[]},"Cross trainer steady state":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Cross trainer intervals":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Kettlebell swing intervals":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Burpees":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Jumping jacks":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"High knees":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Kettlebell complex":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Bodyweight circuit":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Zone 2 bike ride":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["gastrocnemius","biceps-femoris-long"],"u":[]},"Bike sprint intervals":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["gastrocnemius","biceps-femoris-long"],"u":[]},"12-3-30 treadmill":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Incline treadmill hike":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Elliptical hill climb":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus"],"s":["gastrocnemius","biceps-femoris-long"],"u":[]},"Shadow boxing":{"p":["deltoid-anterior","deltoid-lateral"],"s":["triceps-brachii-long","biceps-brachii-long","obliques"],"u":["rectus-abdominis"]},"EMOM bodyweight circuit":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Ruck walk":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Rowing machine steady state":{"p":["latissimus-dorsi","erector-spinae","vastus-lateralis","vastus-medialis","vastus-intermedius"],"s":["biceps-brachii-long","gluteus-maximus","rhomboids"],"u":[]},"Rowing machine intervals":{"p":["latissimus-dorsi","erector-spinae","vastus-lateralis","vastus-medialis","vastus-intermedius"],"s":["biceps-brachii-long","gluteus-maximus","rhomboids"],"u":[]},"Jump rope":{"p":["gastrocnemius","soleus"],"s":["vastus-lateralis","vastus-medialis","vastus-intermedius"],"u":[]},"Double unders":{"p":["gastrocnemius","soleus"],"s":["vastus-lateralis","vastus-medialis","vastus-intermedius"],"u":[]},"Stair climber":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Sled push":{"p":["vastus-lateralis","vastus-medialis","vastus-intermedius","gluteus-maximus","gastrocnemius"],"s":["biceps-femoris-long","soleus"],"u":["erector-spinae"]},"Battle ropes":{"p":["deltoid-anterior","deltoid-lateral"],"s":["triceps-brachii-long","biceps-brachii-long","obliques"],"u":["rectus-abdominis"]},"Swimming":{"p":["latissimus-dorsi","deltoid-anterior"],"s":["pectoralis-major-sternocostal","triceps-brachii-long"],"u":[]},"Wrist curl":{"p":["flexor-carpi"],"s":["brachioradialis"],"u":[]},"Reverse wrist curl":{"p":["extensor-carpi"],"s":["brachioradialis"],"u":[]},"Behind-the-back wrist curl":{"p":["flexor-carpi"],"s":["brachioradialis"],"u":[]},"Wrist roller":{"p":["flexor-carpi","extensor-carpi"],"s":["brachioradialis"],"u":[]},"Plate pinch hold":{"p":["flexor-digitorum"],"s":["brachioradialis"],"u":[]},"Dead hang":{"p":["flexor-digitorum"],"s":["brachioradialis"],"u":[]},"Farmer hold":{"p":["flexor-digitorum"],"s":["brachioradialis"],"u":[]},"Towel pull-ups":{"p":["flexor-digitorum"],"s":["brachioradialis"],"u":[]}};
+function exMuscles(n){
+  const m = EX_MUSCLE[origName(n)] || EX_MUSCLE[n];
+  return m ? {p: m.p || [], s: m.s || [], u: m.u || []} : {p: [], s: [], u: []};
+}
+/* "Inner quad (vastus medialis)" where the extra precision earns its space,
+   and just "Brachialis" where the two would read the same. */
+function musName(slug){ return MUS_LABEL[slug] || slug; }
+function musLong(slug){
+  const l = MUS_LABEL[slug], a = MUS_LATIN[slug];
+  if (!l) return slug;
+  return (!a || a.toLowerCase() === l.toLowerCase()) ? l : l + " (" + a + ")";
+}
+/* One plain phrase for a set of muscles, deduped - the three vasti always move
+   together, so they must never produce three phrases. */
+function musPhrase(list){
+  const seen = [];
+  (list || []).forEach(m => { const w = MUS_PHRASE[m]; if (w && seen.indexOf(w) === -1) seen.push(w); });
+  if (!seen.length) return null;
+  if (seen.length === 1) return seen[0];
+  if (seen.length === 2) return seen[0] + " and " + seen[1];
+  return seen.slice(0, -1).join(", ") + " and " + seen[seen.length - 1];
+}
+/* Do these two movements come at the same muscle at all? Primary against
+   primary - sharing a secondary is not sameness, it is just anatomy. Used for
+   the coaching line, where any overlap is worth saying. */
+function sameTarget(a, b){
+  const A = exMuscles(a).p, B = exMuscles(b).p;
+  if (!A.length || !B.length) return false;
+  return A.some(m => B.indexOf(m) !== -1);
+}
+/* The sharper question, and the one the ranking needs: does `to` bring a muscle
+   that `from` did not? Overlap alone is too blunt - a pulldown and a row share
+   the lats, but the row adds the middle of your back, so it is a real change of
+   stimulus. A second lateral raise adds nothing, and that is what to catch. */
+function addsTarget(from, to){
+  const A = exMuscles(from).p, B = exMuscles(to).p;
+  if (!B.length) return false;
+  if (!A.length) return true;
+  return B.some(m => A.indexOf(m) === -1);
+}
 const EX_PATH = {"Lunges":"fwd","Walking lunges":"fwd","Weighted box step-ups":"fwd","Step-ups":"fwd","Reverse lunges":"back","Step-downs":"back","Lateral lunges":"side","Cossack squats":"side","Curtsy lunges":"cross","Split squat":"still","Bulgarian split squat":"still","Pistol squats (assisted)":"still","TRX pistol squat":"still","Shrimp squats":"still","Skater squats":"still","Sissy squats":"still"};
 function exPath(n){
   const ov = state && state.pathOv && state.pathOv[n];
@@ -2419,7 +2623,7 @@ function swapRank(g, exclude, want){
     for (const r of on) if (!test(r.n)) r.why = (typeof why === "function") ? why(r.n) : why;
     return true;
   };
-  prefer(equipOK, "needs kit you haven't got");
+  prefer(equipOK, n => { const k = missingKit(n); return k ? "needs " + k : "needs kit you haven't got"; });
   if (want.force){
     const dirOK = prefer(n => dayTags(n).includes(want.force),
                          "not " + (FORCE_WORD[want.force] || "the right movement"));
@@ -2444,6 +2648,13 @@ function swapRank(g, exclude, want){
   if (want.fromLen)
     prefer(n => { const l = jointLen(n); return l && l !== want.fromLen; },
            "works the muscle at the same length");
+  /* The same defect the lunges had, three times bigger: 63 movements across
+     Back, Chest and Shoulders used to look identical to this ranking. A front
+     raise and a lateral raise are different heads of the shoulder doing
+     different jobs, and swapping one for the other is not variety. */
+  if (want.fromMus && want.fromMus.length)
+    prefer(n => exMuscles(n).p.some(m => want.fromMus.indexOf(m) === -1),
+           n => "also works " + (musPhrase(exMuscles(n).p) || "the same muscle"));
   const inPlan = n => Object.values(state.plan || {}).flat().some(e => e.n === n);
   const score = want.fresh
     ? n => sinceDone(n) - (inPlan(n) ? 5000 : 0)
@@ -3137,7 +3348,10 @@ function openSettings(){
     <div class="set-main"><div class="set-name">Variety</div>
     <div class="set-sub">${rotN
       ? "Your two steadiest lifts never change, so you can keep adding weight to them. Everything else swaps for a new movement once you have done it " + rotN + " times \u2014 about " + rotWeeks(rotN) + " weeks. Skip one and its count waits."
-      : "Your days never change on their own"}</div>
+      : "Your days never change on their own"}</div>${
+      rotN && rotWeeks(rotN) <= 3
+      ? `<div class="fmt-note">At this setting a movement is gone in about ${rotWeeks(rotN)} weeks. Week to week your top set naturally swings a few percent either way, so the Coach needs roughly that long just to tell a real trend from a normal wobble \u2014 you will see more movements, and less of whether each one is working.</div>`
+      : ""}
     <div class="coach-pick">${[["0","Off"],["8","Every 8"],["4","Every 4"]].map(([v,lab]) =>
       `<button data-rot="${v}" class="${String(rotN) === v ? "on" : ""}">${lab}</button>`).join("")}</div>
     </div></div>`);
@@ -3156,7 +3370,7 @@ function openSettings(){
     </div></div>`);
   const nS = notifState();
   rows.push(`<div class="set-row coach-row" id="notifRow">
-    <span class="set-ic">${ico("bolt")}</span>
+    <span class="set-ic">${ico("clock")}</span>
     <div class="set-main"><div class="set-name">Rest timer alerts</div>
     <div class="set-sub">${notifWhy(nS)}</div>
     <div class="coach-pick">${nS === "on"
@@ -3210,7 +3424,13 @@ function openSettings(){
   if (vl) vl.onclick = ev => { ev.stopPropagation(); if (soundOn()) ac(); openVoiceSheet(); };
   $("setBody").querySelectorAll(".fmt-list button[data-fmt]").forEach(b => b.onclick = ev => {
     ev.stopPropagation();
+    const was = state.fmt;
     state.fmt = b.dataset.fmt === "superset" ? "superset" : "straight";
+    if (state.fmt !== was){
+      state.fmtSince = ((state.history) || []).length;
+      toast("Your numbers will dip for a session or two \u2014 that's the format, not you. "
+          + "I'll hold the progress calls until it settles.", false);
+    }
     save(); render(); openSettings();
   });
   $("setBody").querySelectorAll(".coach-pick button[data-rot]").forEach(b => b.onclick = ev => {
@@ -4513,7 +4733,7 @@ window.addEventListener("appinstalled", () => { a2hsPrompt = null; render(); });
    sw.js for why that matters for a single-file app.
    Registration is guarded on https because a service worker is refused on
    file:// and plain http, and an unhandled rejection there is noise. */
-const BUILD_ID = "2026-09-17b";
+const BUILD_ID = "2026-09-18d";
 let swState = "off";
 let swReg = null;
 function swRegister(){
@@ -4566,9 +4786,9 @@ function notifWhy(s){
        : s === "needs install" ? "Only works once AddPlates is on your Home Screen \u2014 add it first."
        : s === "no worker"     ? "Waiting on the background helper. Close the app fully and reopen."
        : s === "blocked"       ? "You said no earlier. iOS Settings \u2192 AddPlates \u2192 Notifications to change it."
-       : s === "on"            ? "This phone will get a nudge when rest is over, even with the app closed."
+       : s === "on"            ? "This phone is registered. The rest timer starts using it in a later update \u2014 not yet."
        : s === "granted"       ? "Allowed, but this phone is not registered yet. Tap to finish."
-       : "Get a nudge when rest is over, even with the app closed.";
+       : "Sets this phone up for rest alerts. The alerts themselves arrive in a later update.";
 }
 async function notifEnable(){
   const s = notifState();
@@ -4781,7 +5001,16 @@ const REST_HARD = ["Joint pain", "Too fatigued", "Too many reps", "Too much weig
    But the flags that mean "that one hurt" extend it at EVERY level, Push included.
    Same binding rule as the rest of Coach: the setting changes how hard you are
    pushed when things go well, never how you are looked after when they do not. */
-function restSeconds(ex, st){
+/* In a superset the clock runs twice: a short walk-over between the two lifts,
+   then a full rest at the end of the round. Both numbers are Mang 2025's -
+   within a pair 0-60 s, between rounds 120-150 s - and the level picks where
+   you sit inside each. The flag floor below still lands last, so a set that
+   hurt still buys you two minutes even in the middle of a pair. */
+const REST_PAIR = {
+  within:  {lo:  0, hi: 60,  push: 15,  balanced: 30,  steady: 45},
+  between: {lo:120, hi:150,  push:120,  balanced:135,  steady:150}
+};
+function restSeconds(ex, st, pairMode){
   const L = coachLevel();
   const mode = trackMode(ex.n, ex.g);
   const did = Number(st && st.r) || 0;
@@ -4797,8 +5026,11 @@ function restSeconds(ex, st){
   /* The band sets the floor and the ceiling; the level picks where you start
      inside it; a big set or a long session moves you UP toward the ceiling.
      Nothing can take you below the floor - that is the point of the band. */
-  const B = REST_BANDS[exBand(ex)] || REST_BANDS.core;
-  const point = B[L.id] || B.balanced;
+  const B = (pairMode && REST_PAIR[pairMode]) || REST_BANDS[exBand(ex)] || REST_BANDS.core;
+  let point = B[L.id] || B.balanced;
+  /* Mang 2025 on people new to this: longer rests inside the pair. Applied
+     while the log is still thin, not offered as a choice. */
+  if (pairMode === "within" && lifterNew()) point = Math.max(point, B.steady);
   let sec = point + (B.hi - point) * (0.6 * work + 0.4 * fatigue);
   sec = Math.max(B.lo, Math.min(B.hi, sec));
   let why = null;
@@ -4808,9 +5040,24 @@ function restSeconds(ex, st){
   if (st && st.sf && st.sf <= 2){ sec = Math.max(sec, REST_FLOOR); why = why || "you rated that set " + st.sf + "\u2605"; }
   return {sec: round15(sec), why: why};
 }
+/* Which rest you have just earned: the walk-over to your partner lift, the
+   long one at the end of a round, or the ordinary one. Read off the live
+   pair plan, so nothing has to be threaded through the tap handlers. */
+function restMode(ex, st){
+  if (sessionStyle() !== "superset" || !state.session) return null;
+  const list = state.session.list || [];
+  const i = list.indexOf(ex);
+  if (i === -1) return null;
+  const g = pairPlan(list).find(x => x.length === 2 && x.indexOf(i) !== -1);
+  if (!g) return null;
+  const other = list[g[0] === i ? g[1] : g[0]];
+  const j = (ex.sets || []).indexOf(st);
+  const waiting = j !== -1 && other.sets[j] && !other.sets[j].done;
+  return waiting ? "within" : "between";
+}
 function startRest(ex, st){
   if (!restSaid){ restSaid = true; sayP("rest-start"); }
-  const r = restSeconds(ex, st);
+  const r = restSeconds(ex, st, restMode(ex, st));
   restEnd = Date.now() + r.sec*1000;
   if (r.why) toast("Taking " + fmt(r.sec) + " \u2014 " + r.why + ".", false);
   $("rest").classList.add("on");
@@ -4873,7 +5120,7 @@ function rotLineHTML(n){
   const i = plan.findIndex(e => e.n === n);
   if (i === -1) return "";                       /* added just for today, not in the rotation */
   if (plan[i].pin || rotAnchorIdx(day, plan).indexOf(i) !== -1)
-    return `<div class="swap-rot">One of your two steady lifts on ${dayLabel(day)} \u2014 it stays put so you can keep adding weight.</div>`;
+    return `<div class="swap-rot">One of your two steady lifts on ${dayLabel(day)} \u2014 rotation leaves it alone so you can keep adding weight. Swap it yourself any time.</div>`;
   const done = exReps(day, n), left = Math.max(0, every - done);
   return `<div class="swap-rot">Done <b>${done} of ${every}</b> on ${dayLabel(day)} \u2014 ` +
     (left <= 1 ? "it swaps itself next time." : "it swaps itself after " + left + " more.") + `</div>`;
@@ -4894,7 +5141,10 @@ function swapAdvice(idx, group, n, isAdd){
     want.klass = exBand({n: cur.n, g: cur.g});
     want.exact = true;
     /* Only meaningful against the group it came from. */
-    if (group === cur.g){ want.fromLen = jointLen(cur.n); want.fromPath = exPath(cur.n); }
+    if (group === cur.g){
+      want.fromLen = jointLen(cur.n); want.fromPath = exPath(cur.n);
+      want.fromMus = exMuscles(cur.n).p;
+    }
   }
   const rows = swapRank(group, taken, want);
   if (!rows.length) return null;
@@ -4927,7 +5177,7 @@ function swapPanelHTML(idx, g, n, isAdd){
   const picks = adv ? adv.ok.filter(r => r.n !== n).slice(0, 3) : [];
   return `<div class="swap-panel open">
     ${isAdd ? "" : rotLineHTML(n)}
-    ${picks.length ? `<div class="swap-tip">Best swaps here</div>
+    ${picks.length ? `<div class="swap-tip">${rotLineHTML(n) ? "If you do want to change it" : "Best swaps here"}</div>
       <div class="swap-picks">${picks.map(r =>
         `<button class="swap-pick" data-pick="${r.n.replace(/"/g,"&quot;")}">${r.n}</button>`).join("")}</div>` : ""}
     <label>Muscle group</label><select class="sel-group">${groupOptions(g)}</select>
@@ -4945,17 +5195,23 @@ function swapPanelHTML(idx, g, n, isAdd){
    this ("20 sec each side"); main exercises had nothing.
    Movements that ALTERNATE within a set - walking lunges, alternating presses -
    are deliberately not here: the set already covers both sides. */
-const EX_TWO_SIDED = {"Single-arm dumbbell press":1,"One-arm push-ups (assisted)":1,"Single-arm dumbbell row":1,"Single-arm lat pulldown":1,"Concentration cable curl":1,"Concentration curl":1,"Cross-body hammer curls":1,"Overhead dumbbell extension (one arm)":1,"Bulgarian split squat":1,"Reverse lunges":1,"Lateral lunges":1,"Step-ups":1,"Curtsy lunges":1,"Pistol squats (assisted)":1,"Weighted box step-ups":1,"Single-leg glute bridge":1,"Step-downs":1,"Split squat":1,"TRX pistol squat":1,"Shrimp squats":1,"Skater squats":1,"Single-leg Romanian deadlift":1,"B-stance RDL":1,"Single-leg calf raises":1,"Oblique crunch":1,"Side plank":1,"Windmills":1,"Side plank hip dips":1,"Copenhagen plank (bench)":1,"Turkish get-up":1,"Suitcase carries":1,"Turkish sit-ups":1,"Side plank reach through":1,"Single-leg hops":1};
+const EX_TWO_SIDED = {"Single-arm dumbbell press": 2, "One-arm push-ups (assisted)": 2, "Single-arm dumbbell row": 2, "Single-arm lat pulldown": 2, "Concentration cable curl": 2, "Concentration curl": 2, "Cross-body hammer curls": 2, "Overhead dumbbell extension (one arm)": 2, "Bulgarian split squat": 2, "Reverse lunges": 2, "Lateral lunges": 2, "Step-ups": 2, "Curtsy lunges": 2, "Pistol squats (assisted)": 2, "Weighted box step-ups": 2, "Single-leg glute bridge": 2, "Step-downs": 2, "Split squat": 2, "TRX pistol squat": 2, "Shrimp squats": 2, "Skater squats": 2, "Single-leg Romanian deadlift": 2, "B-stance RDL": 2, "Single-leg calf raises": 2, "Oblique crunch": 2, "Side plank": 2, "Windmills": 2, "Side plank hip dips": 2, "Copenhagen plank (bench)": 2, "Turkish get-up": 2, "Suitcase carries": 2, "Turkish sit-ups": 2, "Side plank reach through": 2, "Single-leg hops": 2, "Walking lunges": 2, "Lunges": 2, "Jumping lunges": 2, "Cossack squats": 2, "Alternating dumbbell press": 2, "Cable woodchopper": 2, "Landmine rotation": 2, "Rotational medicine ball throw": 2, "Standing shoulder external rotation": 2, "Halos": "dir", "Around-the-worlds": "dir"};
 function exSides(n){
   const ov = state && state.sides && state.sides[n];
   if (ov) return ov === 2 || ov === "2" ? 2 : 1;
   return EX_TWO_SIDED[origName(n)] ? 2 : 1;
 }
+/* A halo has two halves like a split squat does, but they are clockwise and
+   anticlockwise, not left and right - so the word has to change with it.
+   Same machinery, one different noun: "8 reps/way", "Halos - way 1 of 2". */
+function sideWord(n){
+  return EX_TWO_SIDED[origName(n)] === "dir" ? "way" : "side";
+}
 function unitLabel(ex){
   const m = trackMode(ex.n, ex.g);
   if (m === "sec") return "sec";
   if (m === "min") return "min";
-  return exSides(ex.n) > 1 ? "reps/side" : "reps";
+  return exSides(ex.n) > 1 ? "reps/" + sideWord(ex.n) : "reps";
 }
 function wLabel(ex){
   const m = trackMode(ex.n, ex.g);
@@ -4967,6 +5223,91 @@ function colLabel(ex){
   return trackMode(ex.n, ex.g) === "sec" ? "Timer" : wLabel(ex);
 }
 
+/* One set row. Lifted verbatim out of the exercise card so a superset
+   card can render the same rows interleaved rather than keeping a second
+   copy that drifts. `prev` is passed in because the caller already has it. */
+function setRowHTML(ex, i, s, j, prev, label){
+
+          /* how it went last time, not just what the numbers were - a set you
+             rated 2 stars reads very differently from the same weight at 5 */
+          const psf = prev && prev[j] && prev[j].sf ? Number(prev[j].sf) : 0;
+          const tmode = trackMode(ex.n, ex.g);
+          /* A held set has no weight, so "— × 79" was the wrong shape for it
+             and 79 was seconds, not reps. Say it the way the set is measured. */
+          const pNum = pv => tmode === "sec" ? fmt(Number(pv.r) || 0)
+                           : tmode === "min" ? (Number(pv.r) || 0) + " min"
+                           : `${pv.w||"—"} × ${pv.r||"—"}`;
+          const p = prev && prev[j]
+            ? `${pNum(prev[j])}${psf ? ` <span class="prev-rate${psf <= 2 ? " low" : ""}">${psf}★</span>` : ""}`
+            : "—";
+          const ph = prev && prev[j] ? prev[j] : {w:"", r:""};
+          const tsec = tmode === "sec" ? (Number(s.r)||0) : tmode === "min" ? Math.round((Number(s.r)||0) * 60) : 0;
+          const timerBtn = tsec > 0 && !s.done
+            ? `<button class="t-start" data-i="${i}" data-j="${j}" data-sec="${tsec}">${ico("clock")} ${fmt(tsec)}</button>`
+            : null;
+          /* A held set has no weight, so that column was dead space showing a
+             dash while the timer sat under the "Previous" heading. The timer
+             moves into the empty column and Previous goes back to meaning
+             previous. Minute-tracked work keeps its level input, so the timer
+             stays where it was there. */
+          const timerInW = timerBtn && tmode === "sec";
+          const prevCell = (timerBtn && !timerInW)
+            ? timerBtn
+            : `<span class="prev">${p}</span>`;
+          const wCell = (tmode === "wr" || tmode === "min")
+            ? `<input type="text" inputmode="decimal" value="${s.w}" placeholder="${ph.w}" data-i="${i}" data-j="${j}" data-f="w">`
+            : (timerInW ? timerBtn : `<span class="prev" style="text-align:center;opacity:.4">—</span>`);
+          return `<div class="aux-wrap sswipe"><div class="aux-del">${ico("trash")}<span>Remove</span></div>
+          <div class="set-row ${s.done?"logged":""}" data-si="${i}" data-sj="${j}">
+            <span class="set-num${label ? " set-name-cell" : ""}">${label || (j+1)}</span>
+            ${prevCell}
+            ${wCell}
+            <input type="text" inputmode="decimal" value="${s.r}" placeholder="${ph.r}" data-i="${i}" data-j="${j}" data-f="r">
+            <button class="set-check" data-i="${i}" data-j="${j}">
+              <svg width="14" height="11" viewBox="0 0 14 11" fill="none"><path d="M1 5.5L5 9.5L13 1.5" stroke="#0C0F14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div></div>`;
+}
+/* ---- One superset, as a card -----------------------------------------
+   Two exercises, interleaved by round. Every row still carries its own
+   data-i / data-j, so every existing handler works untouched - that was
+   measured before any of this was written.
+   The set-number column carries the exercise name instead, because in a pair
+   the thing you need to read is WHICH lift, not which set. */
+function pairCardHTML(list, g, lastPerfOf){
+  const A = list[g[0]], B = list[g[1]];
+  const rounds = Math.max(A.sets.length, B.sets.length);
+  const why = pairWhy(list, g);
+  const allDone = [A, B].every(e => e.sets.length && e.sets.every(x => x.done));
+  const head = e => `<span class="pair-ex">${e.n}</span>`;
+  const rows = [];
+  for (let r = 0; r < rounds; r++){
+    const done = [A, B].every(e => e.sets[r] && e.sets[r].done);
+    rows.push(`<div class="pair-round ${done ? "done" : ""}">Round ${r+1} of ${rounds}</div>`);
+    for (const [e, idx, tag] of [[A, g[0], "A"], [B, g[1], "B"]]){
+      if (!e.sets[r]) continue;
+      rows.push(setRowHTML(e, idx, e.sets[r], r, lastPerfOf(e.n), tag));
+    }
+  }
+  return `<div class="exercise pair ${allDone ? "done" : ""}">
+    <div class="ex-head" style="display:block">
+      <div class="meta" style="margin-bottom:6px">Superset${why ? " \u00b7 " + why : ""}</div>
+      ${[[A, g[0], "A"], [B, g[1], "B"]].map(([e, idx, tag]) => `<div class="pair-head-row">
+        <span class="pair-ex"><span class="pair-tag">${tag}</span>${e.n}</span>
+        <span style="display:flex;gap:6px;flex:0 0 auto">
+          <a class="icon-btn" href="${demoURL(e.n)}" target="_blank" rel="noopener" title="Watch ${e.n}">\u25b6</a>
+          <button class="icon-btn swap" data-i="${idx}" title="Swap ${e.n}">\u21c4</button>
+        </span>
+      </div>`).join("")}
+    </div>
+    <div class="sets pair-sets">
+      <div class="set-labels"><span>Lift</span><span>Previous</span><span>${wLabel(A)}</span><span>${unitLabel(A)}</span><span></span></div>
+      ${rows.join("")}
+    </div>
+    ${[[A, g[0]], [B, g[1]]].map(([e, idx]) =>
+      openPanel === idx ? swapPanelHTML(idx, e.g, e.n, false) : "").join("")}
+  </div>`;
+}
 function render(){
   renderPreview();
   const now = new Date();
@@ -5045,7 +5386,19 @@ function render(){
   /* Today already logged? Say so, instead of handing back a fresh empty card that
      looks like unfinished work. The session object has already rolled on to the
      next suggested day by this point, so nothing on screen said today was done. */
-  const doneEntries = (!state.session.pastDate && state.againOn !== todayISO()) ? todayLogged() : [];
+  /* Tapping "Do another workout" sets state.againOn for the day, and nothing
+     ever cleared it - so today's summary was gone until midnight with no way
+     back. It is still remembered, but now it is reversible. */
+  const loggedToday = state.session.pastDate ? [] : todayLogged();
+  const hidDone = state.againOn === todayISO() && loggedToday.length > 0;
+  const doneEntries = (!state.session.pastDate && !hidDone) ? loggedToday : [];
+  /* Declared here, AFTER hidDone - the first attempt put it above and render
+     threw on the dead zone. */
+  const backNote = hidDone
+    ? `<div class="note-row" id="backToDone" style="cursor:pointer">\u2713 ${
+        loggedToday.length === 1 ? "Today\u2019s workout is logged" : loggedToday.length + " workouts logged today"
+      } \u2014 tap to see it</div>`
+    : "";
   if (doneEntries.length){
     $("exerciseList").innerHTML = doneCardHTML(doneEntries) + a2hsCardHTML();
     wireA2hs();
@@ -5058,7 +5411,12 @@ function render(){
     $("finishBtn").style.display = "none";
     return;
   }
-  $("exerciseList").innerHTML = a2hsCardHTML() + pastNote + lowNote + restNote + genNote + auxCard("wu") + state.session.list.map((ex,i) => {
+  $("exerciseList").innerHTML = a2hsCardHTML() + backNote + pastNote + lowNote + restNote + genNote + auxCard("wu") + pairPlan(state.session.list).map(g =>
+    /* A group of two renders as one superset card; a group of one is the
+       ordinary exercise card, unchanged. The body below is the original map
+       callback, wrapped so it keeps every closure it already relied on. */
+    g.length === 2 ? pairCardHTML(state.session.list, g, lastPerf)
+    : ((ex, i) => {
     const allDone = ex.sets.length > 0 && ex.sets.every(s => s.done);
     const prev = lastPerf(ex.n);
     const best = bestPerf(ex.n);
@@ -5105,47 +5463,7 @@ function render(){
       ${openChart === i ? `<div class="chart-panel"><h4>Best set over time</h4>${chart ? chart + '<div class="chart-cap">Tap any dot for details</div>' : '<div class="chart-empty">Log this exercise in at least 2 workouts to see your trend.</div>'}</div>` : ""}
       <div class="sets">
         <div class="set-labels"><span>Set</span><span>Previous</span><span>${colLabel(ex)}</span><span>${unitLabel(ex)}</span><span></span></div>
-        ${ex.sets.map((s,j) => {
-          /* how it went last time, not just what the numbers were - a set you
-             rated 2 stars reads very differently from the same weight at 5 */
-          const psf = prev && prev[j] && prev[j].sf ? Number(prev[j].sf) : 0;
-          const tmode = trackMode(ex.n, ex.g);
-          /* A held set has no weight, so "— × 79" was the wrong shape for it
-             and 79 was seconds, not reps. Say it the way the set is measured. */
-          const pNum = pv => tmode === "sec" ? fmt(Number(pv.r) || 0)
-                           : tmode === "min" ? (Number(pv.r) || 0) + " min"
-                           : `${pv.w||"—"} × ${pv.r||"—"}`;
-          const p = prev && prev[j]
-            ? `${pNum(prev[j])}${psf ? ` <span class="prev-rate${psf <= 2 ? " low" : ""}">${psf}★</span>` : ""}`
-            : "—";
-          const ph = prev && prev[j] ? prev[j] : {w:"", r:""};
-          const tsec = tmode === "sec" ? (Number(s.r)||0) : tmode === "min" ? Math.round((Number(s.r)||0) * 60) : 0;
-          const timerBtn = tsec > 0 && !s.done
-            ? `<button class="t-start" data-i="${i}" data-j="${j}" data-sec="${tsec}">${ico("clock")} ${fmt(tsec)}</button>`
-            : null;
-          /* A held set has no weight, so that column was dead space showing a
-             dash while the timer sat under the "Previous" heading. The timer
-             moves into the empty column and Previous goes back to meaning
-             previous. Minute-tracked work keeps its level input, so the timer
-             stays where it was there. */
-          const timerInW = timerBtn && tmode === "sec";
-          const prevCell = (timerBtn && !timerInW)
-            ? timerBtn
-            : `<span class="prev">${p}</span>`;
-          const wCell = (tmode === "wr" || tmode === "min")
-            ? `<input type="text" inputmode="decimal" value="${s.w}" placeholder="${ph.w}" data-i="${i}" data-j="${j}" data-f="w">`
-            : (timerInW ? timerBtn : `<span class="prev" style="text-align:center;opacity:.4">—</span>`);
-          return `<div class="aux-wrap sswipe"><div class="aux-del">${ico("trash")}<span>Remove</span></div>
-          <div class="set-row ${s.done?"logged":""}" data-si="${i}" data-sj="${j}">
-            <span class="set-num">${j+1}</span>
-            ${prevCell}
-            ${wCell}
-            <input type="text" inputmode="decimal" value="${s.r}" placeholder="${ph.r}" data-i="${i}" data-j="${j}" data-f="r">
-            <button class="set-check" data-i="${i}" data-j="${j}">
-              <svg width="14" height="11" viewBox="0 0 14 11" fill="none"><path d="M1 5.5L5 9.5L13 1.5" stroke="#0C0F14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div></div>`;
-        }).join("")}
+        ${ex.sets.map((s,j) => setRowHTML(ex, i, s, j, prev)).join("")}
       </div>
       ${ex.sets.some(s => s.done) ? `<div class="set-rates" data-i="${i}">
         ${ex.sets.map((s,j) => !s.done ? "" : `<div class="sr-row">
@@ -5166,7 +5484,7 @@ function render(){
       </div>` : ""}
       ${openPanel === i ? swapPanelHTML(i, ex.g, ex.n, false) : ""}
     </div>`;
-  }).join("") + (openPanel === "add"
+  })(state.session.list[g[0]], g[0])).join("") + (openPanel === "add"
     ? `<div class="exercise">${swapPanelHTML("add", "Chest", getLib()["Chest"][0], true)}</div>` : "") + auxCard("cd");
 
   wireEvents();
@@ -5397,6 +5715,9 @@ function measDue(){
   return d === null || d >= 7;
 }
 function backupDue(){
+  /* Signed in means every session is already on the server. Asking for a manual
+     export as well is asking you to protect something that is protected. */
+  if (typeof SYNC_ENABLED !== "undefined" && SYNC_ENABLED && sbUser) return false;
   if (realWorkouts() < 5) return false;
   if (state.backupSkipUntil && todayISO() < state.backupSkipUntil) return false;
   if (!state.lastBackup) return true;
@@ -6277,7 +6598,8 @@ function auxCard(kind){
     })() + `<div class="aux-rows">` + items.map((it,j) => `
       <div class="aux-wrap"><div class="aux-del">${ico("trash")}<span>Remove</span></div>
       <div class="aux-row ${checks[j] ? "done" : ""}" data-aux="${kind}" data-j="${j}">
-        <div class="ar-main"><div class="ar-name">${it.n}</div><div class="ar-spec">${it.s}</div></div>
+        <div class="ar-main"><div class="ar-name">${it.n}</div><div class="ar-spec">${it.s}${
+          auxWorks(it.n) ? ` \u00b7 <span class="ar-m">${auxWorks(it.n)}</span>` : ""}</div></div>
         ${!checks[j] && parseAuxSeconds(it.s) > 0 ? `<button class="a-timer" data-kind="${kind}" data-j="${j}" data-sec="${parseAuxSeconds(it.s)}">${fmt(parseAuxSeconds(it.s))}${auxSides(it.s) > 1 ? " \u00d72" : ""}</button>` : ""}
         ${!checks[j] ? `<button class="icon-btn a-swap" data-kind="${kind}" data-j="${j}" title="Swap">${ico("swap")}</button>` : ""}
 
@@ -6427,6 +6749,9 @@ function wireAux(){
        unticking it to get the timer back for the other side, which is exactly
        the kind of fiddling you should not be doing mid-stretch. The timer now
        does both and tells you when to swap; only the last round marks it done. */
+    /* Always "side" here. Warm-up and cool-down items get their halves from
+       their own text ("20 sec each side"), not from EX_TWO_SIDED, so there is
+       no direction case to answer to - and `ex` does not exist in this scope. */
     const runRound = round => startWorkTimer(sec, sides > 1 ? label + " \u00b7 side " + round + " of " + sides : label, () => {
       if (round < sides){
         sayP("switch-sides");
@@ -7608,10 +7933,22 @@ for (const a of AUXLIB) AUX_META[a.n] = a;
 function auxAll(){
   return AUXLIB.concat((state && state.auxCustom) || []);
 }
+/* The per-day warm-up and cool-down defaults are a separate list from the aux
+   library, and 15 of the 26 carried no muscles at all - so the row had nothing
+   to show. Group level for now; it upgrades when the muscle tree lands. */
+const AUX_EXTRA_M = {"Easy bike or treadmill": ["Quads & Glutes", "Cardio"], "Start at a very easy pace": ["Cardio"], "First lift @ ~50% weight": [], "Pull-aparts": ["Shoulders", "Back"], "Scap push-ups": ["Chest", "Shoulders"], "Push-ups, easy pace": ["Chest", "Triceps", "Shoulders"], "Dead hang from bar": ["Back", "Forearms"], "Scap pull-ups": ["Back", "Shoulders"], "Leg swings": ["Hamstrings", "Quads & Glutes"], "Glute bridges": ["Quads & Glutes", "Hamstrings"], "Lat stretch (hang or side bend)": ["Back"], "Biceps wall stretch": ["Biceps", "Chest"], "Upper-trap stretch": ["Back", "Shoulders"], "Calf stretch on a step": ["Calves"], "Hip-flexor lunge stretch": ["Quads & Glutes"]};
 function auxMeta(n){
-  const base = AUX_META[n] || (state && state.auxCustom || []).find(a => a.n === n) || {n, s:"30 sec", ph:["wu"], m:[], e:["Bodyweight"]};
+  const base = AUX_META[n] || (state && state.auxCustom || []).find(a => a.n === n)
+    || (AUX_EXTRA_M[n] ? {n, s:"30 sec", ph:["wu"], m: AUX_EXTRA_M[n], e:["Bodyweight"]} : null)
+    || {n, s:"30 sec", ph:["wu"], m:[], e:["Bodyweight"]};
   const o = (state && state.auxOv && state.auxOv[n]) || {};
   return { n, s: o.s || base.s, ph: o.ph || base.ph, m: o.m || base.m, e: o.e || base.e };
+}
+/* What this move is actually preparing or stretching, in the user's words. */
+function auxWorks(n){
+  const m = auxMeta(n).m || [];
+  if (!m.length) return "";
+  return m.filter(g => g !== "Cardio").join(", ") || "whole body";
 }
 function auxDays(n){
   if (state && state.auxDay && state.auxDay[n]) return state.auxDay[n];
@@ -8497,20 +8834,28 @@ function renderHistory(){
     ? state.history.slice(0,15).map((h,idx) => {
         if (h.shield){
           const sd = new Date(h.date + "T12:00:00").toLocaleDateString(undefined,{weekday:"short", month:"short", day:"numeric"});
-          return `<div class="log"><div class="log-top"><b>${ico("shield")} Rest day</b><span>${sd} · streak protected</span></div></div>`;
+          return `<div class="log"><div class="log-top"><b>${ico("shield")} Rest day</b></div>
+            <div class="log-sub">${sd} · streak protected</div></div>`;
         }
         const d = new Date(h.date + "T12:00:00");
         const label = d.toLocaleDateString(undefined,{weekday:"short", month:"short", day:"numeric"});
         const dayName = dayLabel(h.day);
         const vol = h.ex ? h.ex.reduce((t,e) => t + e.sets.reduce((a,s) => a + (Number(s.w)||0)*(Number(s.r)||0), 0), 0) : 0;
+        /* "lb volume" was the word that tipped this onto a second line at
+           390px; next to "5 exercises" the unit is not ambiguous. The rating
+           moves out of the run of text into its own slot on the title line, so
+           it is in the same place on every row. */
+        const exN = h.ex ? h.ex.length : (h.count || 0);
+        const exWord = exN + (exN === 1 ? " exercise" : " exercises");
         const sub = h.ex
-          ? `${label} · ${h.ex.length} exercises${vol ? " · " + vol.toLocaleString() + " lb volume" : ""}${h.dur ? " · " + fmt(h.dur) : ""}${h.rating ? " · " + "★".repeat(h.rating) : ""}`
-          : `${label} · ${h.count || 0} exercises`;
+          ? `${label} · ${exWord}${vol ? " · " + vol.toLocaleString() + " lb" : ""}${h.dur ? " · " + fmt(h.dur) : ""}`
+          : `${label} · ${exWord}`;
         const detail = h.ex ? h.ex.map(e =>
           `<div class="log-ex"><b>${e.n}</b><span>${e.sets.map(s => `${s.w||"—"}×${s.r||"—"}`).join("  ·  ")}${e.form ? " · form " + "★".repeat(e.form) : ""}</span></div>`
         ).join("") : "";
         return `<div class="log" data-h="${idx}">
-          <div class="log-top"><b>${dayName}</b><span>${sub}</span></div>
+          <div class="log-top"><b>${dayName}</b>${h.rating ? `<span class="log-stars">${"★".repeat(h.rating)}</span>` : ""}</div>
+          <div class="log-sub">${sub}</div>
           ${detail ? `<div class="log-detail">${detail}</div>` : ""}
         </div>`;
       }).join("")
@@ -8649,12 +8994,7 @@ function wireEvents(){
         confetti(30);
       }
       sndSet();
-      const cs = coachSet(i, j);
-      if (cs){
-        if (cs.msg) toast(cs.msg, false);
-        if (cs.speak) sayP(cs.speak);
-        state.session.ask = cs.ask || null;
-      }
+      coachDeliver(coachSet(i, j), ex, s);
       if (ex.sets.every(x => x.done)){
         if (allSetsDone()) sessionGate(); else coachExerciseDone(ex.n);
       }
@@ -8701,6 +9041,8 @@ function wireEvents(){
     if (idx === -1) ex.issues.push(x); else ex.issues.splice(idx,1);
     save(); render();
   });
+  const btd = document.getElementById("backToDone");
+  if (btd) btd.onclick = () => { delete state.againOn; save(); render(); };
   document.querySelectorAll(".t-start").forEach(b => b.onclick = () => {
     const i = +b.dataset.i, j = +b.dataset.j, sec = +b.dataset.sec;
     const ex = state.session.list[i];
@@ -8723,7 +9065,7 @@ function wireEvents(){
       save(); render();
     };
     const runSide = round => startWorkTimer(sec,
-      sides > 1 ? label + " \u00b7 side " + round + " of " + sides : label,
+      sides > 1 ? label + " \u00b7 " + sideWord(ex.n) + " " + round + " of " + sides : label,
       () => {
         if (round < sides){
           sayP("switch-sides");
@@ -8860,7 +9202,7 @@ async function completeWorkout(overall){
   const wuDone = s.wu && s.wu.length >= AUX_MIN.wu && s.wu.every(Boolean);
   const cdDone = s.cd && s.cd.length >= AUX_MIN.cd && s.cd.every(Boolean);
   state.history.unshift({
-    date: todayISO(), day: s.day, light: light || undefined, dl: (inDeload() || undefined), wu: wuDone || undefined, cd: cdDone || undefined, sweat: sweatCleared || undefined,
+    date: todayISO(), day: s.day, fmt: sessionStyle(), light: light || undefined, dl: (inDeload() || undefined), wu: wuDone || undefined, cd: cdDone || undefined, sweat: sweatCleared || undefined,
     rating: (overall && overall.rating) || undefined,
     flags: (overall && overall.issues && overall.issues.length) ? overall.issues : undefined,
     dur: s.started ? Math.floor((Date.now() - s.started)/1000) : 0,
