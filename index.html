@@ -121,6 +121,67 @@
     border:1px solid var(--accent,#D7F542);background:rgba(215,245,66,.09);color:var(--accent,#D7F542)}
   .exercise.pair .pair-ex{font-size:14px}
   .exercise.pair .pair-amp{opacity:.5;margin:0 2px;font-weight:400}
+  .card-fmt{background:none;border:0;padding:4px 0 0;font:inherit;font-size:11px;font-weight:700;
+    color:var(--accent,#D7F542);cursor:pointer;letter-spacing:.01em;text-align:left}
+  .card-fmt:active{opacity:.6}
+  .kit-row{margin-bottom:10px}
+  .kit-chip{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .kit-edit{margin:2px 0 12px}
+  .kit-edit input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:10px;
+    border:1px solid var(--line);background:var(--card2,#12161c);color:inherit;
+    font:inherit;font-size:15px;font-weight:700}
+  .kit-edit-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .kit-note{font-size:11px;color:var(--muted);font-weight:700}
+  .kit-ask{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:14px;margin-bottom:10px}
+  .kit-ask-t{font-size:14px;font-weight:800;margin-bottom:3px}
+  .kit-ask-b{font-size:12px;color:var(--muted);font-weight:600;line-height:1.45}
+  .kit-ask-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .bm-wrap{margin-bottom:12px}
+  .bm-head{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:6px}
+  .bm-figs{display:flex;gap:10px;justify-content:center}
+  .bm-fig{width:48%;max-width:150px;height:auto;touch-action:manipulation}
+  .bm-base{fill:var(--card2);stroke:var(--line);stroke-width:1}
+  .bm-r{fill:var(--card2);stroke:var(--line);stroke-width:1.2;cursor:pointer;
+    transition:fill .12s ease,stroke .12s ease}
+  .bm-r:active{fill:var(--accent-dim)}
+  .bm-r.on{fill:var(--accent);stroke:var(--accent)}
+  .bm-cap{fill:var(--muted);font-size:8px;font-weight:800;letter-spacing:.14em}
+  .bm-sel{margin-top:7px;font-size:12px;font-weight:700;color:var(--muted);
+    display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+  .ex-note{display:flex;align-items:flex-start;gap:5px;margin-top:4px;font-size:11.5px;
+    font-weight:600;color:var(--muted);line-height:1.4;cursor:pointer}
+  .ex-note svg{width:12px;height:12px;flex:0 0 auto;margin-top:1px;opacity:.7}
+  .ex-note span{flex:1;min-width:0}
+  .ex-note a{color:var(--accent);font-weight:800;text-decoration:none}
+  .ex-note.edit{display:block;cursor:default;margin-top:7px}
+  .ex-note.edit input{width:100%;box-sizing:border-box;padding:9px 10px;border-radius:9px;
+    border:1px solid var(--line);background:var(--card2);color:var(--ink);
+    font:inherit;font-size:13px;font-weight:600}
+  .note-btns{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+  .fi-row,.ask-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .note-add{background:none;border:0;padding:0;font:inherit;font-size:11px;font-weight:800;
+    color:var(--accent);cursor:pointer;white-space:nowrap}
+  .note-add i{font-style:normal;font-weight:600;color:var(--muted)}
+  .note-add:active{opacity:.6}
+  .kit-flash{position:fixed;inset:0;z-index:260;display:flex;align-items:center;
+    justify-content:center;padding:24px;background:rgba(4,6,10,.72);
+    opacity:0;transition:opacity .22s ease;backdrop-filter:blur(3px)}
+  .kit-flash.on{opacity:1}
+  .kit-flash-card{width:100%;max-width:330px;text-align:center;padding:26px 20px;
+    border-radius:20px;background:var(--card);border:2px solid var(--accent);
+    box-shadow:0 0 0 6px var(--accent-dim), 0 20px 50px rgba(0,0,0,.6);
+    transform:scale(.88) translateY(10px);transition:transform .26s cubic-bezier(.2,1.3,.4,1)}
+  .kit-flash.on .kit-flash-card{transform:scale(1) translateY(0)}
+  .kit-flash-k{font-size:10.5px;font-weight:800;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted)}
+  .kit-flash-n{font-size:27px;font-weight:900;line-height:1.1;margin:7px 0 10px;
+    color:var(--accent);word-break:break-word}
+  .kit-flash-b{font-size:12.5px;font-weight:700;line-height:1.45;color:var(--ink,inherit)}
+  .kit-flash-k2{font-size:11px;font-weight:700;color:var(--muted);margin-top:7px}
+  .kit-reach{font-size:11px;font-weight:800;color:var(--accent);margin-top:2px}
+  .solo-why{font-size:11px;color:var(--muted);font-weight:600;margin-top:3px;line-height:1.4;opacity:.9}
   .pair-round{grid-column:1/-1;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
     color:var(--muted);margin:8px 0 2px;padding-left:2px}
   .pair-round.done{opacity:.45}
@@ -147,6 +208,10 @@
   #setBody .fmt-nm{font-size:13px;font-weight:600;letter-spacing:.01em}
   #setBody .fmt-opt.on .fmt-nm{color:var(--accent,#D7F542)}
   #setBody .fmt-gd{font-size:11px;color:var(--muted);line-height:1.4}
+  #setBody .fmt-opt.arm{border-color:var(--accent,#D7F542)}
+  #setBody .fmt-note.arm{background:rgba(215,245,66,.12);color:var(--ink);opacity:1}
+  #setBody .fmt-also{font-weight:600;color:var(--muted);font-size:11.5px}
+  #setBody .fmt-does{display:block;font-size:11.5px;line-height:1.45;color:var(--ink);opacity:.8;margin:3px 0 2px}
   #setBody .fmt-note{margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(127,127,127,.13);font-size:11.5px;line-height:1.5;opacity:.92}
   .set-chev{color:var(--muted);font-weight:900;font-size:13px}
   .set-tog{font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:5px 10px;
@@ -722,6 +787,9 @@
   .snd{background:#242D3B;border-color:#4A5568;color:#EDF1F7;font-size:16px}
   .icon-btn{background:#242D3B;border-color:#4A5568;color:#D7DEE9}
   .mini-btn{border:1px solid #46536A;border-style:solid;color:#CBD4E1;background:#1C242F}
+  .ex-del-row{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+  .ex-del-note{font-size:11px;color:var(--muted);font-weight:600;margin-top:5px;line-height:1.4}
+  .mini-btn.ex-del{color:var(--danger);border-color:rgba(255,107,94,.45);background:var(--danger-soft)}
   .cf-close,.p-btn.cancel,.wt-cancel{background:#2E3949;color:#EDF1F7}
   .n-skip{background:#2E3949;color:#C8D1DE}
   .tab{border-color:#3A465C;color:#C8D1DE}
@@ -1373,8 +1441,70 @@ function inferEquip(){
   for (const h of (state.history || []).slice(0, 80)) for (const e of (h.ex || [])) add(e.n);
   return equipList().filter(e => seen[e]);
 }
+/* ---------- Where you are training today ----------
+   Erik travels for work: "it would be good to have profiles that I can switch
+   between... Profile A is Home... Profile B is Gym... Profile C is hotel where I
+   may have dumbbells and bodyweight."
+   A profile is nothing but a NAMED copy of the equipment list the app already
+   filtered on, so everything downstream - swapRank, pickForGroup, EX_NEEDS,
+   the borrowing in superFill - obeys it without knowing it exists.
+   One profile is the default. On the default the app never says anything; on
+   any other it asks ONCE on the first workout of a new day whether to go back.
+   Six is the cap: at phone width three chips fit on a row, so six is two rows
+   you can still read at a glance. Names run to 24 characters and the chip
+   truncates, because nobody should be told their gym's name is too long. */
+const KIT_MAX = 6, KIT_NAME_MAX = 24;
+/* Profile names are the only free text a user types that we put back into the
+   page, so it gets escaped properly rather than the quote-only treatment the
+   app's own exercise names get. */
+function esc(s){
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function kitList(){
+  if (!state) return [];
+  if (!Array.isArray(state.kits) || !state.kits.length){
+    state.kits = [{ id: "k1", name: "Home", equip: ((state && state.myEquip) || []).slice(), def: true }];
+    state.kitId = "k1";
+  }
+  if (!state.kits.some(k => k.def)) state.kits[0].def = true;
+  return state.kits;
+}
+function activeKit(){
+  const L = kitList();
+  return L.find(k => k.id === state.kitId) || L.find(k => k.def) || L[0];
+}
+function defaultKit(){ const L = kitList(); return L.find(k => k.def) || L[0]; }
+function onDefaultKit(){ const a = activeKit(), d = defaultKit(); return !a || !d || a.id === d.id; }
+function kitName(id){ const k = kitList().find(x => x.id === id); return k ? k.name : null; }
+function newKitId(){
+  let n = 2; const L = kitList();
+  while (L.some(k => k.id === "k" + n)) n++;
+  return "k" + n;
+}
+/* A profile you set for one day reverts on its own, so a hotel week never
+   silently follows you home. */
+function kitExpire(){
+  if (!state || !state.kitUntil) return false;
+  if (todayISO() <= state.kitUntil) return false;
+  delete state.kitUntil;
+  const d = defaultKit();
+  if (d && state.kitId !== d.id){ state.kitId = d.id; return true; }
+  return false;
+}
+/* Ask once, on the first workout of a new day, and only when you are somewhere
+   that is not your default. */
+function kitAskDue(){
+  if (!state || !state.session) return null;
+  if (onDefaultKit()) return null;
+  if (state.kitAsked === todayISO()) return null;
+  if ((state.session.list || []).some(started)) return null;   /* already under way */
+  return defaultKit();
+}
 function myEquip(){
-  const m = state && state.myEquip;
+  const k = activeKit();
+  const m = (k && k.equip && k.equip.length) ? k.equip : (state && state.myEquip);
   return (m && m.length) ? m : equipList();          /* unset = no filter */
 }
 /* ---------- Kit you must HAVE, not kit you could use ----------
@@ -1483,7 +1613,21 @@ function rotWeeks(n){ return Math.round(n / 1.3); }
    follow it without needing to know formats exist. See
    claude/superset-v1-spec.md for why it is global and not per day. */
 const FMT_NEW_AT = 60;                     /* roughly six months at 3 a week */
-function sessionStyle(){ return state && state.fmt === "superset" ? "superset" : "straight"; }
+/* A programme can carry its own training style, and it beats the global
+   setting for as long as you are running it. Erik: "if i'm someone who likes
+   doing full sets but i want to switch it up and do 4 weeks of supersets i can
+   just by creating a custom program." Leaving it unset means the programme
+   follows whatever Settings says, which is what every built-in one does. */
+function sessionStyle(){
+  const p = state && state.program && state.program.fmt;
+  if (p === "superset" || p === "straight") return p;
+  return state && state.fmt === "superset" ? "superset" : "straight";
+}
+/* Who is deciding the style right now - used for the line that says so. */
+function styleSource(){
+  const p = state && state.program;
+  return (p && (p.fmt === "superset" || p.fmt === "straight")) ? (p.name || "this program") : null;
+}
 /* Change format and your numbers dip for a session or two - the same work
    arranged differently is genuinely harder at first. The between-session
    verdicts (stuck, slipping, take weight off) compare you against a you who
@@ -1498,9 +1642,16 @@ function fmtGrace(){
 function lifterNew(){ return ((state && state.history) || []).length < FMT_NEW_AT; }
 /* One line each, so the list still reads at a glance when circuits and the
    rest land beside them. The reasoning belongs in a deep dive, not here. */
+/* Lead with what you actually DO, because "superset" means nothing to someone
+   on their first week. The gym word follows in brackets so they recognise it
+   when they hear it. Same shape will take circuits: "Three or more, on a loop". */
 const FMT_OPTS = [
-  {id:"straight", name:"Regular sets", good:"Going heavy, learning a new lift, your best numbers."},
-  {id:"superset", name:"Supersets",    good:"The same work in about half the time."}
+  {id:"straight", name:"One exercise at a time", also:"regular sets",
+   does:"All your sets of one lift, then a rest, then on to the next.",
+   good:"Going heavy, learning a new lift, your best numbers."},
+  {id:"superset", name:"Two exercises back to back", also:"supersets",
+   does:"One set of the first, straight into one set of the second, then rest. Repeat.",
+   good:"The same work in about half the time."}
 ];
 /* Which direction must this slot keep?
    Anchored to the DAY, not to whatever is standing in the slot. Reading it
@@ -1667,9 +1818,100 @@ function exBand(ex){
 const PAIR_ANTI = { "Quads & Glutes":"Hamstrings", "Hamstrings":"Quads & Glutes",
   "Chest":"Back", "Back":"Chest", "Biceps":"Triceps", "Triceps":"Biceps",
   "Calves":"Tibialis" };
+/* ---------- Pairing asks the muscles, not the group name ----------
+   The "same muscle" test compared rolesFor().t, which holds the twelve DISPLAY
+   group names. At that resolution a hip thrust and a leg extension are both
+   "Quads & Glutes" and a lat pulldown and a shrug are both "Back", so all four
+   were refused as same-muscle work. They are not: glutes against quads, lats
+   against upper traps.
+
+   Heads roll up to the muscle they belong to, because two heads of one muscle
+   share its fatigue - an incline press and a flat press are still the same pec.
+   Anything not named here is its own family. */
+const MUS_FAMILY = {
+  "pectoralis-major-clavicular":"pectoralis-major", "pectoralis-major-sternocostal":"pectoralis-major",
+  "deltoid-anterior":"deltoid", "deltoid-lateral":"deltoid", "deltoid-posterior":"deltoid",
+  "trapezius-upper":"trapezius", "trapezius-middle":"trapezius", "trapezius-lower":"trapezius",
+  "triceps-brachii-long":"triceps", "triceps-brachii-lateral":"triceps", "triceps-brachii-medial":"triceps",
+  /* every curl works all three of these together, so a biceps curl and a hammer
+     curl must not read as different muscles - the measured miss when this map
+     was first drafted. */
+  "biceps-brachii-long":"elbow-flexors", "biceps-brachii-short":"elbow-flexors",
+  "brachialis":"elbow-flexors", "brachioradialis":"elbow-flexors",
+  "rectus-femoris":"quadriceps", "vastus-lateralis":"quadriceps",
+  "vastus-medialis":"quadriceps", "vastus-intermedius":"quadriceps",
+  "biceps-femoris-long":"hamstrings", "biceps-femoris-short":"hamstrings",
+  "semitendinosus":"hamstrings", "semimembranosus":"hamstrings",
+  "gastrocnemius":"calves", "soleus":"calves",
+  "flexor-carpi":"forearm-flexors", "flexor-digitorum":"forearm-flexors",
+  "latissimus-dorsi":"lats", "teres-major":"lats"
+};
+function musFam(m){ return MUS_FAMILY[m] || m; }
+function musFams(n){
+  const out = [];
+  exMuscles(n).p.forEach(m => { const f = musFam(m); if (out.indexOf(f) === -1) out.push(f); });
+  return out;
+}
+/* Do these two come at the same muscle? */
+function pairSameMuscle(a, b){
+  const A = musFams(a), B = musFams(b);
+  if (!A.length || !B.length) return false;
+  return A.some(f => B.indexOf(f) !== -1);
+}
+/* Opposites. The old map held seven entries on group names, and one of them -
+   "Calves":"Tibialis" - named a group that does not exist, so calf work never
+   found its opposite at all.
+
+   Antagonism needs a finer key than fatigue does. The three deltoid heads share
+   one muscle's fatigue but face in different directions: the rear delt opposes
+   the chest, the front delt works WITH it. Same for the trapezius. So the
+   same-muscle test rolls those heads together and this one does not. */
+function antiKey(m){
+  return m === "deltoid-anterior" ? "delt-front"
+       : m === "deltoid-lateral"  ? "delt-side"
+       : m === "deltoid-posterior" ? "delt-rear"
+       : (m === "trapezius-middle" || m === "trapezius-lower") ? "mid-back"
+       : m === "trapezius-upper" ? "upper-traps"
+       : musFam(m);
+}
+/* Declared once per relationship; the lookup below makes it work both ways, so
+   the verdict cannot depend on which exercise you happen to name first. */
+const ANTI_PAIRS = [
+  ["pectoralis-major","lats"], ["pectoralis-major","rhomboids"], ["pectoralis-major","mid-back"],
+  /* No delt-front <-> delt-rear entry: both roll up to one deltoid for fatigue,
+     so any such pair is refused as same-muscle before this test runs. Measured
+     at 0 pairs it could ever decide. Leaving it in would repeat exactly the
+     dead-entry fault this map was written to fix. */
+  ["delt-front","lats"], ["delt-front","mid-back"],
+  ["triceps","elbow-flexors"],
+  ["quadriceps","hamstrings"],
+  ["calves","tibialis-anterior"],
+  ["gluteus-maximus","iliopsoas"],
+  ["erector-spinae","rectus-abdominis"],
+  ["adductor-group","gluteus-medius"], ["adductor-group","gluteus-minimus"]
+];
+const MUS_ANTI = (function(){
+  const m = {};
+  ANTI_PAIRS.forEach(function(p){
+    (m[p[0]] = m[p[0]] || []).push(p[1]);
+    (m[p[1]] = m[p[1]] || []).push(p[0]);
+  });
+  return m;
+})();
 function pairOver(x, y){ return (x || []).some(v => (y || []).indexOf(v) !== -1); }
 function pairNoCore(x){ return (x || []).filter(v => v !== "Abs & Core"); }
-function pairMulti(n){ return EX_MULTI.test(origName(n)); }
+/* "Is this a big lift?" was a name pattern, and names lie: Triceps PRESSdown,
+   Calf PRESS, Pallof PRESS and Straight-arm PULLDOWN all read as heavy
+   compounds, so the app refused to pair a press with a pressdown - the single
+   most obvious superset there is. Eleven single-joint movements were caught
+   that way. Ask the rest classification instead, which is already reviewed and
+   tested and is the same question in other words. Library-wide this moves 10
+   pairs of 53,628; on a real push day it is the difference between one pair
+   and two. */
+function pairMulti(n){
+  const b = exBand({n: n, g: findGroup(n)});
+  return b === "structural" || b === "core";
+}
 function pairBarOnly(n){
   const e = equipTags(n) || [];
   return e.indexOf("Barbell") !== -1 && e.indexOf("Machine") === -1 && e.indexOf("Cable") === -1;
@@ -1680,8 +1922,41 @@ function pairAnti(a, b){
   const pp = x => (dayTags(x) || []).filter(t => t === "Push" || t === "Pull");
   const da = pp(a), db = pp(b);
   if (da.length === 1 && db.length === 1 && !pairOver(da, db)) return true;
-  const ta = rolesFor(a).t || [], tb = rolesFor(b).t || [];
-  return ta.some(t => PAIR_ANTI[t] && tb.indexOf(PAIR_ANTI[t]) !== -1);
+  const A = exMuscles(a).p.map(antiKey), B = exMuscles(b).p.map(antiKey);
+  return A.some(f => (MUS_ANTI[f] || []).some(o => B.indexOf(o) !== -1));
+}
+/* ---------- What actually stops you pairing two lifts ----------
+   The first version of this refused a heavy lift ANY partner, on one sentence
+   from one review. A survey of the sources says that is not the consensus:
+
+   - Mang 2025 (JSCR review): no heavy bilateral compounds in supersets.
+   - Stronger by Science: avoid "very taxing and technically demanding"
+     pairings - their example is squats WITH deadlifts, i.e. two heavy lifts.
+   - StrengthLog: quotes Mang, then recommends Squat + Pull-up, Bench + RDL,
+     Bench + Row. Its real objections are specific: squat + overhead press
+     (both load the spine), deadlift + row (same), deadlift + pull-up (grip
+     fails first).
+   - Biolayne: recommends deadlifts + pull-ups and reverse lunges + curls
+     outright; only caveat is if you are training for power.
+
+   What they all agree on is narrower and more useful than "heavy = never":
+   do not pair two lifts that compete for the same LIMITING FACTOR. The spine,
+   the grip, or being heavy. A squat and a biceps curl share none of those, and
+   not one source objects to it. */
+/* Primary target only, not secondary or support. The sources object to lifts
+   that load the spine UNDER A BAR - squat with overhead press, deadlift with
+   row. A plank works the lower back isometrically and turns up with erectors as
+   a secondary, which counted as a conflict on the first pass and blocked
+   squat + plank, one of the most ordinary pairings there is. */
+function pairSpine(n){
+  return exBand({n:n, g:findGroup(n)}) === "structural"
+      || exMuscles(n).p.indexOf("erector-spinae") !== -1;
+}
+function pairGrip(n){
+  const m = exMuscles(n);
+  return m.p.indexOf("flexor-digitorum") !== -1
+      || m.s.indexOf("flexor-digitorum") !== -1
+      || m.u.indexOf("flexor-digitorum") !== -1;
 }
 function pairOK(a, b){
   if (a === b) return {lv:"no", why:"That is the same exercise twice."};
@@ -1691,12 +1966,15 @@ function pairOK(a, b){
   const ba = exBand({n:a, g:ga}), bb = exBand({n:b, g:gb});
   if (ba === "structural" && bb === "structural")
     return {lv:"no", why:"Both of these load your spine under a heavy bar. Do them on their own."};
-  if (pairOver(rolesFor(a).t, rolesFor(b).t))
+  if (pairSameMuscle(a, b))
     return {lv:"avoid", why:"Same muscle \u2014 the second one loses about a full set\u2019s worth of work."};
-  if (ba === "structural" || bb === "structural")
-    return {lv:"avoid", why:"Heavy spine-loaded lifts belong on their own \u2014 pair the smaller stuff instead."};
+  /* Not "either one is heavy" - only when they want the same thing from you. */
+  if (pairSpine(a) && pairSpine(b))
+    return {lv:"avoid", why:"Both of these load your lower back. It gives out before the muscles do."};
   const anti = pairAnti(a, b);
   const warns = [];
+  if (pairGrip(a) && pairGrip(b))
+    warns.push("Your grip will give out before either muscle does.");
   if (pairMulti(a) && pairMulti(b) && !anti)
     warns.push("Two big lifts back to back is a lot. One big and one small works better.");
   if (pairOver(pairNoCore(rolesFor(a).st), pairNoCore(rolesFor(b).t)) ||
@@ -1704,9 +1982,16 @@ function pairOK(a, b){
     warns.push("One of these holds you steady while the other works it. Expect the second to feel harder.");
   if (pairBarOnly(a) && pairBarOnly(b))
     warns.push("Two barbell lifts means setting up twice every round.");
-  if (warns.length) return {lv:"warn", why:warns[0], all:warns, anti:anti};
-  if (anti) return {lv:"good", why:"Opposite movements \u2014 you get more reps this way, not fewer.", anti:true};
-  return {lv:"ok", why:"These two do not fight each other."};
+  /* Advice, not an objection. A heavy lift with a light partner is fine - no
+     source argues otherwise - but you should still take the full rest before
+     going back to the heavy one. Carried alongside the verdict so it can be
+     shown without blocking the pairing, which is what making it a warn did. */
+  const note = (ba === "structural" || bb === "structural")
+    ? "Take your full rest before the next heavy set \u2014 the light one goes in between."
+    : null;
+  if (warns.length) return {lv:"warn", why:warns[0], all:warns, anti:anti, note:note};
+  if (anti) return {lv:"good", why:"Opposite movements \u2014 you get more reps this way, not fewer.", anti:true, note:note};
+  return {lv:"ok", why:"These two do not fight each other.", note:note};
 }
 /* Never suggested; buildable only when the user insists. */
 /* ---- Grouping a session into supersets -------------------------------
@@ -1722,21 +2007,84 @@ function pairOK(a, b){
    Slot 0 is never paired. Your heaviest lift of the day is where fatigue costs
    the most weight on the bar, and Mang 2025 says to keep supersets for the
    accessory work; see claude/superset-v1-spec.md. */
+/* Change format halfway through a session and the lifts you have not started
+   regroup - visible and useful - while anything already under way is left
+   alone. Without that, finishing a lift the straight-set way and then switching
+   produced a card telling you to alternate A and B round by round, with every A
+   row ticked and every B row empty: an instruction you could no longer follow.
+
+   The lock is stamped AT THE MOMENT OF THE SWITCH, not derived from "has a
+   logged set". Deriving it was the first attempt and it broke the ordinary
+   case: ticking set 1 of lift A made A "started", so the pair you were halfway
+   through dissolved into two cards under you. What matters is not that a lift
+   has been started, but that it was started under a different format. */
+/* ---------- Once you have worked a lift, its group is settled ----------
+   pairPlan recomputes the whole day from scratch on every render, so ANY later
+   change re-shuffled everything - including lifts already finished. Erik:
+   "I had low row separate from a bicep workout... when I switched chin ups for
+   curls it consolidated into a superset."
+   Reproduced: Low row + Plank were a pair, Low row was finished, and swapping an
+   unrelated chin-up for a curl moved Low row's partner to the new curl and threw
+   Plank out on its own. A lift you have already done must not have its partner
+   changed underneath it.
+   So the first logged set pins that lift's group: the partner's NAME, or "" for
+   deliberately alone. pairPlan honours the pin before it decides anything. */
+function pinGroup(i){
+  const L = state.session && state.session.list;
+  if (!L || !L[i]) return;
+  if (typeof sessionStyle === "function" && sessionStyle() !== "superset") return;
+  const g = pairPlan(L).find(x => x.indexOf(i) !== -1);
+  if (!g) return;
+  if (g.length === 2){
+    const a = L[g[0]], b = L[g[1]];
+    if (a.pin === undefined) a.pin = b.n;
+    if (b.pin === undefined) b.pin = a.n;
+  } else if (L[i].pin === undefined){
+    L[i].pin = "";                       /* it was on its own, and stays that way */
+  }
+}
+function started(e){ return !!(e && e.sets && e.sets.some(s => s.done)); }
+/* ---------- Training style lives on the CARD ----------
+   Erik's model, and it is the right one: every card carries a style, inherited
+   from the default. Change the default and every card you have not started
+   follows. Override one card and it keeps what you gave it - so a superset day
+   can hold one deliberate straight set, which is a choice rather than the app
+   failing to pair something.
+   `fmt` unset means "follow the default". It gets set two ways: you pick a
+   style for that card, or you start the card and the style it was done in is
+   pinned so switching later cannot rewrite what you already did. */
+function exStyle(ex){
+  const f = ex && ex.fmt;
+  return (f === "superset" || f === "straight") ? f : sessionStyle();
+}
+function exStyleSet(ex){ return !!(ex && (ex.fmt === "superset" || ex.fmt === "straight")); }
+
 function pairPlan(list){
   const solo = (list || []).map((_, i) => [i]);
   if (!list || list.length < 3) return solo;
   if (typeof sessionStyle === "function" && sessionStyle() !== "superset") return solo;
-  const used = new Array(list.length).fill(false);
-  used[0] = true;
-  const out = [[0]];
+  /* a card only joins a pair if ITS OWN style says supersets */
+  const used = list.map(e => exStyle(e) !== "superset");
+  const out = [];
+  /* every card that is not in superset style is its own block, in place */
   /* warn is "buildable by hand, worth a note" - not "choose this for me". A card
      whose own subtitle says the pairing is a lot to ask should never have been
      built automatically. Across push/pull/legs/upper/lower it costs exactly one
      pair, on Push, where the split has already ruled out anything better. */
   const RANK = {good: 3, ok: 2};
-  for (let i = 1; i < list.length; i++){
-    if (used[i]) continue;
+  for (let i = 0; i < list.length; i++){
+    if (used[i]){ if (exStyle(list[i]) !== "superset") out.push([i]); continue; }
     used[i] = true;
+    /* Pinned when the first set was logged - honoured before anything is ranked,
+       so finishing a lift freezes who it is with. */
+    if (list[i].pin !== undefined){
+      let j = -1;
+      if (list[i].pin)
+        for (let k = 0; k < list.length; k++)
+          if (!used[k] && list[k].n === list[i].pin){ j = k; break; }
+      if (j !== -1){ used[j] = true; out.push([i, j]); } else out.push([i]);
+      continue;
+    }
     /* Nearest acceptable partner, best verdict first. Nearest matters: pulling a
        movement up from the far end of the day rearranges the session more than
        the pairing is worth. */
@@ -1759,9 +2107,9 @@ function pairPlan(list){
 function pairWhy(list, g){
   if (!g || g.length < 2) return "";
   const r = pairOK(list[g[0]].n, list[g[1]].n);
-  return r.lv === "good" ? "Opposite movements \u2014 you get more reps this way."
+  return r.lv === "good" ? "These two pull opposite ways, so each one rests while the other works."
        : r.lv === "warn" ? r.why
-       : "These two do not fight each other.";
+       : "These two use different muscles, so neither tires the other out.";
 }
 function pairSuggestable(a, b){ const r = pairOK(a, b); return r.lv === "good" || r.lv === "ok" || r.lv === "warn"; }
 
@@ -2224,10 +2572,18 @@ function askHTML(a, ex){
       '<button class="ask-no" data-i="' + a.i + '" data-j="' + a.j + '">I\'m fine</button></div></div>';
   }
   const r = Number(s.sf) || 0;
+  /* Erik: "or maybe just at the end of the set". This prompt is where you land
+     the moment a set is ticked, so the note offer rides along with the rating
+     instead of sitting on every card all day. */
   let h = '<div class="ask-card"><div class="ask-label">Set ' + (a.j + 1) + ' — how did that feel?</div>' +
+    '<div class="ask-row">' +
     '<div class="ask-stars">' + [1,2,3,4,5].map(function(v){
       return '<button class="ask-star' + (r && v <= r ? " on" : "") + '" data-i="' + a.i +
-             '" data-j="' + a.j + '" data-v="' + v + '">★</button>'; }).join("") + '</div>';
+             '" data-j="' + a.j + '" data-v="' + v + '">★</button>'; }).join("") + '</div>' +
+    (noteEdit === ex.n ? "" :
+      '<button class="note-add" data-nedit="' + esc(ex.n) + '">' +
+      (exNote(ex.n) ? "Edit note" : "+ Add note") + ' <i>(optional)</i></button>') +
+    '</div>';
   if (r && r <= 3){
     h += '<div class="ask-chips">' + FORM_ISSUES.map(function(x){
       return '<button class="ask-chip' + ((s.si || []).indexOf(x) !== -1 ? " on" : "") + '" data-i="' + a.i +
@@ -2472,6 +2828,41 @@ const DAY_RECIPES = {
   legs: [["Quads & Glutes",null,"structural"],["Hamstrings",null,"structural"],
          ["Quads & Glutes",null,"core"],["Calves",null,null],["Abs & Core",null,null]]
 };
+/* Borrowing on demand. A superset day is built from its own recipe first; then
+   any lift the pairer could not place is handed a partner fetched from ANY
+   muscle group and slotted in right behind it. Erik: "we're not building around
+   push pull legs, so if legs needs to borrow a workout from a different day
+   type, that is OK." Guessing extra slots up front was measured and rejected -
+   it left 1 lift in 5 stranded, because which lift gets stranded depends on
+   what the picker rolled that day, not on the day type. Straight sets never
+   borrow: this runs only in superset mode. */
+const BORROW_ORDER = ["Abs & Core", "Biceps", "Calves", "Triceps", "Shoulders",
+                      "Chest", "Back", "Hamstrings", "Quads & Glutes"];
+const BORROW_CAP = 6;          /* never grow a day by more than this */
+function superFill(list){
+  if (typeof sessionStyle !== "function" || sessionStyle() !== "superset") return list;
+  const used = list.map(e => e.n);
+  const start = list.length;
+  while (list.length < start + BORROW_CAP){
+    const solo = pairPlan(list).filter(g => g.length === 1);
+    if (!solo.length) break;
+    const at = solo[0][0], target = list[at];
+    let best = null, good = false;
+    for (const grp of BORROW_ORDER){
+      const cands = swapRank(grp, used, {}).filter(r => !r.why);
+      for (const c of cands){
+        const lv = pairOK(target.n, c.n).lv;
+        if (lv === "good"){ best = {g: grp, n: c.n}; good = true; break; }
+        if (lv === "ok" && !best) best = {g: grp, n: c.n};
+      }
+      if (good) break;
+    }
+    if (!best) break;                 /* nothing in the library pairs with it */
+    list.splice(at + 1, 0, best);     /* right behind the lift it is there for */
+    used.push(best.n);
+  }
+  return list;
+}
 const CLASS_RANK = {structural:3, core:2, assistance:1, light:0, conditioning:0};
 const COND_FLAVORS = {
   hiit: ["Treadmill sprints","Bike sprint intervals","EMOM bodyweight circuit","Kettlebell swing intervals","Burpees"],
@@ -2616,10 +3007,14 @@ function swapRank(g, exclude, want){
   const live = () => rows.filter(r => !r.why);
   /* `why` may be a string or a function of the name, so a reason can name the
      thing it is comparing against instead of waving at it. */
-  const prefer = (test, why) => {
+  const prefer = (test, why, minKeep) => {
     const on = live();
     const keep = on.filter(r => test(r.n));
     if (!keep.length) return false;              /* would empty it - skip the step */
+    /* Some steps are a preference, not a rule: if applying one would leave you
+       with almost nothing to choose from, it has stopped being useful advice and
+       started being a dead end. Skip it and let the ranking sort them instead. */
+    if (minKeep && keep.length < minKeep && on.length > keep.length) return false;
     if (keep.length === on.length) return true;  /* nothing to set aside */
     for (const r of on) if (!test(r.n)) r.why = (typeof why === "function") ? why(r.n) : why;
     return true;
@@ -2653,9 +3048,19 @@ function swapRank(g, exclude, want){
      Back, Chest and Shoulders used to look identical to this ranking. A front
      raise and a lateral raise are different heads of the shoulder doing
      different jobs, and swapping one for the other is not variety. */
+  /* "Offer me something that adds a muscle this one does not work" is a good
+     question, but it is asked ONE WAY: a movement tagged with three primaries
+     rules out every candidate that shares all three, while a movement tagged
+     with one rules out almost nobody. Every row shares lats, mid traps and
+     rhomboids, so from any row the only survivor was a scapular pull-up - and
+     from there, the only way back was the row you just left. Measured: 82 of 272
+     movements had exactly one suggestion, and 69% of suggestions were not
+     reciprocated. It stays a preference, but stops being applied when it would
+     leave you fewer than three things to pick from. */
   if (want.fromMus && want.fromMus.length)
     prefer(n => exMuscles(n).p.some(m => want.fromMus.indexOf(m) === -1),
-           n => "also works " + (musPhrase(exMuscles(n).p) || "the same muscle"));
+           n => "also works " + (musPhrase(exMuscles(n).p) || "the same muscle"),
+           want.softMus ? 3 : 0);
   const inPlan = n => Object.values(state.plan || {}).flat().some(e => e.n === n);
   const score = want.fresh
     ? n => sinceDone(n) - (inPlan(n) ? 5000 : 0)
@@ -2680,7 +3085,8 @@ function genDayList(type, flavor, forceRecipe){
   const nonce = dayNonce(type);
   if (DAY_RECIPES[type] && (forceRecipe || !state.plan[type])){
     const out = [], used = [];
-    DAY_RECIPES[type].forEach((slot, i) => {
+    const recipe = DAY_RECIPES[type];
+    recipe.forEach((slot, i) => {
       const g = slot[0], want = {force: slot[1], klass: slot[2]};
       const n = pickForGroup(g, used, nonce ? nonce + i : 0, want);
       if (n){ out.push({g, n}); used.push(n); }
@@ -2749,14 +3155,15 @@ function saveCustomProgram(){
     if (p){ p.name = name; p.pattern = [...pgBuild.pattern]; p.tag = customTag(p.pattern);
       p.notes = (pgBuild.notes || "").trim() || undefined;
       p.slotFlavors = Object.fromEntries(pgBuild.pattern.map((d,i) => [i, d === "conditioning" ? ((pgBuild.flavors || {})[i] || "mixed") : null]).filter(e => e[1]));
-      p.recLen = pgBuild.recLen || 30; p.fixedLen = pgBuild.fixed ? (pgBuild.recLen || 30) : undefined; }
+      p.recLen = pgBuild.recLen || 30; p.fixedLen = pgBuild.fixed ? (pgBuild.recLen || 30) : undefined;
+      p.fmt = pgBuild.fmt || undefined; }
   } else {
     state.customPrograms.push({
       id: "cust-" + Date.now().toString(36),
       cat: "Custom", name, tag: customTag(pgBuild.pattern),
       desc: "Your own weekly rhythm \u2014 the app builds each day from your exercises, same as any program.",
       forWho: "You \u2014 you wrote it.",
-      pattern: [...pgBuild.pattern], flavor: null,
+      pattern: [...pgBuild.pattern], flavor: null, fmt: pgBuild.fmt || undefined,
       notes: (pgBuild.notes || "").trim() || undefined,
       slotFlavors: Object.fromEntries(pgBuild.pattern.map((d,i) => [i, d === "conditioning" ? ((pgBuild.flavors || {})[i] || "mixed") : null]).filter(e => e[1])),
       recLen: pgBuild.recLen || 30, fixedLen: pgBuild.fixed ? (pgBuild.recLen || 30) : undefined
@@ -2921,6 +3328,12 @@ function renderCatalog(host){
         `<button class="pgBuildLen ${!pgBuild.lenCustom && (pgBuild.recLen || 30) === L ? "on" : ""}" data-l="${L}">${L}d</button>`).join("")}<button class="pgBuildLen ${pgBuild.lenCustom ? "on" : ""}" data-l="c">Custom</button></div>
       ${pgBuild.lenCustom ? `<input class="import-area" id="pgBuildLenIn" inputmode="numeric" style="min-height:0;padding:11px;font-family:inherit;font-size:15px;font-weight:700;text-align:center;margin:2px 0 4px" placeholder="Days (e.g. 42)" value="${pgBuild.recLen && ![7,14,21,30,60,90].includes(pgBuild.recLen) ? pgBuild.recLen : ""}">` : ""}
       <div class="si-desc" style="margin:0 0 10px">${pgBuild.fixed ? "Runs exactly this long \u2014 no picker at start." : "Pre-selected at start \u2014 they can still pick another length."}</div>
+      <div style="font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Training style</div>
+      <div class="seg" style="margin-bottom:4px">${[["","Follow my setting"],["straight","One at a time"],["superset","Two back to back"]].map(([k,lab]) =>
+        `<button data-pgfmt="${k}" class="${(pgBuild.fmt || "") === k ? "on" : ""}">${lab}</button>`).join("")}</div>
+      <div class="si-desc" style="margin:0 0 10px">${pgBuild.fmt
+        ? "This program always runs this way, whatever Settings says \u2014 so you can try a block of it without changing your default."
+        : "Follows whatever you have picked in Settings."}</div>
       <div style="font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Notes <span style="font-weight:600;text-transform:none;letter-spacing:0">\u00b7 optional</span></div>
       <textarea class="import-area" id="pgBuildNotes" placeholder="Why you built this \u2014 goals, context, reminders for future you" style="min-height:64px;padding:11px;font-family:inherit;font-size:13px;line-height:1.5;margin-bottom:10px">${pgBuild.notes || ""}</textarea>
       <div style="display:flex;gap:8px">
@@ -2993,6 +3406,9 @@ function renderCatalog(host){
   if (bnm) bnm.oninput = () => { pgBuild.name = bnm.value; };
   const bnt = host.querySelector("#pgBuildNotes");
   if (bnt) bnt.oninput = () => { pgBuild.notes = bnt.value; };
+  host.querySelectorAll("[data-pgfmt]").forEach(b => b.onclick = () => {
+    pgBuild.fmt = b.dataset.pgfmt || null; renderCatalog(host);
+  });
   const cu = host.querySelector("#pgCycUp"), cdn = host.querySelector("#pgCycDown");
   if (cu) cu.onclick = () => {
     if (pgBuild.pattern.length >= 14){ toast("14 days is the ceiling — that's already a long rhythm"); return; }
@@ -3030,7 +3446,7 @@ function renderCatalog(host){
   if (bc) bc.onclick = () => { pgBuild = null; renderCatalog(host); };
   host.querySelectorAll(".pgEdit").forEach(b => b.onclick = () => {
     const p = progById(b.dataset.p);
-    if (p){ pgBuild = {editingId: p.id, name: p.name, pattern: [...p.pattern], notes: p.notes || "", flavors: {...(p.slotFlavors || {})}, recLen: p.recLen || p.fixedLen || 30, fixed: !!p.fixedLen, lenCustom: ![7,14,21,30,60,90].includes(p.recLen || p.fixedLen || 30)}; pgSel = null; renderCatalog(host); }
+    if (p){ pgBuild = {editingId: p.id, name: p.name, pattern: [...p.pattern], notes: p.notes || "", flavors: {...(p.slotFlavors || {})}, recLen: p.recLen || p.fixedLen || 30, fixed: !!p.fixedLen, fmt: p.fmt || null, lenCustom: ![7,14,21,30,60,90].includes(p.recLen || p.fixedLen || 30)}; pgSel = null; renderCatalog(host); }
   });
   host.querySelectorAll(".pgDel").forEach(b => b.onclick = () => {
     const id = b.dataset.p;
@@ -3149,7 +3565,8 @@ function renderPlan(){
         const list = state.plan[id] || [];
         return `<div style="background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:9px 11px">
           <div style="font-size:12px;font-weight:800">${dayLabel(id)}</div>
-          <div class="si-desc" style="margin:0">${list.length} exercise${list.length === 1 ? "" : "s"}</div>
+          <div class="si-desc" style="margin:0">${list.length} exercise${list.length === 1 ? "" : "s"}${
+            (() => { const pn = partnerCount(id); return pn ? ` \u00b7 ${list.length + pn} with partners` : ""; })()}</div>
         </div>`;
       }).join("") + `</div>
       <div style="margin:10px 0 5px;font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em">Muscle coverage this week</div>
@@ -3356,17 +3773,37 @@ function openSettings(){
     <div class="coach-pick">${[["0","Off"],["8","Every 8"],["4","Every 4"]].map(([v,lab]) =>
       `<button data-rot="${v}" class="${String(rotN) === v ? "on" : ""}">${lab}</button>`).join("")}</div>
     </div></div>`);
+/* What the second tap will actually do, named lift by lift so it is not a
+   vague warning. */
+function fmtArmNote(id){
+  const s = state.session;
+  const begun = ((s && s.list) || []).filter(started).map(e => e.n);
+  const to = (FMT_OPTS.find(o => o.id === id) || {}).name || "the other style";
+  if (!begun.length) return "Tap again to switch to " + to.toLowerCase() + ".";
+  const names = begun.length === 1 ? begun[0]
+    : begun.slice(0, -1).join(", ") + " and " + begun[begun.length - 1];
+  return "You have already started " + names + ". Tap again and "
+       + (begun.length === 1 ? "it stays" : "they stay")
+       + " exactly as " + (begun.length === 1 ? "it is" : "they are")
+       + " \u2014 only the lifts you have not touched yet change over.";
+}
   const fmtNow = sessionStyle();
   rows.push(`<div class="set-row coach-row">
     <span class="set-ic">${ico("bolt")}</span>
     <div class="set-main"><div class="set-name">Session style</div>
     <div class="fmt-list">${FMT_OPTS.map(o =>
-      `<button class="fmt-opt${o.id === fmtNow ? " on" : ""}" data-fmt="${o.id}">
+      `<button class="fmt-opt${o.id === fmtNow ? " on" : ""}${fmtArm === o.id ? " arm" : ""}" data-fmt="${o.id}">
         <span class="fmt-dot"></span>
-        <span class="fmt-txt"><span class="fmt-nm">${o.name}</span><span class="fmt-gd">Good for: ${o.good}</span></span>
+        <span class="fmt-txt"><span class="fmt-nm">${o.name}${o.also ? ` <span class="fmt-also">(${o.also})</span>` : ""}</span>
+          <span class="fmt-does">${o.does}</span>
+          <span class="fmt-gd">Good for: ${o.good}</span></span>
       </button>`).join("")}</div>${
+      styleSource() ? `<div class="fmt-note">Your program <b>${styleSource()}</b> sets its own style, so it is running ${
+        (FMT_OPTS.find(o => o.id === sessionStyle()) || {}).name || sessionStyle()
+      } whatever you pick here. Leave the program, or edit it, to change that.</div>` :
+      fmtArm ? `<div class="fmt-note arm">${fmtArmNote(fmtArm)}</div>` :
       fmtNow === "superset" && lifterNew()
-      ? `<div class="fmt-note">New to lifting? In the one study on beginners, regular sets came out ahead on one lift out of four \u2014 the rest tied, in half the time. Very likely fine either way.</div>`
+      ? `<div class="fmt-note">New to this? The one study on beginners had them do four lifts each way. Three came out the same; on the fourth, one at a time won. The back-to-back group took about half the time. So it very likely works either way \u2014 it just might not be the fastest route to strong.</div>`
       : ""}
     </div></div>`);
   const nS = notifState();
@@ -3426,10 +3863,29 @@ function openSettings(){
   $("setBody").querySelectorAll(".fmt-list button[data-fmt]").forEach(b => b.onclick = ev => {
     ev.stopPropagation();
     const was = state.fmt;
-    state.fmt = b.dataset.fmt === "superset" ? "superset" : "straight";
+    const want = b.dataset.fmt === "superset" ? "superset" : "straight";
+    /* Mid-workout this is a commitment, so arm it and wait for a second tap. */
+    const midway = want !== was && ((state.session && state.session.list) || []).some(started);
+    if (midway && fmtArm !== want){ fmtArm = want; render(); openSettings(); return; }
+    fmtArm = null;
+    state.fmt = want;
     if (state.fmt !== was){
       state.fmtSince = ((state.history) || []).length;
-      toast("Your numbers will dip for a session or two \u2014 that's the format, not you. "
+      const s = state.session;
+      const begun = s && (s.list || []).some(started);
+      if (s){
+        if (begun){
+          s.fmtMixed = true;                /* today was done two ways */
+          /* Pin the style onto anything you have already started, so switching
+             cannot rewrite a card you are part way through. Everything you have
+             not touched has no style of its own and simply follows. */
+          (s.list || []).forEach(e => { if (started(e) && !exStyleSet(e)) e.fmt = was; });
+        }
+        else s.fmt = sessionStyle();
+      }
+      toast(begun
+        ? "Applies to the lifts you haven't started \u2014 the ones you're part way through stay as they are."
+        : "Your numbers will dip for a session or two \u2014 that's the format, not you. "
           + "I'll hold the progress calls until it settles.", false);
     }
     save(); render(); openSettings();
@@ -4198,8 +4654,18 @@ function buildSets(ex, noProgress){
   return {sets: sets, prog: hold ? "Holding today — progression paused." : c.reason,
           verdict: hold ? "hold-readiness" : c.verdict, speak: hold ? null : c.speak};
 }
-function makeList(dayId, noProgress){
-  return daySource(dayId).map(e => {
+function makeList(dayId, noProgress, noFill){
+  /* The ONE place partners are fetched. It belongs here, not in genDayList or
+     daySource, for two reasons found the hard way:
+     - freshState() seeds state.plan for push, pull and legs, so for every
+       existing user those days never went through genDayList at all and came out
+       unpaired. Erik was seeing this on the deployed build.
+     - filling earlier baked the borrowed lifts into the SAVED day, so a template
+       you built by hand quietly grew every time you looked at it.
+     A saved day stays exactly as you saved it; the session you train gets the
+     partners. In straight sets superFill returns immediately, so nothing moves. */
+  const src = daySource(dayId).map(e => ({g: e.g, n: e.n}));
+  return (noFill ? src : superFill(src)).map(e => {
     const b = buildSets(e, noProgress);
     const planned = state.planned && state.planned[dayId] && state.planned[dayId][e.n];
     if (planned){
@@ -4209,10 +4675,82 @@ function makeList(dayId, noProgress){
     return {g:e.g, n:e.n, sets: b.sets, prog: b.prog, verdict: b.verdict, speak: b.speak};
   });
 }
+/* Switching where you are rebuilds TODAY, on the same rule as switching training
+   style: anything you have already logged a set on stays exactly as it is, and
+   everything you have not touched is rebuilt for the kit in front of you. */
+function kitRebuild(){
+  const s = state && state.session;
+  if (!s || !s.list) return { kept: 0, added: 0 };
+  const kept = s.list.filter(started);
+  const keepNames = kept.map(e => e.n);
+  /* Generate straight from the recipe rather than the saved day template - a
+     template full of cable work is no use in a hotel. It is NOT deleted: it is
+     still yours, and it comes back when you do. (It used to be deleted here,
+     which silently threw away a day the user had built by hand.) */
+  const fresh = genDayList(s.day, activeFlavor(s.day), true)
+                  .filter(e => keepNames.indexOf(e.n) === -1);
+  const merged = kept.map(e => ({g: e.g, n: e.n})).concat(fresh.map(e => ({g: e.g, n: e.n})));
+  superFill(merged);
+  const low = typeof readinessToday === "function" && readinessToday() === "low";
+  const before = s.list.map(e => e.n);
+  s.list = merged.map(m => {
+    const old = kept.find(e => e.n === m.n);
+    if (old) return old;
+    const b = buildSets(m, low);
+    return {g: m.g, n: m.n, sets: b.sets, prog: b.prog, verdict: b.verdict, speak: b.speak};
+  });
+  const after = s.list.map(e => e.n);
+  return { kept: kept.length, added: s.list.length - kept.length,
+           changed: after.filter(n => before.indexOf(n) === -1).length,
+           total: after.length };
+}
+/* Switching where you train is a real change to the day in front of you, so it
+   gets a moment rather than a toast you might miss. Erik: "it needs to look more
+   dramatic when you switch your profile and set up a new profile." */
+function kitFlash(name, r, verb){
+  const old = document.getElementById("kitFlash");
+  if (old) old.remove();
+  const d = document.createElement("div");
+  d.id = "kitFlash"; d.className = "kit-flash";
+  const line = !r ? ""
+    : r.changed ? "Today's workout rebuilt \u2014 " + r.changed + " of " + r.total
+                  + (r.total === 1 ? " lift" : " lifts") + " swapped for what's here"
+                : "Today's workout already suits this place \u2014 nothing needed changing";
+  const kept = (r && r.kept) ? "<div class=\"kit-flash-k2\">the " + r.kept
+      + (r.kept === 1 ? " lift" : " lifts") + " you had started stayed put</div>" : "";
+  d.innerHTML = '<div class="kit-flash-card">'
+    + '<div class="kit-flash-k">' + (verb || "Now training at") + '</div>'
+    + '<div class="kit-flash-n">' + esc(name) + '</div>'
+    + '<div class="kit-flash-b">' + line + '</div>' + kept + '</div>';
+  document.body.appendChild(d);
+  requestAnimationFrame(() => d.classList.add("on"));
+  const kill = () => { d.classList.remove("on"); setTimeout(() => { if (d.parentNode) d.remove(); }, 280); };
+  d.onclick = kill;
+  setTimeout(kill, 2400);
+}
+/* How much of the library this place can actually offer - the number that tells
+   you whether you have ticked enough boxes. */
+function kitReach(){
+  const all = Object.values(getLib()).flat();
+  return { can: all.filter(n => equipOK(n)).length, all: all.length };
+}
+function setKit(id, justToday){
+  const L = kitList();
+  if (!L.some(k => k.id === id)) return null;
+  state.kitId = id;
+  if (justToday) state.kitUntil = todayISO(); else delete state.kitUntil;
+  const r = kitRebuild();
+  return r;
+}
 function buildSession(dayId){
   const holdBack = typeof readinessToday === "function" && readinessToday() === "low";
   const wuL = auxPick("wu", dayId), cdL = auxPick("cd", dayId);
   return { day: dayId, started: null, list: makeList(dayId, holdBack),
+    /* Stamped at build, not read at the finish line. A session you switched
+       halfway through was being written to history as though it had been one
+       format all along, which then fed the grace period and every comparison
+       after it. */
+    fmt: (typeof sessionStyle === "function" ? sessionStyle() : "straight"),
     wuList: wuL, wu: wuL.map(() => false),
     cdList: cdL, cd: cdL.map(() => false) };
 }
@@ -4269,8 +4807,12 @@ async function load(){
   if (!state.exOrig) state.exOrig = {};
   if (!state.off) state.off = [];
   {
+    /* a save where EVERYTHING is switched off is corrupt, not a choice - repair
+       it per place, since each place keeps its own list now */
     const allNames = Object.values(state.lib || LIB).flat();
     if (state.off.length >= allNames.length) state.off = [];
+    if (Array.isArray(state.kits))
+      state.kits.forEach(k => { if (Array.isArray(k.off) && k.off.length >= allNames.length) k.off = []; });
   }
   if (!state.customEquip) state.customEquip = {};
   if (!state.equipOv) state.equipOv = {};
@@ -4525,7 +5067,7 @@ window.addEventListener("appinstalled", () => { a2hsPrompt = null; render(); });
    sw.js for why that matters for a single-file app.
    Registration is guarded on https because a service worker is refused on
    file:// and plain http, and an unhandled rejection there is noise. */
-const BUILD_ID = "2026-09-18d";
+const BUILD_ID = "2026-09-19j";
 let swState = "off";
 let swReg = null;
 function swRegister(){
@@ -4882,10 +5424,49 @@ $("restSkip").onclick = () => { restEnd = null; $("rest").classList.remove("on")
 
 /* ---------- Render ---------- */
 function groupOptions(sel){ return Object.keys(getLib()).map(g => `<option value="${g}" ${g===sel?"selected":""}>${gi(g)}${g}</option>`).join(""); }
-function exOptions(group, sel, adv){
+let bmRegion = null;      /* the body part tapped in the add panel, if any */
+/* Group the set-aside movements by WHY, so the reason is a heading instead of a
+   suffix on every row. Reasons that only apply to one movement would make a
+   heading of their own for a single line, so those are collected at the end and
+   keep their reason inline. */
+function byReasonHTML(rows, opt){
+  if (!rows || !rows.length) return "";
+  const order = [], by = {};
+  rows.forEach(r => {
+    const k = r.why || "Not ideal here";
+    if (!by[k]){ by[k] = []; order.push(k); }
+    by[k].push(r);
+  });
+  let h = "", odd = [];
+  order.forEach(k => {
+    if (by[k].length < 2){ odd = odd.concat(by[k]); return; }
+    h += `<optgroup label="${esc(headingCase(k))}">${by[k].map(r => opt(r.n)).join("")}</optgroup>`;
+  });
+  if (odd.length)
+    h += `<optgroup label="Also worth knowing">${odd.map(r => opt(r.n, r.why)).join("")}</optgroup>`;
+  return h;
+}
+/* "a bigger lift than this slot" reads as a sentence fragment mid-row and as a
+   heading it wants a capital and no article. */
+function headingCase(s){
+  const t = String(s || "").replace(/^(a|an|the)\s+/i, "");
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+function exOptions(group, sel, adv, region){
   const all = getLib()[group] || [];
   const enabled = all.filter(isOn);
   let names = enabled.length ? all.filter(n => isOn(n) || n === sel) : all;
+  /* A tapped body part narrows the list to movements that TRAIN it. If the part
+     and the group disagree - abs picked, group still on Chest - the part wins,
+     because it is the thing the user just touched. */
+  if (region){
+    const r = bodyRegion(region);
+    const hit = regionExercises(region);
+    if (r && hit.length){
+      names = hit.slice();      /* deliberately NOT re-adding sel - see addPick() */
+      adv = null;
+    }
+  }
   if (!adv || !adv.ok.length)
     return names.map(n => `<option ${n===sel?"selected":""}>${n}</option>`).join("");
   const opt = (n, why) => `<option ${n===sel?"selected":""} value="${n.replace(/"/g,"&quot;")}">${
@@ -4893,8 +5474,12 @@ function exOptions(group, sel, adv){
   const listed = {};
   adv.ok.forEach(r => listed[r.n] = 1); adv.no.forEach(r => listed[r.n] = 1);
   let h = `<optgroup label="Suggested">${adv.ok.map(r => opt(r.n)).join("")}</optgroup>`;
-  if (adv.no.length)
-    h += `<optgroup label="Not ideal here">${adv.no.map(r => opt(r.n, r.why)).join("")}</optgroup>`;
+  /* Every set-aside row used to repeat its own reason, and the reason is nearly
+     always the same one: swapping a band pull-apart offered 39 rows, 36 of them
+     ending "- a bigger lift than this slot". On a phone that wrapped to three
+     lines each and buried the exercise name. Say the reason ONCE, as the group
+     heading, and let each row be just the name. */
+  h += byReasonHTML(adv.no, opt);
   /* Whatever is in the slot must always be selectable, even when the ranking
      set it aside - otherwise the dropdown silently changes the exercise. */
   const rest = names.filter(n => !listed[n]);
@@ -4920,25 +5505,49 @@ function rotLineHTML(n){
 /* What rotation itself would do with this slot, shown rather than hidden.
    Same call rotateDay makes, minus `strict` - the panel must still offer
    something when nothing fits perfectly, where rotation may leave a slot be. */
+/* The shape of the question a swap asks. It lived inline in swapAdvice and was
+   copied into a test, which then drifted twice - once when fromPath was added,
+   once when fromMus was - each time failing for a reason that had nothing to do
+   with what was under test. One builder, both callers. */
+/* A panel that opens below the fold has not opened as far as the person is
+   concerned. Erik: "I tap it and because the superset takes up so much of the
+   phone's real estate, I didn't notice the swap was open." Bring it to them. */
+function revealPanel(sel){
+  requestAnimationFrame(() => {
+    const el = document.querySelector(sel || ".swap-panel.open");
+    if (!el || typeof el.scrollIntoView !== "function") return;
+    try { el.scrollIntoView({behavior: "smooth", block: "center"}); }
+    catch (e){ el.scrollIntoView(false); }
+  });
+}
+function swapWant(cur, group, day){
+  const want = {fresh: true};
+  if (!cur) return want;
+  const f = rotForce(day, cur.n);
+  if (f) want.force = f;
+  want.klass = exBand({n: cur.n, g: cur.g});
+  want.exact = true;
+  /* Only meaningful against the group it came from. */
+  if (group === cur.g){
+    want.fromLen = jointLen(cur.n); want.fromPath = exPath(cur.n);
+    want.fromMus = exMuscles(cur.n).p;
+    /* Rotation and a hand swap are opposite questions. Rotation wants variety,
+       so "must work a muscle this one does not" is exactly right there and stays
+       strict. A person swapping a row wants ANOTHER ROW - and every row shares
+       lats, mid traps and rhomboids, so that same rule left them with one
+       option: the lift they had just left. Here it is a preference, and stands
+       down when it would leave fewer than three to choose from. */
+    want.softMus = true;
+  }
+  return want;
+}
 function swapAdvice(idx, group, n, isAdd){
   const s = state.session;
   if (!s || !s.list || !group) return null;
   const i = Number(idx);
   const cur = isAdd || !isFinite(i) ? null : s.list[i];
   const taken = s.list.filter((e, k) => k !== i).map(e => e.n);
-  const want = {fresh: true};
-  if (cur){
-    const f = rotForce(s.day, cur.n);
-    if (f) want.force = f;
-    want.klass = exBand({n: cur.n, g: cur.g});
-    want.exact = true;
-    /* Only meaningful against the group it came from. */
-    if (group === cur.g){
-      want.fromLen = jointLen(cur.n); want.fromPath = exPath(cur.n);
-      want.fromMus = exMuscles(cur.n).p;
-    }
-  }
-  const rows = swapRank(group, taken, want);
+  const rows = swapRank(group, taken, swapWant(cur, group, s.day));
   if (!rows.length) return null;
   return {ok: rows.filter(r => !r.why), no: rows.filter(r => r.why), from: cur ? cur.n : null};
 }
@@ -4950,12 +5559,29 @@ function swapPicksHTML(panel, adv, sel){
   const picks = adv ? adv.ok.filter(r => r.n !== sel).slice(0, 3) : [];
   if (!box) return;
   box.innerHTML = picks.map(r =>
-    `<button class="swap-pick" data-pick="${r.n.replace(/"/g,"&quot;")}">${r.n}</button>`).join("");
+    `<button class="swap-pick" data-pick="${r.n.replace(/"/g,"&quot;")}">${dispName(r.n)}</button>`).join("");
   box.style.display = picks.length ? "" : "none";
   if (tip) tip.style.display = picks.length ? "" : "none";
   swapPicksWire(panel);
 }
 function swapPicksWire(panel){
+  /* Tapping a body part selects its group and narrows the exercise list to the
+     movements that train it. Everything else in the panel keeps working. */
+  panel.querySelectorAll("[data-bm]").forEach(el => el.onclick = ev => {
+    ev.stopPropagation();
+    const id = el.dataset.bm;
+    if (!regionCount(id)){
+      toast("Nothing here you can do with the kit at " + activeKit().name, false);
+      return;
+    }
+    bmRegion = (bmRegion === id) ? null : id;
+    const r = bodyRegion(bmRegion);
+    const selG = panel.querySelector(".sel-group");
+    if (r && selG) selG.value = r.group;
+    render();
+  });
+  const clr = panel.querySelector("#bmClear");
+  if (clr) clr.onclick = ev => { ev.stopPropagation(); bmRegion = null; render(); };
   panel.querySelectorAll(".swap-pick").forEach(b => b.onclick = ev => {
     ev.stopPropagation();
     const selEx = panel.querySelector(".sel-ex");
@@ -4964,16 +5590,127 @@ function swapPicksWire(panel){
     b.classList.add("on");
   });
 }
+/* ---------- Pick by body part ----------
+   The add panel asked you to name a muscle GROUP from a dropdown before it would
+   show you anything. You do not always know the app's word for the thing you want
+   to train - you know where it is. Every one of the 328 exercises already carries
+   primary muscle slugs (EX_MUSCLE), so a tap on a body part filters straight to
+   the movements that actually train it.
+   The figures are built from plain shapes on purpose: no anatomical artwork is
+   copied, and a rounded rect is a bigger tap target than an accurate outline. */
+const BODY_REGIONS = [
+  {id:"delts",     v:"front", label:"Shoulders",  group:"Shoulders",
+   slugs:["deltoid-anterior","deltoid-lateral","rotator-cuff"]},
+  {id:"chest",     v:"front", label:"Chest",      group:"Chest",
+   slugs:["pectoralis-major-clavicular","pectoralis-major-sternocostal","pectoralis-minor","serratus-anterior"]},
+  {id:"biceps",    v:"front", label:"Biceps",     group:"Biceps",
+   slugs:["biceps-brachii-long","biceps-brachii-short","brachialis"]},
+  {id:"forearms",  v:"front", label:"Forearms",   group:"Forearms",
+   slugs:["brachioradialis","flexor-carpi","extensor-carpi","flexor-digitorum"]},
+  {id:"abs",       v:"front", label:"Abs & core", group:"Abs & Core",
+   slugs:["rectus-abdominis","obliques","transversus-abdominis"]},
+  {id:"hips",      v:"front", label:"Hips",       group:"Quads & Glutes",
+   slugs:["iliopsoas","adductor-group","gluteus-medius","gluteus-minimus"]},
+  {id:"quads",     v:"front", label:"Quads",      group:"Quads & Glutes",
+   slugs:["vastus-lateralis","vastus-medialis","vastus-intermedius","rectus-femoris"]},
+  {id:"traps",     v:"back",  label:"Upper back", group:"Back",
+   slugs:["trapezius-upper","trapezius-middle","trapezius-lower","rhomboids"]},
+  {id:"reardelts", v:"back",  label:"Rear delts", group:"Shoulders",
+   slugs:["deltoid-posterior"]},
+  {id:"lats",      v:"back",  label:"Lats",       group:"Back",
+   slugs:["latissimus-dorsi","teres-major"]},
+  {id:"triceps",   v:"back",  label:"Triceps",    group:"Triceps",
+   slugs:["triceps-brachii-long","triceps-brachii-lateral","triceps-brachii-medial"]},
+  {id:"lowerback", v:"back",  label:"Lower back", group:"Back",
+   slugs:["erector-spinae","quadratus-lumborum"]},
+  {id:"glutes",    v:"back",  label:"Glutes",     group:"Quads & Glutes",
+   slugs:["gluteus-maximus"]},
+  {id:"hams",      v:"back",  label:"Hamstrings", group:"Hamstrings",
+   slugs:["biceps-femoris-long","biceps-femoris-short","semitendinosus","semimembranosus"]},
+  {id:"calves",    v:"back",  label:"Calves",     group:"Calves",
+   slugs:["gastrocnemius","soleus","tibialis-anterior"]}
+];
+function bodyRegion(id){ return BODY_REGIONS.find(r => r.id === id) || null; }
+/* Every movement whose PRIMARY muscles include one of this part's - not
+   secondary, or a squat would show up under nearly everything. */
+function regionExercises(id){
+  const r = bodyRegion(id);
+  if (!r) return [];
+  return Object.values(getLib()).flat().filter(n => {
+    if (!isOn(n) || !equipOK(n)) return false;
+    return exMuscles(n).p.some(s => r.slugs.indexOf(s) !== -1);
+  });
+}
+function regionCount(id){ return regionExercises(id).length; }
+/* Shapes, not artwork. x/y/w/h in a 100x210 box; r = corner radius. */
+const BODY_SHAPES = {
+  delts:     [[26,36,15,13,6],[59,36,15,13,6]],
+  chest:     [[33,44,34,20,7]],
+  biceps:    [[20,50,12,26,6],[68,50,12,26,6]],
+  forearms:  [[17,78,11,26,5],[72,78,11,26,5]],
+  abs:       [[38,66,24,30,6]],
+  hips:      [[35,98,30,12,6]],
+  quads:     [[33,112,15,42,7],[52,112,15,42,7]],
+  traps:     [[34,34,32,16,6]],
+  reardelts: [[26,36,15,13,6],[59,36,15,13,6]],
+  lats:      [[32,52,36,24,7]],
+  triceps:   [[20,50,12,26,6],[68,50,12,26,6]],
+  lowerback: [[38,78,24,18,6]],
+  glutes:    [[34,98,32,18,8]],
+  hams:      [[33,118,15,38,7],[52,118,15,38,7]],
+  calves:    [[34,160,13,34,6],[53,160,13,34,6]]
+};
+function bodyFigureSVG(view, sel){
+  const rs = BODY_REGIONS.filter(r => r.v === view);
+  const shapes = rs.map(r => (BODY_SHAPES[r.id] || []).map(([x,y,w,h,rad]) =>
+    `<rect class="bm-r${sel === r.id ? " on" : ""}" data-bm="${r.id}" x="${x}" y="${y}" width="${w}" height="${h}" rx="${rad}"><title>${r.label} · ${regionCount(r.id)}</title></rect>`
+  ).join("")).join("");
+  return `<svg viewBox="0 0 100 210" class="bm-fig" role="img" aria-label="${view} of the body">
+    <circle class="bm-base" cx="50" cy="17" r="11"/>
+    <rect class="bm-base" x="44" y="27" width="12" height="8" rx="3"/>
+    ${shapes}
+    <text class="bm-cap" x="50" y="207" text-anchor="middle">${view === "front" ? "FRONT" : "BACK"}</text>
+  </svg>`;
+}
+/* What the add panel opens on. With a body part tapped, its group and its first
+   movement - otherwise the panel would light up the hamstrings and still have
+   Chest press selected, so Add would add a chest press. */
+function addGroup(){ const r = bodyRegion(bmRegion); return r ? r.group : "Chest"; }
+function addPick(){
+  const hit = bmRegion ? regionExercises(bmRegion) : null;
+  if (hit && hit.length) return hit[0];
+  const g = getLib()[addGroup()] || getLib()["Chest"] || [];
+  return g[0];
+}
+function bodyMapHTML(sel){
+  const r = sel ? bodyRegion(sel) : null;
+  return `<div class="bm-wrap">
+    <div class="bm-head">Tap where you want to train</div>
+    <div class="bm-figs">${bodyFigureSVG("front", sel)}${bodyFigureSVG("back", sel)}</div>
+    <div class="bm-sel">${r
+      ? `<b>${r.label}</b> · ${regionCount(r.id)} to choose from <button class="mini-btn" id="bmClear" style="margin-left:7px">Show all</button>`
+      : "Or use the two menus below."}</div>
+  </div>`;
+}
 function swapPanelHTML(idx, g, n, isAdd){
   const adv = swapAdvice(idx, g, n, isAdd);
-  const picks = adv ? adv.ok.filter(r => r.n !== n).slice(0, 3) : [];
+  let picks = adv ? adv.ok.filter(r => r.n !== n) : [];
+  /* With a body part tapped, the suggestions have to be for THAT part - the
+     advice is computed per muscle group, so on "rear delts" it would otherwise
+     offer lateral raises, which are a different head of the same muscle. */
+  if (isAdd && bmRegion){
+    const hit = regionExercises(bmRegion);
+    const inPart = picks.filter(r => hit.indexOf(r.n) !== -1);
+    picks = inPart.length ? inPart : hit.slice(0, 3).map(x => ({n: x}));
+  }
+  picks = picks.slice(0, 3);
   return `<div class="swap-panel open">
-    ${isAdd ? "" : rotLineHTML(n)}
+    ${isAdd ? bodyMapHTML(bmRegion) : rotLineHTML(n)}
     ${picks.length ? `<div class="swap-tip">${rotLineHTML(n) ? "If you do want to change it" : "Best swaps here"}</div>
       <div class="swap-picks">${picks.map(r =>
-        `<button class="swap-pick" data-pick="${r.n.replace(/"/g,"&quot;")}">${r.n}</button>`).join("")}</div>` : ""}
+        `<button class="swap-pick" data-pick="${r.n.replace(/"/g,"&quot;")}">${dispName(r.n)}</button>`).join("")}</div>` : ""}
     <label>Muscle group</label><select class="sel-group">${groupOptions(g)}</select>
-    <label>Exercise</label><select class="sel-ex">${exOptions(g, n, adv)}</select>
+    <label>Exercise</label><select class="sel-ex">${exOptions(g, n, adv, isAdd ? bmRegion : null)}</select>
     <div class="panel-btns">
       <button class="p-btn confirm" data-idx="${idx}">${isAdd ? "Add" : "Swap"}</button>
       ${isAdd ? "" : `<button class="p-btn remove" data-idx="${idx}">Remove</button>`}
@@ -5071,7 +5808,7 @@ function pairCardHTML(list, g, lastPerfOf){
   const rounds = Math.max(A.sets.length, B.sets.length);
   const why = pairWhy(list, g);
   const allDone = [A, B].every(e => e.sets.length && e.sets.every(x => x.done));
-  const head = e => `<span class="pair-ex">${e.n}</span>`;
+  const head = e => `<span class="pair-ex">${dispName(e.n)}</span>`;
   const rows = [];
   for (let r = 0; r < rounds; r++){
     const done = [A, B].every(e => e.sets[r] && e.sets[r].done);
@@ -5081,26 +5818,167 @@ function pairCardHTML(list, g, lastPerfOf){
       rows.push(setRowHTML(e, idx, e.sets[r], r, lastPerfOf(e.n), tag));
     }
   }
+  /* A finished pair never asked how the lifts felt and never got out of the way.
+     Erik: "I wasn't asked for rating on my superset. And it didn't collapse."
+     Single cards have had both since the start; the pair card was built without
+     them, so a done superset sat there at full height with no rating. */
+  const folded = allDone && [A, B].every(e =>
+    !exExpand.has(e.n) && ((e.form || 0) >= 4 || exFold.has(e.n)));
+  const names = [A.n, B.n].join("|");
+  if (folded){
+    const sum = e => e.sets.map(x => (x.w ? x.w + "\u00d7" + x.r : x.r)).join(" \u00b7 ");
+    return `<div class="exercise pair done collapsed">
+      <div class="ex-head ex-reopen" data-ns="${esc(names)}" style="cursor:pointer;display:block">
+        <div class="meta" style="margin-bottom:6px">Superset \u00b7 ${rounds} rounds</div>
+        ${[[A, g[0]], [B, g[1]]].map(([e, idx]) => `<div class="ex-info" style="margin-bottom:4px">
+          <div class="name" style="font-size:14px">${dispName(e.n)}</div>
+          <div class="meta">${sum(e)}</div>
+          <div class="stars sm fold-stars">${[1,2,3,4,5].map(v =>
+            `<button data-i="${idx}" data-v="${v}" class="${e.form && v <= e.form ? "on" : ""}">\u2605</button>`).join("")}${
+            e.form ? "" : `<span class="fold-ask">rate it</span>`}</div>
+        </div>`).join("")}
+        <span class="chev" style="position:absolute;right:14px;top:14px">\u25b8</span>
+      </div>
+    </div>`;
+  }
   return `<div class="exercise pair ${allDone ? "done" : ""}">
     <div class="ex-head" style="display:block">
-      <div class="meta" style="margin-bottom:6px">Superset${why ? " \u00b7 " + why : ""}</div>
+      <div class="meta" style="margin-bottom:2px">Back to back${why ? " \u00b7 " + why : ""}</div>
+      ${[A, B].some(started) ? "" : `<button class="card-fmt" style="margin-bottom:6px" data-csplit="${g[0]},${g[1]}">Split these into single sets</button>`}
       ${[[A, g[0], "A"], [B, g[1], "B"]].map(([e, idx, tag]) => `<div class="pair-head-row">
-        <span class="pair-ex"><span class="pair-tag">${tag}</span>${e.n}</span>
+        <span class="pair-ex"><span class="pair-tag">${tag}</span>${dispName(e.n)}</span>
         <span style="display:flex;gap:6px;flex:0 0 auto">
           <a class="icon-btn" href="${demoURL(e.n)}" target="_blank" rel="noopener" title="Watch ${e.n}">\u25b6</a>
           <button class="icon-btn swap" data-i="${idx}" title="Swap ${e.n}">\u21c4</button>
         </span>
-      </div>`).join("")}
+      </div>${noteRowHTML(e)}`).join("")}
     </div>
     <div class="sets pair-sets">
       <div class="set-labels"><span>Lift</span><span>Previous</span><span>${wLabel(A)}</span><span>${unitLabel(A)}</span><span></span></div>
       ${rows.join("")}
     </div>
+    ${(() => {
+      /* The end-of-round prompt was being SET on a pair and never drawn: the pair
+         card had no place for it, so in superset mode you were never asked how a
+         set felt, and the note offer that rides with it never appeared either. */
+      const a = state.session && state.session.ask;
+      if (!a || (a.i !== g[0] && a.i !== g[1])) return "";
+      return askHTML(a, a.i === g[0] ? A : B);
+    })()}
+    ${allDone ? [[A, g[0]], [B, g[1]]].map(([e, idx]) => `<div class="form-inline" data-i="${idx}">
+      <div class="fi-label">${esc(dispName(e.n))} \u2014 how clean were those reps?</div>
+      <div class="fi-row">
+        <div class="stars sm">${[1,2,3,4,5].map(v =>
+          `<button data-i="${idx}" data-v="${v}" class="${e.form && v <= e.form ? "on" : ""}">\u2605</button>`).join("")}</div>
+        ${noteEdit === e.n ? "" : `<button class="note-add" data-nedit="${esc(e.n)}">${
+          exNote(e.n) ? "Edit note" : "+ Add note"} <i>(optional)</i></button>`}
+      </div>
+      ${e.form && e.form <= 3 ? `<div class="chips">${FORM_ISSUES.map(x =>
+        `<button data-i="${idx}" data-x="${x}" class="${(e.issues||[]).includes(x) ? "on" : ""}">${x}</button>`).join("")}</div>` : ""}
+    </div>`).join("") : ""}
+    ${allDone ? `<div class="set-btns"><button class="mini-btn ex-fold" data-ns="${esc(names)}">Collapse this pair</button></div>` : ""}
     ${[[A, g[0]], [B, g[1]]].map(([e, idx]) =>
       openPanel === idx ? swapPanelHTML(idx, e.g, e.n, false) : "").join("")}
   </div>`;
 }
+/* Why is this lift on its own while supersets are switched on? Without an
+   answer the screen just looks broken - Erik: "my app is set to superset and
+   only one of my exercises became a superset." Every solo lift has a reason and
+   the app was keeping all of them to itself. */
+/* ---------- A note on a movement ----------
+   Erik, mid-workout: "Wish I had somewhere to add a note. It shouldn't take up
+   real estate like a text box would... Maybe like a link to a YouTube video with
+   the form or even just a note about the movement."
+   So it is per MOVEMENT, not per session: a cue you worked out once, or the video
+   that finally made the setup click, should be there every time you meet that
+   lift again. Nothing is on screen until there is something to say. */
+function exNote(n){
+  const m = state && state.exNote;
+  return (m && (m[origName(n)] || m[n])) || "";
+}
+function setExNote(n, t){
+  state.exNote = state.exNote || {};
+  const k = origName(n), v = String(t || "").trim().slice(0, 300);
+  if (v) state.exNote[k] = v; else delete state.exNote[k];
+}
+/* A pasted link should be tappable, and everything else must not be able to
+   become markup. Escape each piece, then wrap only the bits that are URLs. */
+function noteHTML(t){
+  const s = String(t || "");
+  let out = "", last = 0;
+  const re = /https?:\/\/[^\s<>"']+/gi;
+  let m;
+  while ((m = re.exec(s)) !== null){
+    out += esc(s.slice(last, m.index));
+    const u = m[0].replace(/[.,;:)]+$/, "");
+    out += `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(noteLinkLabel(u))}</a>`;
+    out += esc(m[0].slice(u.length));
+    last = m.index + m[0].length;
+  }
+  return out + esc(s.slice(last));
+}
+/* A raw URL eats the line on a phone, so show where it goes, not all of it. */
+function noteLinkLabel(u){
+  try {
+    const h = u.replace(/^https?:\/\//i, "").replace(/^www\./i, "").split("/")[0];
+    if (/youtu\.?be/i.test(h)) return "Watch the form video";
+    return h.length > 26 ? h.slice(0, 26) + "…" : h;
+  } catch (e){ return u; }
+}
+let noteEdit = null;        /* the movement whose note is open for editing */
+function noteRowHTML(ex){
+  const has = exNote(ex.n);
+  if (noteEdit === ex.n){
+    return `<div class="ex-note edit">
+      <input id="noteInput" maxlength="300" placeholder="A cue, a setup, or paste a link" value="${esc(has)}">
+      <div class="note-btns">
+        <button class="mini-btn" data-nsave="${esc(ex.n)}">Save</button>
+        ${has ? `<button class="mini-btn" data-ndel="${esc(ex.n)}">Delete</button>` : ""}
+        <button class="mini-btn" data-ncancel="1">Cancel</button>
+      </div></div>`;
+  }
+  if (!has) return "";
+  return `<div class="ex-note" data-nedit="${esc(ex.n)}">${ico("pencil")}<span>${noteHTML(has)}</span></div>`;
+}
+function soloWhy(list, i){
+  if (sessionStyle() !== "superset") return null;
+  const ex = list[i];
+  if (!ex) return null;
+  if (exStyle(ex) !== "superset")
+    return started(ex)
+      ? "A straight set \u2014 you had already started it when you switched."
+      : "A straight set \u2014 you set this one on its own.";
+  /* There used to be a line here saying the first lift of the day was kept on its
+     own for your full attention. The day is now grown until every lift has a
+     partner, including the first, so nothing reaches this point for that reason.
+     Say WHY, from the same tests that made the decision - not a guess. The first
+     draft told you walking lunges were "big barbell lifts" and that a plank
+     worked "the same muscles" as a squat; both were wrong, because it read the
+     verdict without asking what produced it. */
+  const heavy = e => exBand({n: e.n, g: e.g}) === "structural";
+  /* There used to be a branch here saying "lifts this heavy want a full rest,
+     not a partner". That was true when any heavy lift was refused every
+     partner. Since the limiting-factor rules went in, a heavy lift pairs fine
+     with a light one that competes for nothing - walking lunges have 93 usable
+     partners in the library - so the line had become a plain untruth. The real
+     reason is always about THIS day, and the branches below already say it. */
+  const others = list.filter((o, k) => k !== i);
+  if (!others.length) return null;
+  const usable = others.filter(o => { const lv = pairOK(ex.n, o.n).lv; return lv === "good" || lv === "ok"; });
+  if (usable.length)
+    return "On its own \u2014 the lifts it pairs with are already partnered up.";
+  const nHeavy = others.filter(heavy).length;
+  const nSame  = others.filter(o => pairSameMuscle(ex.n, o.n)).length;
+  if (nHeavy === others.length)
+    return "On its own \u2014 everything else today is too heavy to pair with.";
+  if (nSame + nHeavy === others.length)
+    return "On its own \u2014 everything else today works the same muscles.";
+  return "On its own \u2014 nothing else today pairs well with it.";
+}
 function render(){
+  /* A profile you set for one day only reverts here, before anything is drawn,
+     so a hotel week never silently follows you home. */
+  if (typeof kitExpire === "function") kitExpire();
   const now = new Date();
   $("dateLine").textContent = now.toLocaleDateString(undefined,{weekday:"long", month:"long", day:"numeric"});
   $("statTotal").textContent = realWorkouts();
@@ -5202,7 +6080,7 @@ function render(){
     $("finishBtn").style.display = "none";
     return;
   }
-  $("exerciseList").innerHTML = a2hsCardHTML() + backNote + pastNote + lowNote + restNote + genNote + auxCard("wu") + pairPlan(state.session.list).map(g =>
+  $("exerciseList").innerHTML = a2hsCardHTML() + kitAskHTML() + backNote + pastNote + lowNote + restNote + genNote + auxCard("wu") + pairPlan(state.session.list).map(g =>
     /* A group of two renders as one superset card; a group of one is the
        ordinary exercise card, unchanged. The body below is the original map
        callback, wrapped so it keeps every closure it already relied on. */
@@ -5227,7 +6105,7 @@ function render(){
       return `<div class="exercise done collapsed">
         <div class="ex-head ex-reopen" data-n="${ex.n.replace(/"/g,"&quot;")}" style="cursor:pointer">
           <div class="ex-info">
-            <div class="name">${ex.n}</div>
+            <div class="name">${dispName(ex.n)}</div>
             <div class="meta">${ex.sets.length} sets · ${sum}</div>
             <div class="stars sm fold-stars">${[1,2,3,4,5].map(v =>
               `<button data-i="${i}" data-v="${v}" class="${ex.form && v <= ex.form ? "on" : ""}">★</button>`).join("")}${
@@ -5237,11 +6115,14 @@ function render(){
         </div>
       </div>`;
     }
+    const solo = soloWhy(state.session.list, i);
     return `<div class="exercise ${allDone?"done":""}">
       <div class="ex-head">
         <div class="ex-info">
-          <div class="name">${ex.n}</div>
-          <div class="meta">${meta}</div>
+          <div class="name">${dispName(ex.n)}</div>
+          <div class="meta">${meta}</div>${solo ? `<div class="solo-why">${solo}</div>` : ""}${
+            sessionStyle() === "superset" && !started(ex) && ex.fmt === "straight"
+              ? `<button class="card-fmt" data-cfmt="${i}">Pair this one up</button>` : ""}
           ${badges ? `<div>${badges}</div>` : ""}
         </div>
         <div class="ex-actions">
@@ -5250,7 +6131,7 @@ function render(){
           <button class="icon-btn swap" data-i="${i}" title="Swap exercise">⇄</button>
           ${allDone ? `<button class="icon-btn ex-fold" data-n="${ex.n.replace(/"/g,"&quot;")}" title="Collapse">▴</button>` : ""}
         </div>
-      </div>
+      </div>${noteRowHTML(ex)}
       ${openChart === i ? `<div class="chart-panel"><h4>Best set over time</h4>${chart ? chart + '<div class="chart-cap">Tap any dot for details</div>' : '<div class="chart-empty">Log this exercise in at least 2 workouts to see your trend.</div>'}</div>` : ""}
       <div class="sets">
         <div class="set-labels"><span>Set</span><span>Previous</span><span>${colLabel(ex)}</span><span>${unitLabel(ex)}</span><span></span></div>
@@ -5270,14 +6151,74 @@ function render(){
       </div>
       ${allDone ? `<div class="form-inline" data-i="${i}">
         <div class="fi-label">Form check — how clean were those reps?</div>
-        <div class="stars sm">${[1,2,3,4,5].map(v => `<button data-i="${i}" data-v="${v}" class="${ex.form && v <= ex.form ? "on" : ""}">★</button>`).join("")}</div>
+        <div class="fi-row">
+          <div class="stars sm">${[1,2,3,4,5].map(v => `<button data-i="${i}" data-v="${v}" class="${ex.form && v <= ex.form ? "on" : ""}">★</button>`).join("")}</div>
+          ${noteEdit === ex.n ? "" : `<button class="note-add" data-nedit="${esc(ex.n)}">${
+            exNote(ex.n) ? "Edit note" : "+ Add note"} <i>(optional)</i></button>`}
+        </div>
         ${ex.form && ex.form <= 3 ? `<div class="chips">${FORM_ISSUES.map(x => `<button data-i="${i}" data-x="${x}" class="${(ex.issues||[]).includes(x) ? "on" : ""}">${x}</button>`).join("")}</div>` : ""}
       </div>` : ""}
       ${openPanel === i ? swapPanelHTML(i, ex.g, ex.n, false) : ""}
     </div>`;
   })(state.session.list[g[0]], g[0])).join("") + (openPanel === "add"
-    ? `<div class="exercise">${swapPanelHTML("add", "Chest", getLib()["Chest"][0], true)}</div>` : "") + auxCard("cd");
+    ? `<div class="exercise">${swapPanelHTML("add", addGroup(), addPick(), true)}</div>` : "") + auxCard("cd");
 
+  /* One card's style, set by hand. Unset means "follow the default", which is
+     what makes changing the default re-style everything you have not started. */
+  document.querySelectorAll("[data-cfmt]").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    const ex = state.session.list[+b.dataset.cfmt];
+    if (!ex) return;
+    if (ex.fmt === "straight") delete ex.fmt; else ex.fmt = "straight";
+    save(); render();
+  });
+  document.querySelectorAll("[data-csplit]").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    b.dataset.csplit.split(",").forEach(k => {
+      const ex = state.session.list[+k];
+      if (ex) ex.fmt = "straight";
+    });
+    save(); render();
+  });
+  /* A note on a movement: opened from the pencil or from "+ Add note" beside the
+     rating, edited in place, and gone from the screen again the moment it is
+     empty. */
+  document.querySelectorAll("[data-nedit]").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    noteEdit = (noteEdit === b.dataset.nedit) ? null : b.dataset.nedit;
+    render();
+    const f = document.getElementById("noteInput");
+    if (f){ f.focus(); f.setSelectionRange(f.value.length, f.value.length); }
+  });
+  document.querySelectorAll("[data-nsave]").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    const f = document.getElementById("noteInput");
+    const had = !!exNote(b.dataset.nsave);
+    setExNote(b.dataset.nsave, f ? f.value : "");
+    const now = !!exNote(b.dataset.nsave);
+    noteEdit = null; save(); render();
+    toast(now ? "Saved \u2014 it will be here every time you do this one"
+              : (had ? "Note removed" : "Nothing to save"), false);
+  });
+  document.querySelectorAll("[data-ndel]").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    setExNote(b.dataset.ndel, "");
+    noteEdit = null; save(); render();
+    toast("Note removed", false);
+  });
+  document.querySelectorAll("[data-ncancel]").forEach(b => b.onclick = ev => {
+    ev.stopPropagation(); noteEdit = null; render();
+  });
+  document.querySelectorAll("[data-kitback]").forEach(b => b.onclick = () => {
+    state.kitAsked = todayISO();
+    const r = setKit(b.dataset.kitback, false);
+    save(); render();
+    if (r) toast("Welcome back \u2014 today's workout is built for home again", false);
+  });
+  document.querySelectorAll("[data-kitstay]").forEach(b => b.onclick = () => {
+    state.kitAsked = todayISO();
+    save(); render();
+  });
   wireEvents();
   wireAux();
   const cpb = document.getElementById("cancelPastBtn");
@@ -5723,8 +6664,12 @@ $("importBtn").onclick = async () => {
   if (!state.exOrig) state.exOrig = {};
   if (!state.off) state.off = [];
   {
+    /* a save where EVERYTHING is switched off is corrupt, not a choice - repair
+       it per place, since each place keeps its own list now */
     const allNames = Object.values(state.lib || LIB).flat();
     if (state.off.length >= allNames.length) state.off = [];
+    if (Array.isArray(state.kits))
+      state.kits.forEach(k => { if (Array.isArray(k.off) && k.off.length >= allNames.length) k.off = []; });
   }
   if (!state.customEquip) state.customEquip = {};
   if (!state.equipOv) state.equipOv = {};
@@ -5911,8 +6856,12 @@ function checkAchievements(){
   if (!state.exOrig) state.exOrig = {};
   if (!state.off) state.off = [];
   {
+    /* a save where EVERYTHING is switched off is corrupt, not a choice - repair
+       it per place, since each place keeps its own list now */
     const allNames = Object.values(state.lib || LIB).flat();
     if (state.off.length >= allNames.length) state.off = [];
+    if (Array.isArray(state.kits))
+      state.kits.forEach(k => { if (Array.isArray(k.off) && k.off.length >= allNames.length) k.off = []; });
   }
   if (!state.customEquip) state.customEquip = {};
   if (!state.equipOv) state.equipOv = {};
@@ -7303,6 +8252,11 @@ $("bodyLogWorkout").onclick = () => setTab("train");
 /* ---------- Retroactive editing: unlock past days inline ---------- */
 let pastEdit = null;
 let editArm = null;
+/* Switching style part way through a workout changes what today looks like, so
+   it is armed first and committed on a second tap - the same pattern the app
+   already uses for deleting a program or rebuilding a day. Nothing is armed
+   when you have not started anything: there is nothing to commit to. */
+let fmtArm = null;
 function startPastEdit(histIndex){
   let day, list;
   if (histIndex !== null){
@@ -7347,6 +8301,50 @@ function savePastEdit(){
 
 
 /* ---------- Exercise library config ---------- */
+/* ---------- Removing an exercise you added ----------
+   Erik: "I misspelled low row. I ended up finding there was one already in
+   there. But I don't have the option of deleting the one I created."
+   You could add a custom movement and never take it back: the editor had Save
+   and Cancel, renaming onto an existing name was refused, and the on/off switch
+   only hides it from suggestions. Only movements YOU added can be deleted - the
+   shipped library already has the switch, and removing from it is a different
+   and riskier thing. */
+function isCustomEx(n){
+  const name = origName(n);
+  return !Object.values(LIB).some(arr => arr.indexOf(name) !== -1)
+      && !Object.values(LIB).some(arr => arr.indexOf(n) !== -1);
+}
+/* How many logged sessions mention it - said out loud before anything is done,
+   because those sessions are not deleted with it. */
+function exUseCount(n){
+  return (state.history || []).filter(h => (h.ex || []).some(e => e.n === n)).length;
+}
+function deleteExercise(n){
+  const lib = getLib();
+  for (const g in lib){
+    const i = lib[g].indexOf(n);
+    if (i !== -1) lib[g].splice(i, 1);
+  }
+  /* every place keeps its own switched-off list */
+  allOffLists().forEach(off => {
+    const i = off.indexOf(n);
+    if (i !== -1) off.splice(i, 1);
+  });
+  for (const store of ["roles","equipOv","dayTag","track","band","sides","muscles",
+                       "customEquip","exOrig","exNote"])
+    if (state[store]) delete state[store][n];
+  for (const d in (state.plan || {}))
+    state.plan[d] = state.plan[d].filter(e => e.n !== n);
+  for (const d in (state.planned || {}))
+    if (state.planned[d]) delete state.planned[d][n];
+  if (state.exN) for (const k in state.exN) if (k.split("|")[1] === n) delete state.exN[k];
+  if (state.session && state.session.list){
+    const started = state.session.list.some(e => e.n === n && e.sets.some(s => s.done));
+    if (!started) state.session.list = state.session.list.filter(e => e.n !== n);
+  }
+  exFold.delete(n); exExpand.delete(n);
+}
+let exDelArm = null;
 function getLib(){ return (state && state.lib) || LIB; }
 function renameExercise(oldName, newName){
   const lib = getLib();
@@ -7357,8 +8355,10 @@ function renameExercise(oldName, newName){
   state.exOrig = state.exOrig || {};
   state.exOrig[newName] = state.exOrig[oldName] || oldName;
   delete state.exOrig[oldName];
-  const offI = (state.off || []).indexOf(oldName);
-  if (offI !== -1) state.off[offI] = newName;
+  allOffLists().forEach(off => {
+    const i = off.indexOf(oldName);
+    if (i !== -1) off[i] = newName;
+  });
   if (state.customEquip && state.customEquip[oldName]){
     state.customEquip[newName] = state.customEquip[oldName];
     delete state.customEquip[oldName];
@@ -7399,8 +8399,10 @@ function mergeExercise(oldName, canonName){
     }
   }
   if (state.session) for (const e of state.session.list) if (e.n === oldName) e.n = canonName;
-  const offI = (state.off || []).indexOf(oldName);
-  if (offI !== -1) state.off.splice(offI, 1);
+  allOffLists().forEach(off => {
+    const i = off.indexOf(oldName);
+    if (i !== -1) off.splice(i, 1);
+  });
   for (const store of ["equipOv","muscles","roles","dayTag","customEquip","track"]){
     if (state[store] && state[store][oldName]){
       if (!state[store][canonName]) state[store][canonName] = state[store][oldName];
@@ -7532,12 +8534,58 @@ function rolesFor(n){
   return gen;
 }
 function muscleTags(n){ return rolesFor(n).t; }
-function isOn(n){ return !(state.off || []).includes(n); }
+/* Which movements you have switched off belongs to the PLACE, the same way the
+   equipment does. Erik: "if I create a new one like gym and toggle some
+   exercises on and off it should remember profile A has x equipment and y
+   exercises, profile B has x1 equipment and y2 exercises enabled."
+   A new place inherits whatever was switched off at the time it was made, and
+   goes its own way from there. state.off survives as the fallback for anyone who
+   has never made a second place. */
+function offList(){
+  const k = activeKit();
+  if (!k){ state.off = state.off || []; return state.off; }
+  if (!Array.isArray(k.off)) k.off = ((state && state.off) || []).slice();
+  return k.off;
+}
+/* Renaming or deleting an exercise has to reach every place, not just this one. */
+function allOffLists(){
+  const out = kitList().map(k => {
+    if (!Array.isArray(k.off)) k.off = ((state && state.off) || []).slice();
+    return k.off;
+  });
+  if (Array.isArray(state.off)) out.push(state.off);
+  return out;
+}
+/* ---------- A name that promises gear you have not got ----------
+   equipTags are ALTERNATIVES: "Standing barbell overhead press" is tagged
+   Barbell OR Dumbbell OR Kettlebell OR Band, so the app is right that you can do
+   it in a hotel room - but the name says barbell and there is no barbell there.
+   Six names in the library read this way. Swap the gear word in the NAME for one
+   you actually own. The stored name never changes: history, PRs, charts, the
+   off-list and every lookup still key off the real one, so nothing breaks and
+   nothing is lost when you go home. */
+const NAME_KIT = ["Barbell", "EZ bar", "Cable", "Machine", "Kettlebell", "Band", "Dumbbell"];
+function dispName(n){
+  const name = String(n == null ? "" : n);
+  if (!name) return name;
+  const mine = (typeof myEquip === "function") ? myEquip() : [];
+  const low = name.toLowerCase();
+  const said = NAME_KIT.find(k => low.indexOf(k.toLowerCase()) !== -1);
+  if (!said || mine.indexOf(said) !== -1) return name;
+  const tags = ((typeof equipTags === "function" ? equipTags(name) : []) || []);
+  const swap = NAME_KIT.find(k => k !== said && mine.indexOf(k) !== -1 && tags.indexOf(k) !== -1);
+  if (!swap) return name;
+  return name.replace(new RegExp(said.replace(/ /g, "\\s+"), "i"), m =>
+    (m[0] === m[0].toUpperCase() ? swap.charAt(0).toUpperCase() + swap.slice(1).toLowerCase()
+                                 : swap.toLowerCase()));
+}
+function isOn(n){ return !offList().includes(n); }
 function setOn(n, on){
-  state.off = state.off || [];
-  const i = state.off.indexOf(n);
-  if (on && i !== -1) state.off.splice(i, 1);
-  if (!on && i === -1) state.off.push(n);
+  const off = offList();
+  const i = off.indexOf(n);
+  if (on && i !== -1) off.splice(i, 1);
+  if (!on && i === -1) off.push(n);
+  if (kitList().length === 1) state.off = off.slice();   /* keep the fallback in step */
 }
 function shownNames(){
   const lib = getLib();
@@ -7856,7 +8904,8 @@ function renderAuxLib(){
     const f = $("auxQ"); f.focus(); f.setSelectionRange(f.value.length, f.value.length);
   };
   $("cfgBody").querySelectorAll("[data-afd]").forEach(b => b.onclick = () => {
-    auxFDD = auxFDD === b.dataset.afd ? null : b.dataset.afd;
+    const next = auxFDD === b.dataset.afd ? null : b.dataset.afd;
+    ddSolo("auxF"); auxFDD = next;
     renderCfg();
   });
   $("cfgBody").querySelectorAll("[data-afv]").forEach(r => r.onclick = () => {
@@ -7911,7 +8960,8 @@ function wireAuxEditor(){
   $("cfgBody").querySelectorAll("[data-aed]").forEach(b => b.onclick = () => {
     auxTmp.name = $("auxEN") ? $("auxEN").value : auxTmp.name;
     auxTmp.spec = $("auxES") ? $("auxES").value : auxTmp.spec;
-    auxEDD = auxEDD === b.dataset.aed ? null : b.dataset.aed;
+    const next = auxEDD === b.dataset.aed ? null : b.dataset.aed;
+    ddSolo("auxE"); auxEDD = next;
     renderCfg();
   });
   $("cfgBody").querySelectorAll("[data-aev]").forEach(r => r.onclick = () => {
@@ -8002,7 +9052,13 @@ $("tourRoot").addEventListener("click", e => {
   if (b) obAction(b.dataset.ob);
 });
 window.addEventListener("resize", () => {
-  if ($("tourRoot").classList.contains("on")) positionTour(tourSeq()[obStep]);
+  /* Defensive because the tour root can be absent - the test harness removes it
+     to get a clean screenshot, and the resize that follows threw here. In the
+     app it is always present, so this never fired for a user; what it cost was
+     a phantom page error in test output, which is worse than it sounds: it got
+     a real-looking error dismissed twice before it was tracked down. */
+  const t = $("tourRoot");
+  if (t && t.classList.contains("on")) positionTour(tourSeq()[obStep]);
 });
 $("acctOverlay").onclick = closeAcctSheet;
 $("cfgClose").onclick = closeCfg;
@@ -8099,6 +9155,17 @@ function editorCard(isNew){
       <button class="p-btn confirm" id="cfgSaveEd" style="flex:1">${isNew ? "Add exercise" : "Save changes"}</button>
       <button class="p-btn cancel" id="cfgCancelEd" style="flex:1">Cancel</button>
     </div>
+    ${(!isNew && cfgTmp.orig && isCustomEx(cfgTmp.orig)) ? (() => {
+      const used = exUseCount(cfgTmp.orig);
+      return `<div class="ex-del-row">
+        <button class="mini-btn ex-del" id="cfgDelEd">${exDelArm === cfgTmp.orig
+          ? "Tap again to delete " + esc(cfgTmp.orig) : "Delete this exercise"}</button>
+        <div class="ex-del-note">${used
+          ? "You added this one. The " + used + (used === 1 ? " workout" : " workouts")
+            + " you logged with it stay in your history."
+          : "You added this one, and nothing has been logged with it."}</div>
+      </div>`;
+    })() : ""}
   </div>`;
 }
 /* ---------- My equipment, in the library ----------
@@ -8116,12 +9183,54 @@ function editorCard(isNew){
 function unavailableCount(){
   return Object.values(getLib()).flat().filter(n => isOn(n) && !equipOK(n)).length;
 }
+/* Asked once, on the first workout of a new day, and only when you are somewhere
+   that is not your default. Plain words: no one has to know what a "profile" is
+   to answer "are you back home?". */
+function kitAskHTML(){
+  const home = kitAskDue();
+  if (!home) return "";
+  const here = activeKit();
+  return `<div class="kit-ask">
+    <div class="kit-ask-t">You're set up for <b>${esc(here.name)}</b>.</div>
+    <div class="kit-ask-b">Still there, or back at ${esc(home.name)}? We'll build today's workout around whichever you pick.</div>
+    <div class="kit-ask-row">
+      <button class="mini-btn" data-kitback="${home.id}">Back at ${esc(home.name)}</button>
+      <button class="mini-btn" data-kitstay="1">Still at ${esc(here.name)}</button>
+    </div>
+  </div>`;
+}
+function kitPanelHTML(){
+  const L = kitList(), act = activeKit(), full = L.length >= KIT_MAX;
+  if (L.length < 2 && !cfgKitOpen)
+    return `<div class="gear-head" style="margin-bottom:8px">
+      <div><div class="gear-title">Where you train</div>
+      <div class="gear-sub">Set up another place — a gym, a hotel — and switch to it in one tap when you're there.</div></div>
+      <button class="mini-btn" id="kitToggle">Set up</button></div>`;
+  return `<div class="gear-head" style="margin-bottom:8px">
+      <div><div class="gear-title">Where you train</div>
+      <div class="gear-sub">${L.length} of ${KIT_MAX}. Tap one to switch — today's workout rebuilds around what's there. ${esc(defaultKit().name)} is your home base.</div></div>
+      <button class="mini-btn" id="kitToggle">${cfgKitOpen ? "Done" : "Edit"}</button>
+    </div>
+    <div class="coach-pick wrap kit-row">${L.map(k =>
+      `<button class="kit-chip ${k.id === act.id ? "on" : ""}" data-kit="${k.id}" title="${esc(k.name)}">${esc(k.name)}</button>`).join("")}
+      ${cfgKitOpen && !full ? `<button class="kit-chip" data-kitadd="1">+ Add a place</button>` : ""}</div>
+    ${cfgKitOpen ? `<div class="kit-edit">
+      <input id="kitName" maxlength="${KIT_NAME_MAX}" value="${esc(act.name)}" placeholder="What do you call this place?">
+      <div class="kit-edit-row">
+        ${act.def ? `<span class="kit-note">This is your home base — the app only asks about the others.</span>`
+                  : `<button class="mini-btn" data-kitdef="1">Make this my home base</button>`}
+        ${L.length > 1 && !act.def ? `<button class="mini-btn" data-kitdel="1">Delete</button>` : ""}
+      </div></div>` : ""}`;
+}
 function gearPanelHTML(){
   const mine = myEquip(), all = equipList(), n = unavailableCount();
+  const act = activeKit();
   return `<div class="gear-panel">
+    ${kitPanelHTML()}
     <div class="gear-head">
-      <div><div class="gear-title">My equipment</div>
-      <div class="gear-sub">${mine.length} of ${all.length}. Rotation only suggests movements you can actually do.</div></div>
+      <div><div class="gear-title">My equipment${kitList().length > 1 ? " at " + esc(act.name) : ""}</div>
+      <div class="gear-sub">${mine.length} of ${all.length} ticked. Rotation only suggests movements you can actually do.
+        <div class="kit-reach">${kitReach().can} of ${kitReach().all} exercises work here</div></div></div>
       <button class="mini-btn" id="gearToggle">${cfgGearOpen ? "Hide" : "Edit"}</button>
     </div>
     ${cfgGearOpen ? `<div class="coach-pick wrap" style="margin-top:10px">${all.map(e =>
@@ -8129,7 +9238,19 @@ function gearPanelHTML(){
     ${n ? `<button class="mini-btn gear-sweep" id="gearSweep">Turn off the ${n} enabled ${n === 1 ? "movement" : "movements"} I have no gear for</button>` : ""}
   </div>`;
 }
-let cfgGearOpen = false;
+/* Only one dropdown open at a time, anywhere on this screen. The library filters
+   and the exercise editor each tracked their own open panel, so opening one
+   while the other was open left BOTH drawn - and the second landed 473px below
+   the first, off the bottom of an 844px phone. Erik: "click in a different drop
+   down... it might pop up behind the current drop down that's open."
+   Every toggle calls this first and says which one it is keeping. */
+function ddSolo(keep){
+  if (keep !== "cfg") cfgOpenDD = null;
+  if (keep !== "ed"){ edOpenDD = null; edHelp = null; }
+  if (keep !== "auxF") auxFDD = null;
+  if (keep !== "auxE") auxEDD = null;
+}
+let cfgGearOpen = false, cfgKitOpen = false;
 function renderCfg(){
   if (cfgEqEdit){ renderEqCreator(); return; }
   if (cfgMode !== "ex"){ renderAuxLib(); return; }
@@ -8178,7 +9299,8 @@ function renderCfg(){
     const q = $("cfgQ"); q.focus(); q.setSelectionRange(q.value.length, q.value.length);
   };
   $("cfgBody").querySelectorAll(".ddbtn[data-dd]").forEach(b => b.onclick = () => {
-    cfgOpenDD = cfgOpenDD === b.dataset.dd ? null : b.dataset.dd;
+    const next = cfgOpenDD === b.dataset.dd ? null : b.dataset.dd;
+    ddSolo("cfg"); cfgOpenDD = next;
     renderCfg();
   });
   $("cfgBody").querySelectorAll(".dd-row[data-ddv]").forEach(r => r.onclick = () => {
@@ -8204,13 +9326,76 @@ function renderCfg(){
   };
   const gt = document.getElementById("gearToggle");
   if (gt) gt.onclick = () => { cfgGearOpen = !cfgGearOpen; renderCfg(); };
+  const kt = document.getElementById("kitToggle");
+  if (kt) kt.onclick = () => {
+    const closing = cfgKitOpen;
+    cfgKitOpen = !cfgKitOpen;
+    if (cfgKitOpen && kitList().length < 2) cfgGearOpen = true;
+    renderCfg();
+    if (closing && kitList().length > 1) kitFlash(activeKit().name, null, "All set \u2014 training at");
+  };
+  $("cfgBody").querySelectorAll("[data-kit]").forEach(b => b.onclick = () => {
+    if (b.dataset.kit === activeKit().id) return;
+    const r = setKit(b.dataset.kit, false);
+    save(); render(); renderCfg();
+    kitFlash(activeKit().name, r);
+  });
+  const ka = $("cfgBody").querySelector("[data-kitadd]");
+  if (ka) ka.onclick = () => {
+    const L = kitList();
+    if (L.length >= KIT_MAX){ toast("Six places is the limit"); return; }
+    /* start it from what you have at your home base - most people are
+       subtracting a rack, not building a gym from nothing */
+    const base = defaultKit();
+    const k = { id: newKitId(), name: "New place",
+                equip: ((base && base.equip) || equipList()).slice(),
+                off: (((base && base.off) || state.off || [])).slice(), def: false };
+    L.push(k); state.kitId = k.id; cfgKitOpen = true; cfgGearOpen = true;
+    kitRebuild(); save(); render(); renderCfg();
+    kitFlash("New place", null, "Setting up");
+    const f = document.getElementById("kitName");
+    if (f){ f.focus(); f.select(); }
+  };
+  const kn = document.getElementById("kitName");
+  if (kn) kn.oninput = () => {
+    const v = kn.value.slice(0, KIT_NAME_MAX);
+    activeKit().name = v;
+    save();
+    $("cfgBody").querySelectorAll("[data-kit]").forEach(b => {
+      if (b.dataset.kit === activeKit().id) b.textContent = v || "Unnamed";
+    });
+  };
+  const kd = $("cfgBody").querySelector("[data-kitdef]");
+  if (kd) kd.onclick = () => {
+    kitList().forEach(k => k.def = false);
+    activeKit().def = true;
+    delete state.kitUntil;
+    save(); renderCfg();
+    toast(activeKit().name + " is your home base \u2014 we'll only ask about the others", false);
+  };
+  const kx = $("cfgBody").querySelector("[data-kitdel]");
+  if (kx) kx.onclick = () => {
+    const L = kitList(), cur = activeKit();
+    if (L.length < 2 || cur.def) return;
+    L.splice(L.indexOf(cur), 1);
+    state.kitId = defaultKit().id;
+    delete state.kitUntil;
+    kitRebuild(); save(); render(); renderCfg();
+    toast("Deleted \u2014 back at " + defaultKit().name, false);
+  };
   $("cfgBody").querySelectorAll(".gear-panel button[data-eq]").forEach(b => b.onclick = () => {
     const e = b.dataset.eq;
-    let cur = (state.myEquip && state.myEquip.length) ? state.myEquip.slice() : equipList().slice();
+    const k = activeKit();
+    let cur = (k && k.equip && k.equip.length) ? k.equip.slice() : equipList().slice();
     const i = cur.indexOf(e);
     if (i === -1) cur.push(e); else cur.splice(i, 1);
     if (!cur.length){ toast("Keep at least one \u2014 otherwise there is nothing to suggest"); return; }
-    state.myEquip = equipList().filter(x => cur.indexOf(x) !== -1);
+    /* the kit belongs to the place you are in; myEquip stays as the fallback for
+       anyone who has never made a second profile */
+    const picked = equipList().filter(x => cur.indexOf(x) !== -1);
+    k.equip = picked;
+    if (kitList().length === 1) state.myEquip = picked.slice();
+    kitRebuild();
     save(); render(); renderCfg();
   });
   /* Exactly what the tour teaches by hand - filter to gear you do not own, hit
@@ -8254,7 +9439,8 @@ function renderCfg(){
   $("cfgBody").querySelectorAll(".ddbtn[data-edd]").forEach(b => b.onclick = ev => {
     if (ev.target.closest(".qm")) return;
     if ($("cfgEN")) cfgTmp.name = $("cfgEN").value;
-    edOpenDD = edOpenDD === b.dataset.edd ? null : b.dataset.edd;
+    const next = edOpenDD === b.dataset.edd ? null : b.dataset.edd;
+    ddSolo("ed"); edOpenDD = next;
     renderCfg();
   });
   $("cfgBody").querySelectorAll(".dd-row[data-edv]").forEach(r => r.onclick = () => {
@@ -8278,6 +9464,16 @@ function renderCfg(){
     if ($("cfgEN")) cfgTmp.name = $("cfgEN").value;
     edSel(edOpenDD).length = 0;
     renderCfg();
+  };
+  const dl = document.getElementById("cfgDelEd");
+  if (dl) dl.onclick = () => {
+    const n = cfgTmp.orig;
+    if (exDelArm !== n){ exDelArm = n; renderCfg(); return; }   /* two taps, like every other delete */
+    exDelArm = null;
+    deleteExercise(n);
+    cfgEdit = null; cfgAdding = false; cfgTmp = null; ddSolo("none");
+    save(); render(); renderCfg();
+    toast("Deleted " + n, false);
   };
   const sv = document.getElementById("cfgSaveEd");
   if (sv) sv.onclick = () => {
@@ -8355,12 +9551,34 @@ function renderNav(){
   if (tc) tc.onclick = () => pickDate(todayISO());
 }
 
+/* Your saved day is the list you edit. On the day itself it is topped up with
+   partner lifts so nothing trains alone, and the count differs - so say so,
+   rather than letting the Plan tab promise five and the workout hand you eight. */
+function partnerCount(dayId){
+  if (typeof sessionStyle !== "function" || sessionStyle() !== "superset") return 0;
+  const src = daySource(dayId).map(e => ({g: e.g, n: e.n}));
+  /* superFill splices in place and returns the same array, so it gets a copy -
+     comparing a list against itself always said "no partners added". */
+  return Math.max(0, superFill(src.slice()).length - src.length);
+}
+function partnerNote(dayId, own){
+  const n = partnerCount(dayId);
+  if (!n) return "";
+  const total = own + n;
+  return `<div class="pv-note" style="margin-top:-4px">\u21c4 <b>On the day this runs as ${
+    Math.floor(total / 2)} supersets.</b> ${n === 1 ? "One partner lift is" : n + " partner lifts are"
+    } added so nothing trains on its own \u2014 they are not part of your saved day, so they change with it.</div>`;
+}
 function renderAlt(mode){
   if (mode === "past"){ renderPast(); return; }
   /* FUTURE preview: planned session, editable but not loggable */
   const dayId = effectiveDay(viewDate);
   const dayDef = DAYS.find(d => d.id === dayId) || {id: dayId, name: dayLabel(dayId)};
-  if (!previewList) previewList = makeList(dayId);
+  /* The preview is an EDITOR for your saved day: its row indexes are written
+     straight back into state.plan. Fetched partners are spliced in beside the
+     lift they are there for, so including them here made editing row 3 rewrite a
+     different exercise. It shows your day; the partners are summarised below. */
+  if (!previewList) previewList = makeList(dayId, false, true);
   $("dayTitle").textContent = dayDef.name + " · planned";
   $("progressLabel").textContent = "Preview";
   $("barFill").style.width = "0%";
@@ -8368,6 +9586,7 @@ function renderAlt(mode){
   const dstr = new Date(viewDate + "T12:00:00").toLocaleDateString(undefined,{weekday:"long", month:"long", day:"numeric"});
   $("exerciseList").innerHTML =
     `<div class="pv-note"> This is your planned <b>${dayDef.name}</b> workout for ${dstr}. Adjust weights, reps, or exercises now — you can log sets when the day arrives. Projections assume your current numbers.</div>`
+    + partnerNote(dayId, previewList.length)
     + previewList.map((ex,i) => {
     const best = bestPerf(ex.n);
     const lastF = lastFormMeta(ex.n);
@@ -8383,7 +9602,7 @@ function renderAlt(mode){
     return `<div class="exercise pv">
       <div class="ex-head">
         <div class="ex-info">
-          <div class="name">${ex.n}</div>
+          <div class="name">${dispName(ex.n)}</div>
           <div class="meta">${meta}</div>
           ${badges ? `<div>${badges}</div>` : ""}
         </div>
@@ -8415,7 +9634,7 @@ function renderAlt(mode){
       ${openPanel === i ? swapPanelHTML(i, ex.g, ex.n, false) : ""}
     </div>`;
   }).join("") + (openPanel === "add"
-    ? `<div class="exercise">${swapPanelHTML("add", "Chest", getLib()["Chest"][0], true)}</div>` : "");
+    ? `<div class="exercise">${swapPanelHTML("add", addGroup(), addPick(), true)}</div>` : "");
 
   wirePreviewEvents(dayId);
 }
@@ -8517,8 +9736,10 @@ function wirePreviewEvents(dayId){
     render();
   });
   document.querySelectorAll(".swap").forEach(b => b.onclick = () => {
-    openPanel = openPanel === +b.dataset.i ? null : +b.dataset.i;
+    const opening = openPanel !== +b.dataset.i;
+    openPanel = opening ? +b.dataset.i : null;
     render();
+    if (opening) revealPanel();
   });
   document.querySelectorAll(".sel-group").forEach(sel => sel.onchange = () => {
     const panel = sel.closest(".swap-panel");
@@ -8674,10 +9895,15 @@ function wireEvents(){
         }
         return;
       }
+      /* data-ns carries BOTH lifts of a superset, so one tap folds or reopens the
+         whole card rather than half of it. */
+      const namesOf = el => (el.dataset.ns ? el.dataset.ns.split("|") : [el.dataset.n]).filter(Boolean);
       const fo = e.target.closest(".ex-fold");
-      if (fo){ e.stopPropagation(); exExpand.delete(fo.dataset.n); exFold.add(fo.dataset.n); render(); return; }
+      if (fo){ e.stopPropagation();
+        namesOf(fo).forEach(n => { exExpand.delete(n); exFold.add(n); });
+        render(); return; }
       const ro = e.target.closest(".ex-reopen");
-      if (ro){ exFold.delete(ro.dataset.n); exExpand.add(ro.dataset.n); render(); }
+      if (ro){ namesOf(ro).forEach(n => { exFold.delete(n); exExpand.add(n); }); render(); }
     });
   }
   function removeSetAt(i, j){
@@ -8785,6 +10011,7 @@ function wireEvents(){
         toast("New PR on " + ex.n + " \u2014 locked in when you finish.", true);
         confetti(30);
       }
+      pinGroup(i);          /* settle who this lift is with, before anything else moves */
       sndSet();
       coachDeliver(coachSet(i, j), ex, s);
       if (ex.sets.every(x => x.done)){
@@ -8880,8 +10107,10 @@ function wireEvents(){
     render();
   });
   document.querySelectorAll(".swap").forEach(b => b.onclick = () => {
-    openPanel = openPanel === +b.dataset.i ? null : +b.dataset.i;
+    const opening = openPanel !== +b.dataset.i;
+    openPanel = opening ? +b.dataset.i : null;
     render();
+    if (opening) revealPanel();
   });
   document.querySelectorAll(".sel-group").forEach(sel => sel.onchange = () => {
     const panel = sel.closest(".swap-panel");
@@ -8934,7 +10163,14 @@ function switchDay(id){
   save(); render();
 }
 
-$("addBtn").onclick = () => { openPanel = openPanel === "add" ? null : "add"; render(); };
+$("addBtn").onclick = () => {
+  const opening = openPanel !== "add";
+  openPanel = opening ? "add" : null;
+  bmRegion = null;                 /* a fresh add starts with the whole body */
+  render();
+  /* the add panel lands under every card on the day - same problem as swap */
+  if (opening) revealPanel();
+};
 
 $("finishBtn").onclick = () => {
   if (!state.session.list.some(e => e.sets.some(x => x.done))) return;
@@ -8994,7 +10230,10 @@ async function completeWorkout(overall){
   const wuDone = s.wu && s.wu.length >= AUX_MIN.wu && s.wu.every(Boolean);
   const cdDone = s.cd && s.cd.length >= AUX_MIN.cd && s.cd.every(Boolean);
   state.history.unshift({
-    date: todayISO(), day: s.day, fmt: sessionStyle(), light: light || undefined, dl: (inDeload() || undefined), wu: wuDone || undefined, cd: cdDone || undefined, sweat: sweatCleared || undefined,
+    date: todayISO(), day: s.day, fmt: (s.fmtMixed ? "mixed" : (s.fmt || sessionStyle())),
+    /* where you trained, so three light weeks on the road explain themselves */
+    kit: (kitList().length > 1 ? (kitName(state.kitId) || undefined) : undefined),
+    light: light || undefined, dl: (inDeload() || undefined), wu: wuDone || undefined, cd: cdDone || undefined, sweat: sweatCleared || undefined,
     rating: (overall && overall.rating) || undefined,
     flags: (overall && overall.issues && overall.issues.length) ? overall.issues : undefined,
     dur: s.started ? Math.floor((Date.now() - s.started)/1000) : 0,
