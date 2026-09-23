@@ -10,3 +10,18 @@
   Cache-Control: no-cache
 /
   Cache-Control: no-cache
+
+# Security headers (build 20p security review). The app is one page with its
+# script and styles inline, so 'unsafe-inline' has to stay; what this still
+# buys: the page cannot be framed by another site (clickjacking), the browser
+# will not guess file types, and the app may only load code from itself and
+# jsDelivr and only talk to itself and Supabase - so injected markup could not
+# pull in a script from anywhere else or send your data anywhere else.
+# 21d: the font moved inside index.html, so Google is out of style-src and
+# font-src entirely. Nothing but the page itself supplies type now.
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; media-src 'self' blob: data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; worker-src 'self'; manifest-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
